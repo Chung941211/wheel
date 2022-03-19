@@ -89,17 +89,17 @@ export default {
     return await request({ url: `/api/get_user_info`,  method: 'post', headers: header });
   },
 
-  // 获取用户信息
-  async login() {
-    return await request({
-        url: `/api/login`,
-        method: 'post',
-        data: {
-          phone: '15999951551', //13051032222
-          pass: '123456'
-        }
-    });
-  },
+  // // 获取用户信息
+  // async login() {
+  //   return await request({
+  //       url: `/api/login`,
+  //       method: 'post',
+  //       data: {
+  //         phone: '15999951551', //13051032222
+  //         pass: '123456'
+  //       }
+  //   });
+  // },
 
   // 开奖记录
   async getRecords() {
