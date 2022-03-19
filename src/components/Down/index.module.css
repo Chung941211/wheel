@@ -1,0 +1,403 @@
+.result {
+  display: flex;
+  background-color: rgba(242, 164, 28, 1);
+  border-radius: 13px;
+  align-items: center;
+  margin: 0 10px;
+  padding: 6px 20px;
+}
+
+
+.operation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 45px;
+  margin-top: 70px;
+}
+
+
+.go {
+  width: 40px;
+  height: 40px;
+  margin-left: 8px;
+}
+
+.reset {
+  width: 20px;
+  height: 20px;
+  margin-left: 7px;
+}
+
+.down {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+}
+
+.title {
+  font-weight: bold;
+  color: #ffffff;
+  border-right: 2px solid #ffffff;
+  padding-right: 15px;
+  margin-right: 15px;
+}
+
+.animal {
+  display: flex;
+  align-items: center;
+  padding-top: 2px;
+}
+
+.animal img {
+  width: 32px;
+  height: 38px;
+  margin: 0 7px;
+}
+
+.rows {
+  display: flex;
+  position: relative;
+}
+
+.new {
+  position: absolute;
+  font-size: 12px;
+  background-color: rgba(241, 79, 0, 1);
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 0 3px;
+  transform: scale(0.8);
+  top: -3px;
+  right: -6px;
+}
+
+.choose {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-bottom: 5%;
+}
+
+.chooseRows {
+  background-color: rgba(255, 216, 124, 1);
+  border: 3px solid rgba(220, 154, 0, 1);
+  border-radius: 36px;
+  flex: 1;
+  text-align: center;
+  margin: 0 20px;
+  color: rgba(250, 141, 0, 1);
+  font-weight: bold;
+  padding: 5px 0;
+}
+
+.diamonds {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.diamonds img{
+  width: 20px;
+  margin-right: 10px;
+}
+
+
+.circle {
+  text-align: center;
+  margin-top: 40px;
+  position: relative;
+}
+
+.please {
+  position: absolute;
+  width: 100%;
+  top: 40%;
+  z-index: 1;
+  width: 100%;
+  text-align: center;
+  color: #ffffff;
+}
+
+.select {
+  width: 80px;
+  margin: 0 auto;
+  transform: scale(0.9);
+  font-size: 12px;
+}
+.times {
+  span {
+    font-size: 13px;
+  }
+}
+
+.ball {
+  width: 270px;
+  position: relative;
+}
+
+.content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper {
+  position: absolute;
+  top: -30px;
+  width: 270px;
+  height: 270px;
+  left: calc(50% - 96px);
+}
+
+.ballContent {
+  position: absolute;
+  left: 0px;
+  top: 25px;
+  width: 100%;
+}
+
+.ballTop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  img {
+    width: 10px;
+    height: 9px;
+  }
+}
+
+.max {
+  margin-top: -5px;
+  img {
+    width: 13px;
+    height: 11px;
+  }
+}
+
+.ballAnimal {
+  width: 40px;
+  margin-top: -30px;
+  position: relative;
+  z-index: 3;
+}
+
+.ballTurn {
+  animation: turn 1s linear infinite;
+}
+
+.ballWord {
+  font-size: 12px;
+  transform: scale(0.8);
+}
+
+.you {
+  color: #911111;
+  transform: scale(0.8);
+}
+.num {
+  transform: scale(0.8);
+  font-weight: bold;
+}
+
+.row {
+  position: absolute;
+  height: 170px;
+  -webkit-transform-origin: 0 100%;
+  transform-origin: 0 100%;
+  z-index: 2;
+}
+
+.container {
+  background-image: url("../../assets/bg01.png");
+  background-size: 100% 100%;
+  width: 78px;
+  height: 78px;
+  position: relative;
+}
+
+.row:nth-child(1) {
+  -webkit-transform: rotate(-19deg);
+  transform: rotate(-19deg);
+}
+
+.row:nth-child(1) .container {
+  -webkit-transform: rotate(19deg);
+  transform: rotate(19deg);
+}
+
+.row:nth-child(2) {
+  -webkit-transform: rotate(25deg);
+  transform: rotate(25deg);
+}
+
+.row:nth-child(2) .container {
+  -webkit-transform: rotate(-25deg);
+  transform: rotate(-25deg);
+}
+
+.row:nth-child(3) {
+  -webkit-transform: rotate(70deg);
+  transform: rotate(70deg);
+}
+
+.row:nth-child(3) .container {
+  -webkit-transform: rotate(-70deg);
+  transform: rotate(-70deg);
+}
+
+.row:nth-child(4) {
+  -webkit-transform: rotate(116deg);
+  transform: rotate(116deg);
+}
+
+.row:nth-child(4) .container {
+  -webkit-transform: rotate(-116deg);
+  transform: rotate(-116deg);
+}
+
+.row:nth-child(5) {
+  -webkit-transform: rotate(165deg);
+  transform: rotate(165deg);
+}
+
+.row:nth-child(5) .container {
+  -webkit-transform: rotate(-165deg);
+  transform: rotate(-165deg);
+}
+
+.row:nth-child(6) {
+  -webkit-transform: rotate(212deg);
+  transform: rotate(212deg);
+}
+
+.row:nth-child(6) .container {
+  -webkit-transform: rotate(-212deg);
+  transform: rotate(-212deg);
+}
+
+.row:nth-child(7) {
+  -webkit-transform: rotate(256deg);
+  transform: rotate(256deg);
+}
+
+.row:nth-child(7) .container {
+  -webkit-transform: rotate(-256deg);
+  transform: rotate(-256deg);
+}
+
+.row:nth-child(8) {
+  -webkit-transform: rotate(300deg);
+  transform: rotate(300deg);
+}
+
+.row:nth-child(8) .container {
+  -webkit-transform: rotate(-300deg);
+  transform: rotate(-300deg);
+}
+
+
+.ballNum .container {
+  background-image: url("../../assets/bg03.png") !important;
+}
+
+.ballLast .container {
+  background-image: url("../../assets/bg04.png") !important;
+}
+
+.ballNumLast .container {
+  background-image: url("../../assets/bg05.png") !important;
+}
+
+.ballActive .container {
+  background-image: url("../../assets/bg02.png") !important;
+}
+
+
+.off {
+  &::after {
+    content: '';
+    position: absolute;
+    background-color: #000;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    border-radius: 50%;
+    opacity: 0.4;
+    z-index: 1;
+  }
+}
+
+.on {
+  &::after {
+    display: none;
+  }
+}
+
+
+.chip {
+  width: 45px;
+  height: 45px;
+  margin: 0 8px;
+  border-radius: 50%;
+  position: relative;
+  div {
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    line-height: 45px;
+    font-size: 12px;
+    background-size: 100% 100%;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    left: 0;
+    top: 0;
+    background-color: #000;
+    opacity: 0.4;
+    z-index: 1;
+    border-radius: 50%;
+  }
+}
+
+.active {
+  &::after {
+    display: none;
+  }
+}
+
+.chip-0 {
+  background-image: url("../../assets/chip-0.png");
+}
+
+.chip-1 {
+  background-image: url("../../assets/chip-1.png");
+}
+
+.chip-2 {
+  background-image: url("../../assets/chip-2.png");
+}
+
+.chip-3 {
+  background-image: url("../../assets/chip-3.png");
+}
+
+
+@keyframes turn {
+  0%{
+    transform: rotate(-30deg);
+    -webkit-transform: rotate(-30deg);
+  }
+  50%{
+    transform: rotate(30deg);
+    -webkit-transform:rotate(30deg);
+  }
+  100%{
+    transform: rotate(-30deg);
+    -webkit-transform:rotate(-30deg);
+  }
+}

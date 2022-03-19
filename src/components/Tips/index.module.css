@@ -1,0 +1,146 @@
+
+.props {
+  position: fixed;
+  z-index: 100;
+  bottom: 0;
+  left: 0;
+  background: #140F0C;
+  width: 100%;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  padding: 20px 0 40px 0;
+}
+
+.title {
+  text-align: center;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 15px 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imgs {
+  width: 30px;
+  margin-left: 10px;
+}
+
+.word {
+  text-align: center;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.tips {
+  color: #FFC720;
+  text-align: center;
+  margin-top: 40px;
+  position: relative;
+  font-size: 14px;
+  &::after, &::before {
+    content: '';
+    height: 1px;
+    width: 80px;
+    background-color: #FFC720;
+    position: absolute;
+    left: 20px;
+    top: 10px;
+  }
+  &::before {
+    right: 20px;
+    left: auto;
+  }
+}
+
+.portrait {
+  border-radius: 50%;
+  img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+  }
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  margin-top: 30px;
+}
+
+.name {
+  color: #ffffff;
+  margin: 10px 0;
+  text-align: center;
+  font-size: 14px;
+}
+
+.nums {
+  width: 25px;
+  height: 30px;
+  line-height: 30px;
+  background-size: 100% 100%;
+  margin: -15px auto 0 auto;
+  color: #ffffff;
+  font-size: 13px;
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+
+.nums-0 {
+  background-image: url("../../assets/one.png");
+}
+
+.nums-1 {
+  background-image: url("../../assets/two.png");
+}
+
+.nums-2 {
+  background-image: url("../../assets/three.png");
+}
+
+.diamonds {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  img {
+    width: 20px;
+    height: 15px;
+  }
+  div {
+    color: #ffffff;
+    font-size: 14px;
+  }
+}
+
+.wrap {
+  position: relative;
+}
+
+.times {
+  position: absolute;
+  left: 10px;
+  height: 10px;
+  color: #ffffff;
+}
+
+
+.contents {
+  display: flex;
+  color: #ffffff;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  img {
+    width: 20px;
+    height: 15px;
+  }
+}

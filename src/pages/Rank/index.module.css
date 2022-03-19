@@ -1,0 +1,177 @@
+.wrapper {
+  background: linear-gradient(179deg, #F2E9B5 0%, #FFD39E 100%);
+  min-height: 100vh;
+  padding: 0 10px 20px 10px;
+}
+/*
+.fiexd {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  left: 0;
+  z-index: 1;
+  background: #F2E9B5;
+} */
+
+.header {
+  display: flex;
+  padding-top: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back {
+  width: 12px;
+  height: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  color: #F37A00;
+  font-weight: bold;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  left: 0;
+}
+
+.reward {
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 3px 7px;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.reward a {
+  color: #F37A00;
+}
+
+.portrait {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.ranking {
+  display: flex;
+  text-align: center;
+  margin: 40px 0 20px 0;
+}
+
+.bigPortrait {
+  flex: 1;
+}
+
+.nums {
+  width: 25px;
+  height: 30px;
+  line-height: 30px;
+  background-size: 100% 100%;
+  margin: -15px auto 0 auto;
+  color: #ffffff;
+  font-size: 13px;
+  position: relative;
+  z-index: 1;
+}
+
+
+.nums-1 {
+  background-image: url("../../assets/one.png");
+}
+
+.nums-2 {
+  background-image: url("../../assets/two.png");
+}
+
+.nums-3 {
+  background-image: url("../../assets/three.png");
+}
+
+.bimg {
+  width: 90px;
+  height: 90px;
+  margin-top: -20px;
+}
+.name {
+  margin-top: 5px;
+}
+
+.name span {
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+}
+
+.fraction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3px;
+}
+
+.fraction img {
+  width: 19px;
+  height: 16px;
+  margin-right: 2px;
+}
+
+.grade {
+  font-size: 14px;
+}
+
+.name-1 {
+  color: #6F6FC4;
+}
+
+.name-2 {
+  color: #FF7700;
+}
+
+.name-3 {
+  color: #A77657;
+}
+
+.items {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.index {
+  font-weight: bold;
+  margin-right: 20px;
+  color: #FF9100;
+}
+
+.itemHeader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.popular {
+  font-size: 14px;
+  font-weight: bold;
+  color: #B86900;
+  margin-left: 20px;
+  flex: 1;
+}
+
+
+.gold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #B86900;
+}
+
+.gold img {
+  width: 19px;
+  height: 16px;
+  margin-right: 4px;
+}
