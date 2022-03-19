@@ -1,5 +1,7 @@
-import styles from './index.module.css';
 import { useState, useEffect } from "react";
+import text from '@/locales';
+
+import styles from './index.module.css';
 import diamonds from '@/assets/diamonds.png';
 
 const Tips = (props) => {
@@ -37,16 +39,16 @@ const Tips = (props) => {
       <div className={styles.wrap}>
         <div className={styles.times}>{times}s</div>
         <div className={styles.title}>
-          <div>The result of this round :</div>
+          <div>{ text.round } :</div>
           <img className={styles.imgs} src={portrait}  />
         </div>
         { (winner.self.win_diamond > 0 || winner.self.bet_diamond > 0)  && <div className={styles.contents}>
             <img src={diamonds} />
-            <div>You win: { winner.self.win_diamond }</div>
+            <div>{ text.youWin }: { winner.self.win_diamond }</div>
           </div>
         }
-        { winner.self.win_diamond === 0 && winner.self.bet_diamond === 0 && <div className={styles.word}>You didn't bet this round</div> }
-        <div className={styles.tips}>Congratulations they get</div>
+        { winner.self.win_diamond === 0 && winner.self.bet_diamond === 0 && <div className={styles.word}>{ text.didnt }</div> }
+        <div className={styles.tips}>{ text.congratulations }</div>
         <div className={styles.result}>
           {
             winner.other && winner.other.map((item, index) => {

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRequest } from 'ice';
 import userService from '@/services/api';
+import text from '@/locales';
 
 import styles from './index.module.css';
 
@@ -36,12 +37,12 @@ const Rank = () => {
 
       <div className={styles.header}>
         <img className={styles.back} onClick={ () => window.history.go(-1) } src={back} />
-        <div className={styles.title}>Reward</div>
+        <div className={styles.title}>{ text.reward }</div>
       </div>
 
       <div className={styles.mainer}>
         <div className={styles.word}>
-          Users with the most weekly bets can get the cars sent by the Lightchat platform, and the top three weekly get the right to use the items for 7days
+        { text.rewardTips }
         </div>
         <div className={styles.gift}>
           { data && data.gameTopReward.map((item:any, index:number) => {
@@ -49,7 +50,7 @@ const Rank = () => {
                 <div key={item.wares_id} className={styles.rows}>
                   <img src={item.img} />
                   <div className={styles.top}>
-                    <span>TOP{ index + 1 }</span>
+                    <span>{ text.top }{ index + 1 }</span>
                   </div>
                 </div>
               )
@@ -58,7 +59,7 @@ const Rank = () => {
         </div>
       </div>
 
-      <div className={styles.btn}>Please pay attention to check your reward</div>
+      <div className={styles.btn}>{ text.attention }</div>
 
       <div className={styles.ranking}>
         { data && <Lists item={data.rows[1]} index={2} /> }

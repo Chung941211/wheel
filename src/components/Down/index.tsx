@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import text from '@/locales';
 
 import ball from '../../assets/ball.png';
 
@@ -76,9 +77,9 @@ const Down = (props) => {
       <div className={styles.circle}>
 
       <div className={styles.please}>
-        { info.showTime > 0 && <div className={styles.select}>Please <br /> Select animal</div> }
-        { (info.showTime <= 0 && !result) && <div className={styles.select}>Settlement <br /> in progress</div> }
-        { (info.showTime <= 0 && result) && <div className={styles.select}>Next game</div> }
+        { info.showTime > 0 && <div className={styles.select}>{ text.please }</div> }
+        { (info.showTime <= 0 && !result) && <div className={styles.select}>{ text.settlement }</div> }
+        { (info.showTime <= 0 && result) && <div className={styles.select}>{ text.next }</div> }
         { ((info.showTime <= 0 && result) || info.showTime > 0) && <div className={styles.times}>{info.showTime < 0 ? 10 - info.showTime * -1 : info.showTime}<span>S</span></div> }
       </div>
 
@@ -131,14 +132,14 @@ const Down = (props) => {
 
       <div className={styles.choose}>
         <div className={styles.chooseRows}>
-          <div>Gold balance</div>
+          <div>{ text.balance }</div>
           <div className={styles.diamonds}>
             <img src={diamonds} />
             <span>{ parseInt(balance) }</span>
           </div>
         </div>
         <div className={styles.chooseRows}>
-          <div>Today's profit</div>
+          <div>{ text.profit }</div>
           <div className={styles.diamonds}>
             <img src={diamonds} />
             <span>{ today }</span>
@@ -147,12 +148,12 @@ const Down = (props) => {
       </div>
 
       <div className={styles.result}>
-        <div className={styles.title}>Result</div>
+        <div className={styles.title}>{ text.result }</div>
         <div className={styles.animal}>
           { history && history.slice(0, 5).map((item, index) => {
             return (
               <div key={index} className={styles.rows}>
-                { index === 0 && <div className={styles.new}>New</div>}
+                { index === 0 && <div className={styles.new}>{ text.news }</div>}
                 <img src={item.img} />
               </div>
             )

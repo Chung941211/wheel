@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRequest } from 'ice';
 import userService from '@/services/api';
+import text from '@/locales';
 
 import styles from './index.module.css';
 
@@ -58,9 +59,9 @@ const Rank = () => {
 
       <div className={styles.header}>
         <img className={styles.back} onClick={ () => window.history.go(-1) } src={back} />
-        <div className={styles.title}>Rank</div>
+        <div className={styles.title}>{ text.rank }</div>
         <div className={styles.reward}>
-          <a href="/index/ferris/reward.html">Reward</a>
+          <a href="/index/ferris/reward.html">{ text.reward }</a>
         </div>
       </div>
       { recordsList &&

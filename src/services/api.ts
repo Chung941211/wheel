@@ -1,15 +1,6 @@
 import { request } from 'ice';
+import { getCookie } from '../utils';
 
-function getCookie (cname) {
-  let name = cname + "=";
-  let ca = document.cookie.split(';');
-  for (let i=0; i<ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0)==' ') c = c.substring(1);
-    if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
-  }
-  return "";
-}
 
 type historyType = {
 
@@ -28,6 +19,7 @@ if (getCookie("biubiuclub_cookiehttp_token")) {
 if (getCookie("biubiuclub_cookieaccept_language")) {
   header['Accept-Language'] = getCookie("biubiuclub_cookieaccept_language");
 }
+
 
 
 export default {
@@ -89,17 +81,7 @@ export default {
     return await request({ url: `/api/get_user_info`,  method: 'post', headers: header });
   },
 
-  // // 获取用户信息
-  // async login() {
-  //   return await request({
-  //       url: `/api/login`,
-  //       method: 'post',
-  //       data: {
-  //         phone: '15999951551', //13051032222
-  //         pass: '123456'
-  //       }
-  //   });
-  // },
+
 
   // 开奖记录
   async getRecords() {

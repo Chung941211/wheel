@@ -1,9 +1,9 @@
 {
-  "plugins": [],
   "mpa": true,
   "proxy": {
       "/api": {
       "enable": true,
+      "target": "https://live.piupiuchat.top"
     }
   },
   "publicPath": "/assets/"

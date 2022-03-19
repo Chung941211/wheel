@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useDocumentVisibility, useInterval } from 'ahooks';
 import { useRequest } from 'ice';
+
 import userService from '@/services/api';
+import text from '@/locales';
 
 import Down from '@/components/Down';
 import Rules from '@/components/Rules';
@@ -42,9 +44,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    // if (documentVisibility === 'visible') {
     getSection();
-    // }
   }, [documentVisibility]);
 
   useEffect(() => {
@@ -162,12 +162,12 @@ const Home = () => {
         <div className={styles.wrap}>
           <div className={styles.leftW}>
             <div className={`${styles.rows} ${styles.records}`}>
-              <a href="/index/ferris/records.html">Records</a>
+              <a href="/index/ferris/records.html">{ text.records }</a>
             </div>
           </div>
-          <div className={`${styles.rows} ${styles.rules}`} onClick={ () => setRules(true) }>Rules</div>
+          <div className={`${styles.rows} ${styles.rules}`} onClick={ () => setRules(true) }>{ text.rules }</div>
           <div className={`${styles.rows} ${styles.rank}`}>
-            <a href="/index/ferris/rank.html">Rank</a>
+            <a href="/index/ferris/rank.html">{ text.rank }</a>
           </div>
         </div>
 

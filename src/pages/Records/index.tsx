@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useRequest } from 'ice';
 import userService from '@/services/api';
+import text from '@/locales';
 
 import styles from './index.module.css';
 
@@ -40,15 +41,15 @@ const Rank = () => {
 
       <div className={styles.header}>
         <img className={styles.back} onClick={ () => window.history.go(-1) } src={back} />
-        <div className={styles.title}>Reward</div>
+        <div className={styles.title}>{ text.reward }</div>
       </div>
 
       <div className={`${styles.table} ${styles.thead}`}>
-        <div>Level</div>
-        <div>Selected</div>
-        <div>Result</div>
-        <div>Win or lose</div>
-        <div>Time</div>
+        <div>{ text.level }</div>
+        <div>{ text.selected }</div>
+        <div>{ text.selected }</div>
+        <div>{ text.winOrLose }</div>
+        <div>{ text.time }</div>
       </div>
 
       <div className={styles.list}>
