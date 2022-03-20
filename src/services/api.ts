@@ -13,13 +13,14 @@ type historyType = {
 let header:historyType = {}
 
 if (getCookie("biubiuclub_cookiehttp_token")) {
-  // header['token'] = getCookie("biubiuclub_cookiehttp_token");
+  header['token'] = getCookie("biubiuclub_cookiehttp_token");
 }
 
 if (getCookie("biubiuclub_cookieaccept_language")) {
   header['Accept-Language'] = getCookie("biubiuclub_cookieaccept_language");
 }
 
+// header['token'] = '2d87e57d-8b59-4163-9554-196e0f15af42';
 
 
 export default {
@@ -81,7 +82,17 @@ export default {
     return await request({ url: `/api/get_user_info`,  method: 'post', headers: header });
   },
 
-
+  // // 获取用户信息
+  async login() {
+    return await request({
+        url: `/api/login`,
+        method: 'post',
+        data: {
+          phone: '15999951551', //13051032222
+          pass: '123456'
+        }
+    });
+  },
 
   // 开奖记录
   async getRecords() {

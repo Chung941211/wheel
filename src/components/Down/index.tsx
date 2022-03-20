@@ -126,8 +126,7 @@ const Down = (props) => {
               )
             })
           }
-          {/* <img onClick={() => handleGo()} className={styles.go} src={goImg} />
-          <img onClick={() => handleReset()} className={styles.reset} src={resetImg} /> */}
+
         </div>
 
       <div className={styles.choose}>
