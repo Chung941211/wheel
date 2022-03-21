@@ -1,27 +1,5 @@
 import { request } from 'ice';
-import { getCookie } from '../utils';
-
-
-type historyType = {
-
-  token?: string
-
-  'Accept-Language'?: string
-
-}
-
-let header:historyType = {}
-
-if (getCookie("biubiuclub_cookiehttp_token")) {
-  header['token'] = getCookie("biubiuclub_cookiehttp_token");
-}
-
-if (getCookie("biubiuclub_cookieaccept_language")) {
-  header['Accept-Language'] = getCookie("biubiuclub_cookieaccept_language");
-}
-
-// header['token'] = '2d87e57d-8b59-4163-9554-196e0f15af42';
-
+import { header } from '../utils';
 
 export default {
 
