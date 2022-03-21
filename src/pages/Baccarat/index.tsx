@@ -5,6 +5,7 @@ import text from '@/locales';
 
 const Baccarat = () => {
   return (
+
     <div className={styles.main}>
       <div className={styles.nav}>
         <div>{ text.records }</div>
