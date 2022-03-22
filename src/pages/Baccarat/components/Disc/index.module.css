@@ -1,0 +1,62 @@
+.disc {
+  position: relative;
+  z-index: 1;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.mic {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 1;
+  animation: wheel_rotate 1s linear;
+  /* display: none; */
+  img {
+    width: 145px;
+  }
+}
+
+.wan {
+  width: 160px;
+  margin: 0 auto;
+  position: relative;
+  .wanImg {
+    width: 160px;
+  }
+}
+
+.baccarat {
+  position: absolute;
+  width: 100px;
+}
+
+.baccarat01 {
+  top: 8px;
+  left: 2px;
+}
+
+.baccarat02 {
+  top: 8px;
+  right: 2px;
+}
+
+.baccarat03 {
+  bottom: -2px;
+  right: 28px;
+}
+
+@keyframes wheel_rotate {
+  0% {
+    margin-left: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    margin-left: 200px;
+  }
+}

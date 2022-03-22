@@ -1,0 +1,126 @@
+.reward {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  width: 240px;
+  justify-content: center;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.rewardImg {
+  width: 78px;
+  height: 78px;
+}
+
+.rewardItem {
+  border: 1px solid #df1007;
+  height: 78px;
+  background-color: #ffffff;
+}
+
+.times {
+  width: 50px;
+  height: 50px;
+  background-image: url("../../../../assets/times.png");
+  background-size: 100%;
+  margin: 10px auto 0 auto;
+  text-align: center;
+  line-height: 50px;
+  color: #46614c;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.operation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 25px;
+}
+
+.chip {
+  width: 45px;
+  height: 45px;
+  margin: 0 8px;
+  border-radius: 50%;
+  position: relative;
+  div {
+    width: 45px;
+    height: 45px;
+    text-align: center;
+    line-height: 45px;
+    font-size: 12px;
+    background-size: 100% 100%;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+  }
+}
+
+
+
+.chip-0 {
+  background-image: url("../../../../assets/chip-0.png");
+}
+
+.chip-1 {
+  background-image: url("../../../../assets/chip-1.png");
+}
+
+.chip-2 {
+  background-image: url("../../../../assets/chip-2.png");
+}
+
+.chip-3 {
+  background-image: url("../../../../assets/chip-3.png");
+}
+
+.bigBtn {
+  display: flex;
+  justify-content: space-between;
+  width: 240px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.stop {
+  background-image: linear-gradient( #87ceec 0, #5d8ed6 100%);
+  color: #ffffff;
+  width: 105px;
+  font-size: 14px;
+  border-radius: 16px;
+  padding: 5px 0;
+  border: 1px solid #6398de;
+}
+
+.number {
+  background-image: linear-gradient( #efcc63 0, #e4a054 100%);
+  color: #ffffff;
+  width: 105px;
+  font-size: 14px;
+  border-radius: 16px;
+  padding: 5px 0;
+  border: 1px solid #dea65c;
+}
+
+.btn {
+  display: flex;
+  width: 240px;
+  margin: 15px auto 0 auto;
+  div {
+    text-align: center;
+    font-size: 13px;
+    background-image: linear-gradient( #7fcc91 0, #5e9f69 100%);
+    border: 1px solid #7fb17b;
+    border-radius: 16px;
+    color: #ffffff;
+    padding: 5px 8px;
+    margin-right: 20px;
+  }
+}
