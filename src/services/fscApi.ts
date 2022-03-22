@@ -1,20 +1,18 @@
 import { request } from 'ice';
 import { header } from '../utils';
 
-
-
 export default {
-
   //
-  async getFsc() {
+  async getFsc(params) {
+    console.log(params)
     const data = await request({
       url: `/api/fsc/section`,
-      data: {
-        offset: '',
-        page: ''
-      },
-      method: 'post',
-      headers: header
+      params,
+      headers: {
+        ...header,
+        roomId: params.roomId,
+        betType: params.betType
+      }
     });
     return data.data;
   }

@@ -1,4 +1,22 @@
-function getCookie (cname:string) {
+
+function getQueryVariable (variable: string) {
+
+  let query:string = window.location.search.substring(1);
+  let vars:Array<string> = query.split("&");
+
+  for (let i=0; i<vars.length; i++) {
+    let pair:Array<string> = vars[i].split("=");
+
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+
+  }
+
+  return(false);
+}
+
+function getCookie (cname: string) {
   let name:string = cname + "=";
   let ca = document.cookie.split(';');
   for (let i = 0; i < ca.length; i++) {
@@ -30,6 +48,7 @@ if (getCookie("biubiuclub_cookieaccept_language")) {
 
 export {
   header,
-  getCookie
+  getCookie,
+  getQueryVariable
 }
 

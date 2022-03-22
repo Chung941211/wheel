@@ -2,7 +2,7 @@
   "mpa": true,
   "proxy": {
       "/api": {
-      "enable": true
+      "enable": true,
     }
   },
   "publicPath": "/assets/"
