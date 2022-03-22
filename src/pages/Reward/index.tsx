@@ -25,7 +25,7 @@ const Lists = (props) => {
   )
 }
 
-const Rank = () => {
+const Reward = () => {
   const { data, request } = useRequest<any>(userService.getFerrisTop3);
 
   useEffect(() => {
@@ -76,4 +76,4 @@ const Rank = () => {
   ;
 };
 
-export default Rank;
+export default Reward;

@@ -29,7 +29,7 @@ const Lists = (props) => {
   )
 }
 
-const Rank = () => {
+const Records = () => {
   const { data: recordsList, request } = useRequest(userService.getRecords);
   useEffect(() => {
     request();
@@ -47,7 +47,7 @@ const Rank = () => {
       <div className={`${styles.table} ${styles.thead}`}>
         <div>{ text.level }</div>
         <div>{ text.selected }</div>
-        <div>{ text.selected }</div>
+        <div>{ text.result }</div>
         <div>{ text.winOrLose }</div>
         <div>{ text.time }</div>
       </div>
@@ -63,4 +63,4 @@ const Rank = () => {
   ;
 };
 
-export default Rank;
+export default Records;
