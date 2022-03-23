@@ -30,7 +30,7 @@ const Lists = (props) => {
 }
 
 const Records = (props) => {
-  const { handleReward } = props;
+  const { handleRecords } = props;
   const { data: recordsList, request } = useRequest(fscService.getRecords);
   useEffect(() => {
     request();
@@ -39,11 +39,11 @@ const Records = (props) => {
 
   return (
     <>
-      <div className={styles.bg}></div>
+      <div onClick={ () => handleRecords() } className={styles.bg}></div>
       <div className={styles.wrapper}>
 
         <div className={styles.header}>
-          <img className={styles.back} onClick={ () => handleReward() } src={back} />
+          <img className={styles.back} onClick={ () => handleRecords() } src={back} />
           <div className={styles.title}>{ text.reward }</div>
         </div>
 

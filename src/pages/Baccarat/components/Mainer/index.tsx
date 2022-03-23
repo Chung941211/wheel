@@ -2,19 +2,17 @@ import { useState, useEffect } from "react";
 
 import styles from './index.module.css';
 
-const Seat = (props) => {
-  const { reward, bet } = props.fscData;
 
-  const handleChip = (index: number) => {
-    console.log(index);
-  }
+const Seat = (props) => {
+  const {  handleBall, handleChip, fscData, chip } = props;
+  const { reward, bet } = fscData;
 
   return (
     <div className={styles.content}>
-      <div className={styles.reward}>
-        { reward.map(item => {
+      <div id='reward' className={styles.reward}>
+        { reward.map((item, index) => {
           return (
-            <div className={styles.rewardItem} key={item.id}>
+            <div id={`reward-${index + 1}`} onClick={ () => handleBall(`reward-${index + 1}`) }  className={styles.rewardItem} key={item.id}>
               <img className={styles.rewardImg} src={item.show_img} />
             </div>
           )
@@ -27,7 +25,7 @@ const Seat = (props) => {
           {
             bet.map((item, index) => {
               return (
-                <div key={index} onClick={() => handleChip(index)} className={`${styles.chip}`}>
+                <div key={index} onClick={() => handleChip(index)} className={`${styles.chip} ${chip === index ? styles.chipActive : ''}`}>
                   <div className={`${styles['chip-' + index]}`}>{ item.diamond }</div>
                 </div>
               )

@@ -7,7 +7,6 @@ import baccarat from '@/assets/baccarat-01.png';
 
 const Seat = (props) => {
 
-
   return (
     <>
       <div className={styles.disc}>

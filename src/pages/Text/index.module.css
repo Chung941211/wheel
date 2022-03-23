@@ -1,0 +1,48 @@
+.mainer {
+  margin-top: 100px;
+
+  margin: 100px 30px 0 30px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.test {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.mainerRows {
+  height: 150px;
+  width: 150px;
+  border: 1px solid red;
+  position: relative;
+  background-color: red;
+}
+
+.rows {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: blue;
+  top: 0;
+  left: 0;
+  animation: wheel_move 0.3s linear;
+  animation-fill-mode: forwards;
+  z-index: 3;
+  pointer-events: none;
+}
+
+
+@keyframes wheel_move {
+  0% {
+    top: 0;
+    left: 0;
+  }
+  100% {
+    top: var(--top);
+    left: var(--left);
+  }
+}
+

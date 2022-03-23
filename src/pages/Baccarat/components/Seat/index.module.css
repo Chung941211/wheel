@@ -18,6 +18,7 @@
   box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.4) inset;
   height: 70px;
   width: 43px;
+  position: relative;
 }
 
 .empty {
@@ -58,3 +59,54 @@
   font-size: 12px;
   margin-top: -3px;
 }
+
+
+.ball {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  line-height: 27px;
+  border-radius: 50%;
+  top: 5px;
+  left: 5px;
+  animation: ball_move 0.3s linear;
+  animation-fill-mode: forwards;
+  z-index: 3;
+  pointer-events: none;
+  background-size: 100% 100%;
+  text-align: center;
+  span {
+    font-size: 12px;
+    transform: scale(0.6);
+    display: inline-block;
+  }
+}
+
+.ball-0 {
+  background-image: url("../../../../assets/chip-0.png");
+}
+
+.ball-1 {
+  background-image: url("../../../../assets/chip-1.png");
+}
+
+.ball-2 {
+  background-image: url("../../../../assets/chip-2.png");
+}
+
+.ball-3 {
+  background-image: url("../../../../assets/chip-3.png");
+}
+
+
+@keyframes ball_move {
+  0% {
+    top: 5px;
+    left: 5px;
+  }
+  100% {
+    top: var(--top);
+    left: var(--left);
+  }
+}
+

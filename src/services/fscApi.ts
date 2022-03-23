@@ -2,7 +2,18 @@ import { request } from 'ice';
 import { header } from '../utils';
 
 export default {
-
+  // 开始游戏
+  async getStart(params) {
+    const data = await request({
+      url: `/api/fsc/start`,
+      headers: {
+        ...header,
+        roomId: params.roomId,
+        betType: params.betType
+      }
+    });
+    return data.data;
+  },
   // 获取排行榜TOP3
   async getFscTop3() {
     const data = await request({
@@ -18,7 +29,6 @@ export default {
   },
 
   async getFsc(params) {
-    console.log(params)
     const data = await request({
       url: `/api/fsc/section`,
       params,
