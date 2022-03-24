@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 
 import styles from './index.module.css';
-import mic from '@/assets/mic_ico.png';
+import micImg from '@/assets/mic_ico.png';
 import record from '@/assets/record_icon.png';
-import test from '@/assets/test.jpg';
 
 const Ball = (props) => {
   const { item } = props;
@@ -20,47 +19,37 @@ const Ball = (props) => {
 
 const SeatRows = (props) => {
 
-  const { rows, ball } = props;
+  const { rows } = props;
 
   return (
-    <div id={`seat-${rows}`} className={styles.seatRows} key={rows}>
-      { rows !== 8 && <div className={styles.empty}>Empty</div> }
-      { rows === 8 && <div className={styles.has}>
+    <div id={`seat-${rows.id}`} className={styles.seatRows} key={rows}>
+      { !rows.user_id && <div className={styles.empty}>Empty</div> }
+      { rows.user_id && <div className={styles.has}>
         <div className={styles.portrait}>
-          <img src={test}  />
+          <img src={ rows.user_info.headimgurl }  />
         </div>
-        <div className={styles.names}>我的名字</div>
-        <div className={styles.nums}>1000</div>
-        { ball.map((item, index) => <Ball key={index} item={item} /> )}
+        <div className={styles.names}>{ rows.user_info.nickname }</div>
+        <div className={styles.nums}>{ rows.user_info.balance }</div>
+        { rows.ball.map((item, index) => <Ball key={index} item={item} /> )}
       </div> }
     </div>
   )
 }
 
 const Seat = (props) => {
-  const { ball } = props;
-  const [ leftSeat, setleftSeat ] = useState<number[]>([]);
-  useEffect(() => {
-    let leftArr:Array<number> = [];
-
-    for (let i = 1; i < 14; i++) {
-      leftArr.push(i);
-    }
-
-    setleftSeat(leftArr);
-  }, [ ])
+  const { mic } = props;
 
   return (
     <div className={styles.seatWrapper}>
       <div className={styles.seat}>
-        <div>{ leftSeat.slice(0, 7).map(item => <SeatRows key={item} rows={item} ball={ball} />) }</div>
+        <div>{ mic.slice(0, 7).map((item, index) => <SeatRows key={index} rows={item} />) }</div>
         <div>
-          { leftSeat.slice(7, 14).map(item => <SeatRows key={item} rows={item} ball={ball} />) }
+          { mic.slice(7, 14).map((item, index) => <SeatRows key={index} rows={item} />) }
           <div className={styles.seatIcon}>
             <img src={record} />
           </div>
           <div className={styles.seatIcon}>
-            <img src={mic} />
+            <img src={micImg} />
           </div>
         </div>
       </div>

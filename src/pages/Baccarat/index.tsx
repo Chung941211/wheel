@@ -15,22 +15,16 @@ import Records from './components/Records';
 import styles from './index.module.css';
 import text from '@/locales';
 
-type ballType = {
-  top: string
-  left: string,
-  active: number | string,
-  diamond: number
-}
-
 const Baccarat = () => {
   const [ showRules, setRules ] = useState<boolean>(false);
   const [ showReward, setReward ] = useState<boolean>(false);
   const [ showRecords, setRecords ] = useState<boolean>(false);
   const [ showRank, setRank ] = useState<boolean>(false);
-  const [ ball, setBall ] = useState<ballType[]>([]);
   const [ chip, setChip ] = useState<number | string>('');
   const { data: fscData, request: getFsc } = useRequest(fscService.getFsc);
   const { request: getStart } = useRequest(fscService.getStart);
+  const [ mic, setMic ] = useState<object[]>([]);
+  const [ master, setMaster ] = useState<number | string>('');
 
   useEffect(() => {
     let roomId:string | boolean = getQueryVariable('roomId');
@@ -38,12 +32,33 @@ const Baccarat = () => {
 
     const fetchData = async () => {
       await getStart({ roomId, betType });
-      await getFsc({ roomId, betType });
+      let data = await getFsc({ roomId, betType });
+      let seatArr:Array<object> = [];
+      for (let i = 0; i < 13; i++) {
+        seatArr.push({
+          ball: [],
+          id: i
+        });
+      }
+      data.user_mic_serial.forEach(ele => {
+        if (ele.user_info.is_master === 1) {
+          ele.user_info.balance = 3000;
+          setMaster(ele.position);
+        }
+        seatArr[ele.position] = {
+          ...ele,
+          ...seatArr[ele.position],
+        }
+      });
+      setMic(seatArr);
     };
 
     fetchData();
 
   }, []);
+
+  useEffect(() => {
+  }, [fscData])
 
   const handleChip = (index: number) => {
     if (chip === index) {
@@ -54,15 +69,23 @@ const Baccarat = () => {
   }
 
 
-  const handleBall = (dom: string) => {
+  const handleBall = (dom: string, seat: number | string) => {
     if (chip === '') {
       return;
     }
+    if (!seat && master !== '') {
+      seat = master;
+    }
     const current:HTMLElement = document.getElementById(dom) as HTMLElement;
-    const set:HTMLElement = document.getElementById('seat-8') as HTMLElement;
+    const set:HTMLElement = document.getElementById(`seat-${seat}`) as HTMLElement;
+    let eleLeft: number = 0;
     const leftPos = (Math.random() < 0.5 ? -1 : 1) * Math.round(Math.random() * 20);
     const topPos = (Math.random() < 0.5 ? -1 : 1) * Math.round(Math.random() * 20);
-    const eleLeft = current.offsetLeft + 12 + leftPos + set.offsetLeft
+    if (seat < 7) {
+      eleLeft = current.offsetLeft + 12 + leftPos + set.offsetLeft;
+    } else {
+      eleLeft = (leftPos + set.offsetLeft - current.offsetLeft) * -1 + 25;
+    }
     const eleTop = current.offsetTop + topPos + 250 - set.offsetTop
     let ballPos = {
       left: `${eleLeft}px`,
@@ -70,10 +93,13 @@ const Baccarat = () => {
       active: chip,
       diamond: fscData.bet[chip].diamond
     }
-    setBall([
-      ...ball,
-      ballPos
-    ]);
+    let temp = mic;
+    let deduction = temp[seat].user_info.balance - fscData.bet[chip].diamond;
+    if (deduction >= 0) {
+      temp[seat].user_info.balance = deduction;
+      temp[seat].ball.push(ballPos)
+      setMic([ ...temp ]);
+    }
   }
   return (
 
@@ -90,10 +116,10 @@ const Baccarat = () => {
         <Mainer
         fscData={fscData}
         chip={chip}
-        handleBall={ (dom) => handleBall(dom) }
+        handleBall={ (dom, index) => handleBall(dom, index) }
         handleChip={ (index) => handleChip(index) } /> }
 
-      <Seat ball={ball} />
+      { mic.length > 0 && <Seat mic={mic} /> }
 
       { fscData && showRules && <Rules rule={fscData.rule} handleShow={ () => setRules(false) } /> }
 
