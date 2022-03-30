@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useInterval } from 'ahooks';
 import { useRequest } from 'ice';
 
 import fscService from '@/services/fscApi';
@@ -15,23 +16,34 @@ import Records from './components/Records';
 import styles from './index.module.css';
 import text from '@/locales';
 
+
+type betItemType = {
+  rewardId: string
+  betId: number
+  betMany: number
+}
+
 const Baccarat = () => {
   const [ showRules, setRules ] = useState<boolean>(false);
   const [ showReward, setReward ] = useState<boolean>(false);
   const [ showRecords, setRecords ] = useState<boolean>(false);
   const [ showRank, setRank ] = useState<boolean>(false);
   const [ chip, setChip ] = useState<number | string>('');
-  const { data: fscData, request: getFsc } = useRequest(fscService.getFsc);
-  const { request: getStart } = useRequest(fscService.getStart);
+  const { request: postClick } = useRequest(fscService.postClick);
+  const { data: result, request: getResult } = useRequest(fscService.getResult);
+  const { data: fscData, request: getFsc } = useRequest(fscService.getFsc, {
+    pollingInterval: 1000,
+    pollingWhenHidden: false
+  });
   const [ mic, setMic ] = useState<object[]>([]);
-  const [ master, setMaster ] = useState<number | string>('');
+  const [ own, setOwn ] = useState<number | string>('');
+  const [ betItem, setBetItem ] = useState<betItemType[]>([]);
+  let roomId:string | boolean = getQueryVariable('roomId');
+  let betType:string | boolean = getQueryVariable('betType');
 
   useEffect(() => {
-    let roomId:string | boolean = getQueryVariable('roomId');
-    let betType:string | boolean = getQueryVariable('betType');
 
     const fetchData = async () => {
-      await getStart({ roomId, betType });
       let data = await getFsc({ roomId, betType });
       let seatArr:Array<object> = [];
       for (let i = 0; i < 13; i++) {
@@ -41,9 +53,8 @@ const Baccarat = () => {
         });
       }
       data.user_mic_serial.forEach(ele => {
-        if (ele.user_info.is_master === 1) {
-          ele.user_info.balance = 3000;
-          setMaster(ele.position);
+        if (ele.is_own === 1) {
+          setOwn(ele.position);
         }
         seatArr[ele.position] = {
           ...ele,
@@ -58,7 +69,14 @@ const Baccarat = () => {
   }, []);
 
   useEffect(() => {
-  }, [fscData])
+    postClick({ roomId, betType, betItem })
+  }, [betItem])
+  useInterval(() => {
+    console.log(result)
+    if (fscData.info.stage_status === 4 && (!result || (result && result.reward_id === ''))) {
+      getResult({ roomId, betType })
+    }
+  }, 2000)
 
   const handleChip = (index: number) => {
     if (chip === index) {
@@ -69,14 +87,14 @@ const Baccarat = () => {
   }
 
 
-  const handleBall = (dom: string, seat: number | string) => {
-    if (chip === '') {
+  const handleBall = (key: number, seat: number | string) => {
+    if (chip === '' || fscData.info.stage_status !== 3) {
       return;
     }
-    if (!seat && master !== '') {
-      seat = master;
+    if (!seat && own !== '') {
+      seat = own;
     }
-    const current:HTMLElement = document.getElementById(dom) as HTMLElement;
+    const current:HTMLElement = document.getElementById(`reward-${key}`) as HTMLElement;
     const set:HTMLElement = document.getElementById(`seat-${seat}`) as HTMLElement;
     let eleLeft: number = 0;
     const leftPos = (Math.random() < 0.5 ? -1 : 1) * Math.round(Math.random() * 20);
@@ -100,6 +118,11 @@ const Baccarat = () => {
       temp[seat].ball.push(ballPos)
       setMic([ ...temp ]);
     }
+    setBetItem([{
+      rewardId: fscData.reward[key].id.toString(),
+      betId: fscData.bet[chip].id,
+      betMany: 1
+    }])
   }
   return (
 
@@ -110,16 +133,16 @@ const Baccarat = () => {
         <div onClick={ () => setRank(true) }>{ text.rank }</div>
       </div>
 
-      <Disc />
+      { fscData && <Disc fscData={fscData}  /> }
 
       { fscData &&
         <Mainer
         fscData={fscData}
         chip={chip}
-        handleBall={ (dom, index) => handleBall(dom, index) }
+        handleBall={ (reward, index) => handleBall(reward, index) }
         handleChip={ (index) => handleChip(index) } /> }
 
-      { mic.length > 0 && <Seat mic={mic} /> }
+      { fscData && mic.length > 0 && <Seat mic={mic}/> }
 
       { fscData && showRules && <Rules rule={fscData.rule} handleShow={ () => setRules(false) } /> }
 

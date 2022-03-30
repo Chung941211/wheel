@@ -12,8 +12,6 @@
   width: 100%;
   text-align: center;
   z-index: 1;
-  animation: wheel_move 1s linear;
-  /* display: none; */
   img {
     width: 145px;
   }
@@ -48,9 +46,40 @@
   right: 28px;
 }
 
+@keyframes shake {
+  0%,100% {
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0)
+  }
+
+  10%,30%,50%,70%,90% {
+    -webkit-transform: translateX(-10px);
+    -ms-transform: translateX(-10px);
+    transform: translateX(-10px)
+  }
+
+  20%,40%,60%,80% {
+    -webkit-transform: translateX(10px);
+    -ms-transform: translateX(10px);
+    transform: translateX(10px)
+  }
+}
+
+.shake {
+  animation: shake 0.7s linear;
+  animation-iteration-count: 3;
+}
+
+.move {
+  animation: wheel_move 2s linear;
+  animation-fill-mode: forwards;
+}
+
 @keyframes wheel_move {
   0% {
     margin-left: 0;
+    opacity: 1;
   }
   50% {
     opacity: 1;

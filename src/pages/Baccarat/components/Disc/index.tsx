@@ -6,11 +6,12 @@ import wan from '@/assets/wan.png';
 import baccarat from '@/assets/baccarat-01.png';
 
 const Seat = (props) => {
+  const { fscData } = props;
 
   return (
     <>
-      <div className={styles.disc}>
-        <div className={styles.mic}>
+      <div className={`${styles.disc} ${fscData.info.stage_status === 2 ? styles.shake : ''}`}>
+        <div className={`${styles.mic} ${ fscData.info.stage_status === 5 ? styles.move : ''}`}>
           <img src={mic} />
         </div>
         <div className={styles.wan}>
