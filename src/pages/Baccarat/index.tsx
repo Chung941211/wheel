@@ -16,6 +16,7 @@ import Records from './components/Records';
 import styles from './index.module.css';
 import text from '@/locales';
 
+// "26_30_30"
 
 type betItemType = {
   rewardId: string
@@ -69,14 +70,16 @@ const Baccarat = () => {
   }, []);
 
   useEffect(() => {
-    postClick({ roomId, betType, betItem })
-  }, [betItem])
+    if (betItem.length > 0) {
+      postClick({ roomId, betType, betItem })
+    }
+  }, [ betItem ]);
+
   useInterval(() => {
-    console.log(result)
     if (fscData.info.stage_status === 4 && (!result || (result && result.reward_id === ''))) {
       getResult({ roomId, betType })
     }
-  }, 2000)
+  }, 2000);
 
   const handleChip = (index: number) => {
     if (chip === index) {
@@ -133,7 +136,7 @@ const Baccarat = () => {
         <div onClick={ () => setRank(true) }>{ text.rank }</div>
       </div>
 
-      { fscData && <Disc fscData={fscData}  /> }
+      { fscData && <Disc info={fscData.info} history={fscData.history}  /> }
 
       { fscData &&
         <Mainer
@@ -142,7 +145,7 @@ const Baccarat = () => {
         handleBall={ (reward, index) => handleBall(reward, index) }
         handleChip={ (index) => handleChip(index) } /> }
 
-      { fscData && mic.length > 0 && <Seat mic={mic}/> }
+      { fscData && mic.length > 0 && <Seat mic={mic} fscData={fscData} /> }
 
       { fscData && showRules && <Rules rule={fscData.rule} handleShow={ () => setRules(false) } /> }
 

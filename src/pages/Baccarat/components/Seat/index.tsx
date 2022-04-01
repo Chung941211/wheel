@@ -37,20 +37,71 @@ const SeatRows = (props) => {
 }
 
 const Seat = (props) => {
-  const { mic } = props;
+  const [ recordBol, setRecordBol ] = useState(false);
+  const [ historyItem, setHistoryItem ] = useState<any[]>([]);
+  const { mic, fscData } = props;
+  const { history, historyItemCount, reward } = fscData;
+
+  useEffect(() => {
+    if (history.length > 0) {
+      let temp = [];
+      temp = history.map(item => {
+        let arr:string[] = []
+        item.reward_id.split('_').forEach(el => {
+          reward.forEach(element => {
+            if (element.id == el) {
+              arr.push(element.show_img)
+            }
+          });
+        });
+        return {
+          ...item,
+          img: arr
+        }
+      })
+      setHistoryItem(temp);
+    }
+  }, [ history ]);
 
   return (
     <div className={styles.seatWrapper}>
+
       <div className={styles.seat}>
+
         <div>{ mic.slice(0, 7).map((item, index) => <SeatRows key={index} rows={item} />) }</div>
+
         <div>
           { mic.slice(7, 14).map((item, index) => <SeatRows key={index} rows={item} />) }
-          <div className={styles.seatIcon}>
-            <img src={record} />
+
+          <div className={`${styles.seatIcon} ${styles.record}`}>
+            <img src={record} onClick={ () => setRecordBol(!recordBol) } />
+            {
+              recordBol &&
+              <div className={styles.history}>
+                <div className={styles.count}>
+                  { historyItemCount.map((item, index) => <div key={index}>{item.name}x{item.num}</div>) }
+                </div>
+                <div className={styles.lists}>
+                  { historyItem.map((el, index) => {
+                      return (
+                        <div className={styles.rows}>
+                          <div className={styles.index}>{ index + 1 }</div>
+                          <div className={styles.animal}>
+                            { el.item.map((animal, index) => <div key={index}><img src={el.img[index]} /></div>)  }
+                          </div>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+              </div>
+            }
           </div>
+
           <div className={styles.seatIcon}>
             <img src={micImg} />
           </div>
+
         </div>
       </div>
     </div>
