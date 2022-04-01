@@ -6,12 +6,12 @@ import wan from '@/assets/wan.png';
 
 const Seat = (props) => {
 
-  const { info, history } = props;
+  const { info, history, result } = props;
 
   return (
     <>
       <div className={`${styles.disc} ${ info.stage_status === 2 ? styles.shake : ''}` }>
-        <div className={`${styles.mic} ${ info.stage_status === 5 ? styles.move : ''}` }>
+        <div className={`${styles.mic} ${ (info.stage_status === 4 && result && result.reward_id) ? styles.move : ''}` }>
           <img src={mic} />
         </div>
         <div className={styles.wan}>

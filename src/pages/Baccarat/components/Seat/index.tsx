@@ -84,7 +84,7 @@ const Seat = (props) => {
                 <div className={styles.lists}>
                   { historyItem.map((el, index) => {
                       return (
-                        <div className={styles.rows}>
+                        <div key={index} className={styles.rows}>
                           <div className={styles.index}>{ index + 1 }</div>
                           <div className={styles.animal}>
                             { el.item.map((animal, index) => <div key={index}><img src={el.img[index]} /></div>)  }

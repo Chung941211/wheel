@@ -8,7 +8,7 @@ import styles from './index.module.css';
 const Seat = (props) => {
   const [ my, setMy ] = useState<any>({});
   const { request: getStart } = useRequest(fscService.getStart);
-  const {  handleBall, handleChip, fscData, chip } = props;
+  const {  handleBall, handleChip, fscData, chip, num } = props;
   const { reward, bet } = fscData;
 
   useEffect(() => {
@@ -61,12 +61,12 @@ const Seat = (props) => {
         { fscData.info.stage_status === 3 &&
           <div>
             <div className={styles.bigBtn}>
-              <div className={styles.stop}>停止下注</div>
-              <div className={styles.number}>0</div>
+              {/* <div className={styles.stop}>停止下注</div> */}
+              <div className={styles.number}>{num}</div>
             </div>
             <div className={styles.btn}>
-              <div>二中二</div>
-              <div>完成下注</div>
+              {/* <div>二中二</div> */}
+              {/* <div>完成下注</div> */}
             </div>
           </div>
         }

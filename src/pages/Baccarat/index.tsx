@@ -39,6 +39,7 @@ const Baccarat = () => {
   const [ mic, setMic ] = useState<object[]>([]);
   const [ own, setOwn ] = useState<number | string>('');
   const [ betItem, setBetItem ] = useState<betItemType[]>([]);
+  const [ num, setNum ] = useState<number>(0);
   let roomId:string | boolean = getQueryVariable('roomId');
   let betType:string | boolean = getQueryVariable('betType');
 
@@ -46,23 +47,7 @@ const Baccarat = () => {
 
     const fetchData = async () => {
       let data = await getFsc({ roomId, betType });
-      let seatArr:Array<object> = [];
-      for (let i = 0; i < 13; i++) {
-        seatArr.push({
-          ball: [],
-          id: i
-        });
-      }
-      data.user_mic_serial.forEach(ele => {
-        if (ele.is_own === 1) {
-          setOwn(ele.position);
-        }
-        seatArr[ele.position] = {
-          ...ele,
-          ...seatArr[ele.position],
-        }
-      });
-      setMic(seatArr);
+      handleResult(data);
     };
 
     fetchData();
@@ -77,9 +62,35 @@ const Baccarat = () => {
 
   useInterval(() => {
     if (fscData.info.stage_status === 4 && (!result || (result && result.reward_id === ''))) {
-      getResult({ roomId, betType })
+      getResult({ roomId, betType });
+    }
+    if (result && result.reward_id !== '') {
+      console.log('yes')
+      handleResult(fscData);
+      setNum(0)
     }
   }, 2000);
+
+  const handleResult = (data) => {
+    let seatArr:Array<object> = [];
+    for (let i = 0; i < 13; i++) {
+      seatArr.push({
+        ball: [],
+        id: i
+      });
+    }
+    data.user_mic_serial.forEach(ele => {
+      if (ele.is_own === 1) {
+        setOwn(ele.position);
+      }
+      seatArr[ele.position] = {
+        ...ele,
+        ...seatArr[ele.position],
+      }
+    });
+    console.log(seatArr)
+    setMic(seatArr);
+  }
 
   const handleChip = (index: number) => {
     if (chip === index) {
@@ -88,7 +99,6 @@ const Baccarat = () => {
       setChip(index);
     }
   }
-
 
   const handleBall = (key: number, seat: number | string) => {
     if (chip === '' || fscData.info.stage_status !== 3) {
@@ -115,10 +125,12 @@ const Baccarat = () => {
       diamond: fscData.bet[chip].diamond
     }
     let temp = mic;
+    let tempNum = num + fscData.bet[chip].diamond;
     let deduction = temp[seat].user_info.balance - fscData.bet[chip].diamond;
     if (deduction >= 0) {
       temp[seat].user_info.balance = deduction;
-      temp[seat].ball.push(ballPos)
+      temp[seat].ball.push(ballPos);
+      setNum(tempNum);
       setMic([ ...temp ]);
     }
     setBetItem([{
@@ -127,6 +139,7 @@ const Baccarat = () => {
       betMany: 1
     }])
   }
+
   return (
 
     <div className={styles.main}>
@@ -136,12 +149,13 @@ const Baccarat = () => {
         <div onClick={ () => setRank(true) }>{ text.rank }</div>
       </div>
 
-      { fscData && <Disc info={fscData.info} history={fscData.history}  /> }
+      { fscData && <Disc info={fscData.info} history={fscData.history} result={result}  /> }
 
       { fscData &&
         <Mainer
         fscData={fscData}
         chip={chip}
+        num={num}
         handleBall={ (reward, index) => handleBall(reward, index) }
         handleChip={ (index) => handleChip(index) } /> }
 
