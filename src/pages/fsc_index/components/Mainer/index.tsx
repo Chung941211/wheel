@@ -7,6 +7,9 @@ import styles from './index.module.css';
 
 const Seat = (props) => {
   const [ my, setMy ] = useState<any>({});
+  const [ two, setTwo ] = useState<boolean>(false);
+  const [ end, setEnd ] = useState<boolean>(false);
+  const [ twoActive, setTwoActive ] = useState<number[]>([]);
   const { request: getStart } = useRequest(fscService.getStart);
   const {  handleBall, handleChip, fscData, chip, num } = props;
   const { reward, bet } = fscData;
@@ -18,6 +21,11 @@ const Seat = (props) => {
           setMy(ele);
         }
       });
+      if (fscData.info.stage_status === 4) {
+        setTwoActive([]);
+        setTwo(false);
+        setEnd(true);
+      }
     }
   }, [fscData]);
 
@@ -25,6 +33,37 @@ const Seat = (props) => {
     let roomId:string | boolean = getQueryVariable('roomId');
     let betType:string | boolean = getQueryVariable('betType');
     getStart({ roomId, betType });
+    setEnd(false);
+  }
+
+  const handleTwo = () => {
+    setTwo(true);
+  }
+
+  const handleEnd = () => {
+    setTwoActive([]);
+    setTwo(false);
+  }
+
+  const handleFinish = () => {
+    setTwoActive([]);
+    setTwo(false);
+    setEnd(true);
+  }
+
+  const handleClick = (index:number) => {
+    if (end) {
+      return;
+    }
+    if (!two || twoActive.length === 2) {
+      return handleBall(index, twoActive);
+    }
+    const tempArr = twoActive;
+    const key = twoActive.indexOf(index);
+    if (twoActive.length < 2 && key < 0) {
+      tempArr.push(index)
+    }
+    setTwoActive([ ...tempArr ]);
   }
 
   return (
@@ -32,8 +71,12 @@ const Seat = (props) => {
       <div id='reward' className={styles.reward}>
         { reward.map((item, index) => {
           return (
-            <div id={`reward-${index}`} onClick={ () => handleBall(index) }  className={styles.rewardItem} key={item.id}>
-              <img className={styles.rewardImg} src={item.show_img} />
+            <div
+              id={`reward-${index}`}
+              onClick={ () => handleClick(index) }
+              className={`${styles.rewardItem} ${twoActive.indexOf(index) > -1 ? styles.two : ''}`}
+              key={item.id}>
+                <img className={styles.rewardImg} src={item.show_img} />
             </div>
           )
         }) }
@@ -48,6 +91,7 @@ const Seat = (props) => {
       }
 
       <div className={styles.operation}>
+        { two && <div className={styles.tips}>请选择两门下注</div> }
           {
             fscData.info.stage_status === 3 && bet.map((item, index) => {
               return (
@@ -61,12 +105,12 @@ const Seat = (props) => {
         { fscData.info.stage_status === 3 &&
           <div>
             <div className={styles.bigBtn}>
-              {/* <div className={styles.stop}>停止下注</div> */}
+              <div className={styles.stop} onClick={ () => handleFinish() }>停止下注</div>
               <div className={styles.number}>{num}</div>
             </div>
             <div className={styles.btn}>
-              {/* <div>二中二</div> */}
-              {/* <div>完成下注</div> */}
+              <div onClick={ () => handleTwo() }>二中二</div>
+              <div onClick={ () => handleEnd() }>完成下注</div>
             </div>
           </div>
         }

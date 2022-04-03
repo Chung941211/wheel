@@ -16,8 +16,6 @@ import Records from './components/Records';
 import styles from './index.module.css';
 import text from '@/locales';
 
-// "26_30_30"
-
 type betItemType = {
   rewardId: string
   betId: number
@@ -65,7 +63,6 @@ const Baccarat = () => {
       getResult({ roomId, betType });
     }
     if (result && result.reward_id !== '') {
-      console.log('yes')
       handleResult(fscData);
       setNum(0)
     }
@@ -82,13 +79,14 @@ const Baccarat = () => {
     data.user_mic_serial.forEach(ele => {
       if (ele.is_own === 1) {
         setOwn(ele.position);
+        console.log(own)
       }
       seatArr[ele.position] = {
         ...ele,
-        ...seatArr[ele.position],
+        ...seatArr[ele.position]
       }
     });
-    console.log(seatArr)
+
     setMic(seatArr);
   }
 
@@ -100,8 +98,11 @@ const Baccarat = () => {
     }
   }
 
-  const handleBall = (key: number, seat: number | string) => {
+  const handleBall = (key: number, two:number[], seat: number | string) => {
     if (chip === '' || fscData.info.stage_status !== 3) {
+      return;
+    }
+    if (two.length === 2 && two.indexOf(key) < 0) {
       return;
     }
     if (!seat && own !== '') {
@@ -113,9 +114,9 @@ const Baccarat = () => {
     const leftPos = (Math.random() < 0.5 ? -1 : 1) * Math.round(Math.random() * 20);
     const topPos = (Math.random() < 0.5 ? -1 : 1) * Math.round(Math.random() * 20);
     if (seat < 7) {
-      eleLeft = current.offsetLeft + 12 + leftPos + set.offsetLeft;
+      eleLeft = current.offsetLeft + 70 + leftPos + set.offsetLeft;
     } else {
-      eleLeft = (leftPos + set.offsetLeft - current.offsetLeft) * -1 + 25;
+      eleLeft = (leftPos + set.offsetLeft - current.offsetLeft) * -1 + 95;
     }
     const eleTop = current.offsetTop + topPos + 250 - set.offsetTop
     let ballPos = {
@@ -134,9 +135,9 @@ const Baccarat = () => {
       setMic([ ...temp ]);
     }
     setBetItem([{
-      rewardId: fscData.reward[key].id.toString(),
+      rewardId: two.length === 2 ? `${fscData.reward[two[0]].id},${fscData.reward[two[1]].id}` : fscData.reward[key].id.toString(),
       betId: fscData.bet[chip].id,
-      betMany: 1
+      betMany: two.length === 2 ? 2 : 1
     }])
   }
 
@@ -156,7 +157,7 @@ const Baccarat = () => {
         fscData={fscData}
         chip={chip}
         num={num}
-        handleBall={ (reward, index) => handleBall(reward, index) }
+        handleBall={ (reward, two) => handleBall(reward, two, '') }
         handleChip={ (index) => handleChip(index) } /> }
 
       { fscData && mic.length > 0 && <Seat mic={mic} fscData={fscData} /> }

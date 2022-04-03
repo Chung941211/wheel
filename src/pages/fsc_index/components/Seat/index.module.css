@@ -62,6 +62,7 @@
 
 .record {
   position: relative;
+  z-index: 99;
 }
 
 .history {
