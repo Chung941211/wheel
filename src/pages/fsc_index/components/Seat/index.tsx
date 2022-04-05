@@ -2,8 +2,34 @@ import { useState, useEffect } from "react";
 
 import styles from './index.module.css';
 import micImg from '@/assets/mic_ico.png';
+import mcImg from '@/assets/main.png';
 import record from '@/assets/record_icon.png';
+import logo from '@/assets/logo.png';
+import golden from '@/assets/golden.png';
 
+
+const Gold = () => {
+  const [ goldItem, setGoldItem ] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (goldItem.length === 15) {
+      return;
+    }
+    let timer = setTimeout(() => {
+      setGoldItem([ ...goldItem , 1])
+    }, 100);
+    return () => {
+      clearTimeout(timer)
+    };
+  }, [ goldItem ]);
+
+  return(
+    <>
+      { goldItem.map((item, index) => <img className={styles.golden} key={index} src={golden} />) }
+    </>
+  )
+
+}
 const Ball = (props) => {
   const { item } = props;
   const mystyles = {
@@ -68,10 +94,24 @@ const Seat = (props) => {
 
       <div className={styles.seat}>
 
-        <div>{ mic.slice(0, 7).map((item, index) => <SeatRows key={index} rows={item} />) }</div>
 
         <div>
-          { mic.slice(7, 14).map((item, index) => <SeatRows key={index} rows={item} />) }
+          <div id={`seat-mc`} className={styles.seatRows}>
+            <div className={styles.has}>
+              <div className={styles.portrait}>
+                <img src={ mcImg }  />
+              </div>
+              <div className={styles.names}>Biubiu</div>
+              <div className={styles.nums}>9999+</div>
+            </div>
+            <img className={styles.logo} src={logo} />
+            {/* <Gold /> */}
+          </div>
+          { mic.slice(0, 6).map((item, index) => <SeatRows key={index} rows={item} />) }
+        </div>
+
+        <div>
+          { mic.slice(6, 13).map((item, index) => <SeatRows key={index} rows={item} />) }
 
           <div className={`${styles.seatIcon} ${styles.record}`}>
             <img src={record} onClick={ () => setRecordBol(!recordBol) } />

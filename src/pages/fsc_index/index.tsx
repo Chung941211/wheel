@@ -32,7 +32,7 @@ const Baccarat = () => {
   const { request: postClick } = useRequest(fscService.postClick);
   const { data: result, request: getResult, mutate: resetResult } = useRequest(fscService.getResult);
   const { data: fscData, request: getFsc } = useRequest(fscService.getFsc, {
-    pollingInterval: 1000,
+    // pollingInterval: 1000,
     pollingWhenHidden: false
   });
   const [ mic, setMic ] = useState<object[]>([]);
@@ -75,7 +75,7 @@ const Baccarat = () => {
 
   const handleResult = (data) => {
     let seatArr:Array<object> = [];
-    for (let i = 0; i < 13; i++) {
+    for (let i = 0; i < 12; i++) {
       seatArr.push({
         ball: [],
         id: i

@@ -5,10 +5,19 @@ import fscService from '@/services/fscApi';
 import { getQueryVariable } from '@/utils';
 import styles from './index.module.css';
 
+type betType = {
+  reward?: number
+  index?: number
+  left?: number
+  top?: number
+  diamond?: number
+}
+
 const Seat = (props) => {
   const [ my, setMy ] = useState<any>({});
   const [ two, setTwo ] = useState<boolean>(false);
   const [ end, setEnd ] = useState<boolean>(false);
+  const [ oldBet, setOldBet ] = useState<betType[]>([]);
   const [ twoActive, setTwoActive ] = useState<number[]>([]);
   const { request: getStart } = useRequest(fscService.getStart);
   const {  handleBall, handleChip, fscData, chip, num } = props;
@@ -26,6 +35,20 @@ const Seat = (props) => {
         setTwo(false);
         setEnd(true);
       }
+      if (fscData.info.stage_status === 5) {
+        setOldBet([]);
+      }
+      if (oldBet.length === 0 && num === 0) {
+        let tempBet:betType[] = [];
+        fscData.reward.forEach((ele, reward) => {
+          if (ele.bet_id_list.length > 0) {
+            ele.bet_id_list.forEach(item => {
+              tempBet.push(getBetIndex(item, reward))
+            })
+          }
+        });
+        setOldBet([ ...tempBet ]);
+      }
     }
   }, [fscData]);
 
@@ -34,6 +57,23 @@ const Seat = (props) => {
     let betType:string | boolean = getQueryVariable('betType');
     getStart({ roomId, betType });
     setEnd(false);
+  }
+
+  const getBetIndex = (id: number | string, reward: number) => {
+    let location:betType = {};
+
+    fscData.bet.forEach((ele, index) => {
+      if (ele.id == id) {
+        location = {
+          reward,
+          index,
+          left: Math.round(Math.random() * 50),
+          top: Math.round(Math.random() * 50),
+          diamond: ele.diamond
+        }
+      }
+    })
+    return location;
   }
 
   const handleTwo = () => {
@@ -49,6 +89,7 @@ const Seat = (props) => {
     setTwoActive([]);
     setTwo(false);
     setEnd(true);
+    handleChip('');
   }
 
   const handleClick = (index:number) => {
@@ -77,6 +118,17 @@ const Seat = (props) => {
               className={`${styles.rewardItem} ${twoActive.indexOf(index) > -1 ? styles.two : ''}`}
               key={item.id}>
                 <img className={styles.rewardImg} src={item.show_img} />
+                { oldBet.length > 0 && oldBet.map(
+                  (el, key) => el.reward === index &&
+                    <div
+                      className={`${styles.old}`}
+                      style={{ top: el.top, left: el.top }} key={key}>
+                      <div className={styles['chip-' + el.index]}>
+                        <span>{ el.diamond }</span>
+                      </div>
+                    </div>
+                  )
+                }
             </div>
           )
         }) }

@@ -12,6 +12,9 @@ export default {
         betType: params.betType
       }
     });
+    if (data.code === 0) {
+      alert(data.message);
+    }
     return data.data;
   },
   // 获取结果
