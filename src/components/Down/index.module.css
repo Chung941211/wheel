@@ -12,7 +12,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 55px;
   margin-top: 70px;
 }
 
@@ -31,8 +31,9 @@
 
 .down {
   position: fixed;
-  bottom: 10px;
+  bottom: -20px;
   width: 100%;
+  transform: scale(0.9);
 }
 
 .title {

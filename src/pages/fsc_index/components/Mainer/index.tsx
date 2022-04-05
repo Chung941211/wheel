@@ -85,7 +85,7 @@ const Seat = (props) => {
       <div className={styles.times}>{ fscData.info.countdown }</div>
 
       {
-        my.is_ready_game === 0 && <div className={styles.ready}>
+        my.is_ready_game === 0 && fscData.info.stage_status !== 4 && <div className={styles.ready}>
           <span onClick={() => handleStart()}>准备</span>
         </div>
       }

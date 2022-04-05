@@ -8,9 +8,13 @@
 
 .nav {
   display: flex;
-  justify-content: flex-end;
   padding-right: 10px;
   padding-top: 20px;
+  justify-content: space-between;
+}
+
+.leftNav {
+  display: flex;
   > div {
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 20px;
@@ -21,5 +25,17 @@
     font-weight: bold;
     width: 65px;
     text-align: center;
+  }
+}
+
+.close {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  line-height: 28px;
+  text-align: center;
+  img {
+    width: 15px;
   }
 }

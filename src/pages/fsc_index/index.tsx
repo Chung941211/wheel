@@ -14,6 +14,7 @@ import Rank from './components/Rank';
 import Records from './components/Records';
 
 import styles from './index.module.css';
+import close from '@/assets/close.png';
 import text from '@/locales';
 
 type betItemType = {
@@ -29,7 +30,7 @@ const Baccarat = () => {
   const [ showRank, setRank ] = useState<boolean>(false);
   const [ chip, setChip ] = useState<number | string>('');
   const { request: postClick } = useRequest(fscService.postClick);
-  const { data: result, request: getResult } = useRequest(fscService.getResult);
+  const { data: result, request: getResult, mutate: resetResult } = useRequest(fscService.getResult);
   const { data: fscData, request: getFsc } = useRequest(fscService.getFsc, {
     pollingInterval: 1000,
     pollingWhenHidden: false
@@ -59,12 +60,16 @@ const Baccarat = () => {
   }, [ betItem ]);
 
   useInterval(() => {
-    if (fscData.info.stage_status === 4 && (!result || (result && result.reward_id === ''))) {
+    const { stage_status } = fscData.info;
+    if (stage_status === 4 && (!result || (result && result.reward_id === ''))) {
       getResult({ roomId, betType });
     }
-    if (result && result.reward_id !== '') {
+    if (stage_status !== 4 && stage_status !== 5) {
+      resetResult(null);
+    }
+    if (stage_status === 5) {
+      setNum(0);
       handleResult(fscData);
-      setNum(0)
     }
   }, 2000);
 
@@ -79,14 +84,13 @@ const Baccarat = () => {
     data.user_mic_serial.forEach(ele => {
       if (ele.is_own === 1) {
         setOwn(ele.position);
-        console.log(own)
       }
       seatArr[ele.position] = {
         ...ele,
-        ...seatArr[ele.position]
+        ...seatArr[ele.position],
+        id: ele.position
       }
     });
-
     setMic(seatArr);
   }
 
@@ -110,13 +114,15 @@ const Baccarat = () => {
     }
     const current:HTMLElement = document.getElementById(`reward-${key}`) as HTMLElement;
     const set:HTMLElement = document.getElementById(`seat-${seat}`) as HTMLElement;
+    const parent:HTMLElement = document.getElementById(`reward`) as HTMLElement;
     let eleLeft: number = 0;
     const leftPos = (Math.random() < 0.5 ? -1 : 1) * Math.round(Math.random() * 20);
     const topPos = (Math.random() < 0.5 ? -1 : 1) * Math.round(Math.random() * 20);
+
     if (seat < 7) {
-      eleLeft = current.offsetLeft + 70 + leftPos + set.offsetLeft;
+      eleLeft = current.offsetLeft + parent.offsetLeft + leftPos + set.offsetLeft;
     } else {
-      eleLeft = (leftPos + set.offsetLeft - current.offsetLeft) * -1 + 95;
+      eleLeft = (leftPos + set.offsetLeft - current.offsetLeft - parent.offsetLeft - 20) * -1;
     }
     const eleTop = current.offsetTop + topPos + 250 - set.offsetTop
     let ballPos = {
@@ -145,9 +151,14 @@ const Baccarat = () => {
 
     <div className={styles.main}>
       <div className={styles.nav}>
-        <div onClick={ () => setRecords(true) }>{ text.records }</div>
-        <div onClick={ () => setRules(true) }>{ text.rules }</div>
-        <div onClick={ () => setRank(true) }>{ text.rank }</div>
+        <div className={styles.leftNav}>
+          <div onClick={ () => setRecords(true) }>{ text.records }</div>
+          <div onClick={ () => setRules(true) }>{ text.rules }</div>
+          <div onClick={ () => setRank(true) }>{ text.rank }</div>
+        </div>
+        <div className={styles.close}>
+          <img src={close}  />
+        </div>
       </div>
 
       { fscData && <Disc info={fscData.info} history={fscData.history} result={result}  /> }
