@@ -153,6 +153,10 @@
   }
 }
 
+.sound {
+  opacity: 0.6;
+}
+
 .ball-0 {
   background-image: url("../../../../assets/chip-0.png");
 }

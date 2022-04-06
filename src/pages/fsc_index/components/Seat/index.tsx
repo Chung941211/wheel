@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { useRequest } from 'ice';
+
+import fscService from '@/services/fscApi';
 
 import styles from './index.module.css';
 import micImg from '@/assets/mic_ico.png';
@@ -65,6 +68,7 @@ const SeatRows = (props) => {
 const Seat = (props) => {
   const [ recordBol, setRecordBol ] = useState(false);
   const [ historyItem, setHistoryItem ] = useState<any[]>([]);
+  const { data: sound, request: postSound } = useRequest(fscService.postSound);
   const { mic, fscData } = props;
   const { history, historyItemCount, reward } = fscData;
 
@@ -87,7 +91,18 @@ const Seat = (props) => {
       })
       setHistoryItem(temp);
     }
+    console.log(sound)
   }, [ history ]);
+
+  const handleMic = async () => {
+    let uid:number | string = '';
+    mic.forEach(element => {
+      if (element.is_own === 1) {
+        uid = element.user_id
+      }
+    });
+    postSound(uid);
+  }
 
   return (
     <div className={styles.seatWrapper}>
@@ -139,7 +154,7 @@ const Seat = (props) => {
           </div>
 
           <div className={styles.seatIcon}>
-            <img src={micImg} />
+            <img onClick={ () => handleMic() } className={`${ sound ? styles.sound : ''}`} src={micImg} />
           </div>
 
         </div>

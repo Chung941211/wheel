@@ -73,6 +73,19 @@ export default {
     return data.data;
   },
 
+  // 禁言
+  async postSound(uid) {
+    const data = await request({
+      url: `/api/is_sound`,
+      data: {
+        uid
+      },
+      method: 'post',
+      headers: header
+    });
+    return data;
+  },
+
   // 获取排行榜
   async getRank() {
     const data = await request({

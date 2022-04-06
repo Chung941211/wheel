@@ -73,11 +73,12 @@
 .animal {
   text-align: left;
   display: flex;
+  flex-wrap: wrap;
 }
 
 .info {
   width: 40px;
-  margin: 0 -8px;
+  margin: 0 -8px -10px -8px;
 }
 
 .amount {

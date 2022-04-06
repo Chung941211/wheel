@@ -20,7 +20,7 @@ const Lists = (props) => {
                 <div>
                   { item.item_info.map((el, num) => <img className={styles.info} key={num} src={el.item_img} />) }
                 </div>
-                <div className={styles.amount}>{ item.amount }</div>
+                <div className={styles.amount}>{ item.bet_many === 2 ? <span>二中二({ item.amount })</span> : item.amount }</div>
               </div>
             )
           })
