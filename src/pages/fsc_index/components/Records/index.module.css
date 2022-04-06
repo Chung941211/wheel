@@ -6,7 +6,12 @@
   left: calc(50% - 177.5px);
   width: 355px;
   border-radius: 8px;
-  min-height: 500px;
+}
+
+.list {
+  height: 430px;
+  padding-bottom: 30px;
+  overflow-y: scroll;
 }
 
 .bg {
@@ -64,13 +69,20 @@
   flex: 1;
 }
 
+
 .animal {
   text-align: left;
-  img {
-    width: 22px;
-    border-radius: 50%;
-    margin-right: 3px;
-  }
+  display: flex;
+}
+
+.info {
+  width: 40px;
+  margin: 0 -8px;
+}
+
+.amount {
+  color: #F37A00;
+  font-size: 12px;
 }
 
 .tbody {
@@ -86,13 +98,16 @@
 }
 
 .result {
+  text-align: center;
+  div {
+    margin-bottom: -35px;
+  }
   img {
-    width: 22px;
-    border-radius: 50%;
+    width: 55px;
   }
 }
 
-.table div {
+.table > div {
   &:nth-child(1) {
     width: 15%;
   }

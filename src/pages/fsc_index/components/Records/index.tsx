@@ -14,11 +14,21 @@ const Lists = (props) => {
     <div  className={`${styles.table} ${styles.tbody}`}>
       <div className={styles.num}>{ index + 1 }</div>
       <div className={styles.animal}>
-        {  items.bet_items.map((item, key) => <img key={key} src={item.item_img} /> ) }
+        {  items.bet_items.map((item, key) => {
+            return (
+              <div key={key}>
+                <div>
+                  { item.item_info.map((el, num) => <img className={styles.info} key={num} src={el.item_img} />) }
+                </div>
+                <div className={styles.amount}>{ item.amount }</div>
+              </div>
+            )
+          })
+        }
 
       </div>
       <div className={styles.result}>
-      {  items.reward_val.map((item, key) => <img key={key} src={item.item_img} /> ) }
+      {  items.reward_val.map((item, key) => <div><img key={key} src={item.item_img} /></div> ) }
       </div>
       <div
         className={`${styles.win} ${ items.moment_profit < 0 ? styles.lose : styles.wins}`}>
@@ -56,6 +66,7 @@ const Records = (props) => {
         </div>
 
         <div className={styles.list}>
+          { recordsList && recordsList.map((item, index) => <Lists key={index} index={index} items={item} />)  }
           { recordsList && recordsList.map((item, index) => <Lists key={index} index={index} items={item} />)  }
         </div>
 

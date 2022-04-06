@@ -167,6 +167,7 @@ const Baccarat = () => {
         <Mainer
         fscData={fscData}
         chip={chip}
+        result={result}
         num={num}
         handleBall={ (reward, two) => handleBall(reward, two, '') }
         handleChip={ (index) => handleChip(index) } /> }

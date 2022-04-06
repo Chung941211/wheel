@@ -19,9 +19,10 @@ const Seat = (props) => {
   const [ end, setEnd ] = useState<boolean>(false);
   const [ oldBet, setOldBet ] = useState<betType[]>([]);
   const [ twoActive, setTwoActive ] = useState<number[]>([]);
+  const [ hisActive, setHisActive ] = useState<number[]>([]);
   const { request: getStart } = useRequest(fscService.getStart);
-  const {  handleBall, handleChip, fscData, chip, num } = props;
-  const { reward, bet } = fscData;
+  const {  handleBall, handleChip, fscData, chip, num, result } = props;
+  const { reward, bet, history } = fscData;
 
   useEffect(() => {
     if (fscData) {
@@ -30,6 +31,7 @@ const Seat = (props) => {
           setMy(ele);
         }
       });
+
       if (fscData.info.stage_status === 4) {
         setTwoActive([]);
         setTwo(false);
@@ -37,7 +39,13 @@ const Seat = (props) => {
       }
       if (fscData.info.stage_status === 5) {
         setOldBet([]);
+        setHisActive([])
       }
+
+      if (result && result.reward_id && fscData.info.stage_status === 4) {
+        setHisActive([ ...history[0].reward_id.split('_') ]);
+      }
+
       if (oldBet.length === 0 && num === 0) {
         let tempBet:betType[] = [];
         fscData.reward.forEach((ele, reward) => {
@@ -115,7 +123,7 @@ const Seat = (props) => {
             <div
               id={`reward-${index}`}
               onClick={ () => handleClick(index) }
-              className={`${styles.rewardItem} ${twoActive.indexOf(index) > -1 ? styles.two : ''}`}
+              className={`${styles.rewardItem} ${hisActive.indexOf(item.id.toString()) > -1 ? styles.two : ''} ${twoActive.indexOf(index) > -1 ? styles.two : ''}`}
               key={item.id}>
                 <img className={styles.rewardImg} src={item.show_img} />
                 { oldBet.length > 0 && oldBet.map(
@@ -161,7 +169,7 @@ const Seat = (props) => {
               <div className={styles.number}>{num}</div>
             </div>
             <div className={styles.btn}>
-              <div onClick={ () => handleTwo() }>二中二</div>
+              <div className={`${ two ? styles.twoActive : '' }`} onClick={ () => handleTwo() }>二中二</div>
               <div onClick={ () => handleEnd() }>完成下注</div>
             </div>
           </div>
