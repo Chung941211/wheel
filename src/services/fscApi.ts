@@ -86,6 +86,19 @@ export default {
     return data;
   },
 
+  // 开麦
+  async postRemove(uid) {
+    const data = await request({
+      url: `/api/remove_sound`,
+      data: {
+        uid
+      },
+      method: 'post',
+      headers: header
+    });
+    return data;
+  },
+
   // 获取排行榜
   async getRank() {
     const data = await request({

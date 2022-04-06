@@ -68,9 +68,15 @@ const SeatRows = (props) => {
 const Seat = (props) => {
   const [ recordBol, setRecordBol ] = useState(false);
   const [ historyItem, setHistoryItem ] = useState<any[]>([]);
-  const { data: sound, request: postSound } = useRequest(fscService.postSound);
+  const [ micOpen, setMicOpen ] = useState<boolean>(true);
+  const { request: postSound } = useRequest(fscService.postSound);
+  const { request: postRemove } = useRequest(fscService.postRemove);
   const { mic, fscData } = props;
   const { history, historyItemCount, reward } = fscData;
+
+  useEffect(() => {
+    handleMic(true);
+  }, []);
 
   useEffect(() => {
     if (history.length > 0) {
@@ -91,17 +97,22 @@ const Seat = (props) => {
       })
       setHistoryItem(temp);
     }
-    console.log(sound)
   }, [ history ]);
 
-  const handleMic = async () => {
+  const handleMic = async (open?: Boolean) => {
     let uid:number | string = '';
     mic.forEach(element => {
       if (element.is_own === 1) {
         uid = element.user_id
       }
     });
-    postSound(uid);
+    if (open || !micOpen) {
+      postRemove(uid);
+      setMicOpen(true)
+    } else {
+      postSound(uid);
+      setMicOpen(false)
+    }
   }
 
   return (
@@ -154,7 +165,7 @@ const Seat = (props) => {
           </div>
 
           <div className={styles.seatIcon}>
-            <img onClick={ () => handleMic() } className={`${ sound ? styles.sound : ''}`} src={micImg} />
+            <img onClick={ () => handleMic() } className={`${ !micOpen ? styles.sound : ''}`} src={micImg} />
           </div>
 
         </div>
