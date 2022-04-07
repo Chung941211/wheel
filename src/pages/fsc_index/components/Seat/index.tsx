@@ -11,9 +11,13 @@ import logo from '@/assets/logo.png';
 import golden from '@/assets/golden.png';
 
 
-const Gold = () => {
+const Gold = (props) => {
+  const { gold } = props;
   const [ goldItem, setGoldItem ] = useState<number[]>([]);
-
+  const mystyles = {
+    '--top': `${gold.top}px`,
+    '--left': `${gold.left}px`,
+  } as React.CSSProperties;
   useEffect(() => {
     if (goldItem.length === 15) {
       return;
@@ -28,7 +32,7 @@ const Gold = () => {
 
   return(
     <>
-      { goldItem.map((item, index) => <img className={styles.golden} key={index} src={golden} />) }
+      { goldItem.map((item, index) => <img className={`${gold.win ? styles.golden : styles.lose }`} key={index} src={golden} style={mystyles} />) }
     </>
   )
 
@@ -65,18 +69,49 @@ const SeatRows = (props) => {
   )
 }
 
+type goldType = {
+  win: boolean
+  left: number
+  top: number
+}
+
 const Seat = (props) => {
   const [ recordBol, setRecordBol ] = useState(false);
   const [ historyItem, setHistoryItem ] = useState<any[]>([]);
   const [ micOpen, setMicOpen ] = useState<boolean>(true);
+  const [ gold, setGold ] =  useState<goldType[]>([]);
   const { request: postSound } = useRequest(fscService.postSound);
   const { request: postRemove } = useRequest(fscService.postRemove);
-  const { mic, fscData } = props;
+  const { mic, fscData, result } = props;
   const { history, historyItemCount, reward } = fscData;
 
   useEffect(() => {
     handleMic(true);
   }, []);
+
+  useEffect(() => {
+    if (result) {
+      const parent:HTMLElement = document.getElementById(`seat`) as HTMLElement;
+      let other:any[] = result.winner.other;
+      let tempArr:goldType[] = [];
+      other.forEach(el => {
+        mic.forEach((item, key) => {
+          let topNum = key < 6 ? key + 1 : key - 6
+          if (el.user_id === item.user_id) {
+            tempArr.push({
+              win: el.diamond > 0,
+              left: key < 6 ? 20 : parent.clientWidth - 40,
+              top: topNum * 70 + 30
+            })
+          }
+        });
+      });
+      setGold([ ...tempArr ]);
+    } else {
+      setGold([]);
+    }
+  }, [result]);
+
 
   useEffect(() => {
     if (history.length > 0) {
@@ -118,8 +153,9 @@ const Seat = (props) => {
   return (
     <div className={styles.seatWrapper}>
 
-      <div className={styles.seat}>
+      <div id="seat" className={styles.seat}>
 
+        { gold.length > 0 && gold.map((item, index) => <Gold key={index} gold={item} />) }
 
         <div>
           <div id={`seat-mc`} className={styles.seatRows}>
@@ -131,7 +167,6 @@ const Seat = (props) => {
               <div className={styles.nums}>9999+</div>
             </div>
             <img className={styles.logo} src={logo} />
-            {/* <Gold /> */}
           </div>
           { mic.slice(0, 6).map((item, index) => <SeatRows key={index} rows={item} />) }
         </div>

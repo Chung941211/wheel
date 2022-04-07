@@ -153,7 +153,7 @@ const Seat = (props) => {
       <div className={styles.operation}>
         { two && <div className={styles.tips}>请选择两门下注</div> }
           {
-            fscData.info.stage_status === 3 && bet.map((item, index) => {
+            fscData.info.stage_status === 3 && !end && bet.map((item, index) => {
               return (
                 <div key={index} onClick={() => handleChip(index)} className={`${styles.chip} ${chip === index ? styles.chipActive : ''}`}>
                   <div className={`${styles['chip-' + index]}`}>{ item.diamond }</div>
@@ -162,7 +162,7 @@ const Seat = (props) => {
             })
           }
         </div>
-        { fscData.info.stage_status === 3 &&
+        { fscData.info.stage_status === 3 && !end &&
           <div>
             <div className={styles.bigBtn}>
               <div className={styles.stop} onClick={ () => handleFinish() }>停止下注</div>

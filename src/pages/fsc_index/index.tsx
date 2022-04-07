@@ -124,7 +124,7 @@ const Baccarat = () => {
     } else {
       eleLeft = (leftPos + set.offsetLeft - current.offsetLeft - parent.offsetLeft - 20) * -1;
     }
-    const eleTop = current.offsetTop + topPos + 250 - set.offsetTop
+    const eleTop = current.offsetTop + topPos + 220 - set.offsetTop
     let ballPos = {
       left: `${eleLeft}px`,
       top: `${eleTop}px`,
@@ -172,7 +172,7 @@ const Baccarat = () => {
         handleBall={ (reward, two) => handleBall(reward, two, '') }
         handleChip={ (index) => handleChip(index) } /> }
 
-      { fscData && mic.length > 0 && <Seat mic={mic} fscData={fscData} /> }
+      { fscData && mic.length > 0 && <Seat result={result} mic={mic} fscData={fscData} /> }
 
       { fscData && showRules && <Rules rule={fscData.rule} handleShow={ () => setRules(false) } /> }
 
