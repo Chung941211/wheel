@@ -2,6 +2,14 @@ import { request } from 'ice';
 import { header } from '../utils';
 
 export default {
+  async getUserRoom() {
+    const data = await request({
+      url: `/api/room/userRoom`,
+      method: 'post',
+      headers: header
+    });
+    return data.data;
+  },
   // 开始游戏
   async getStart(params) {
     const data = await request({

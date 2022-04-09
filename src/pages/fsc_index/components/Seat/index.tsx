@@ -54,8 +54,11 @@ const SeatRows = (props) => {
 
   const { rows } = props;
 
+  const handleSeat = () => {
+    // window.BiubiuClub.startActivity();
+  }
   return (
-    <div id={`seat-${rows.id}`} className={styles.seatRows} key={rows}>
+    <div id={`seat-${rows.id}`} className={styles.seatRows} key={rows} onClick={ () => handleSeat() }>
       { !rows.user_id && <div className={styles.empty}>Empty</div> }
       { rows.user_id && <div className={styles.has}>
         <div className={styles.portrait}>

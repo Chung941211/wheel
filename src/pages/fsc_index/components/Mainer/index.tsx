@@ -22,7 +22,7 @@ const Seat = (props) => {
   const [ twoActive, setTwoActive ] = useState<number[]>([]);
   const [ hisActive, setHisActive ] = useState<number[]>([]);
   const { request: getStart } = useRequest(fscService.getStart);
-  const {  handleBall, handleChip, fscData, chip, num, result, mic, own} = props;
+  const {  handleBall, handleChip, fscData, chip, num, result, mic, own, roomId } = props;
   const { reward, bet, history, bet_records, info } = fscData;
 
   useEffect(() => {
@@ -97,7 +97,6 @@ const Seat = (props) => {
   }
 
   const handleStart = () => {
-    let roomId:string | boolean = getQueryVariable('roomId');
     let betType:string | boolean = getQueryVariable('betType');
     getStart({ roomId, betType });
   }
