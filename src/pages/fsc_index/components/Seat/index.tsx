@@ -78,32 +78,55 @@ type goldType = {
 const Seat = (props) => {
   const [ recordBol, setRecordBol ] = useState(false);
   const [ historyItem, setHistoryItem ] = useState<any[]>([]);
+  const [ recordsId, setRecordsId ] = useState<number[]>([]);
   const [ micOpen, setMicOpen ] = useState<boolean>(true);
   const [ gold, setGold ] =  useState<goldType[]>([]);
   const { request: postSound } = useRequest(fscService.postSound);
   const { request: postRemove } = useRequest(fscService.postRemove);
   const { mic, fscData, result } = props;
-  const { history, historyItemCount, reward } = fscData;
+  const { history, historyItemCount, reward, bet_records, info } = fscData;
 
   useEffect(() => {
     handleMic(true);
   }, []);
 
   useEffect(() => {
+    if (!fscData) {
+      return;
+    }
+    if (info.stage_status === 3) {
+      bet_records.forEach(element => {
+        let uid:number = Number(element.bet_user_id);
+        if (recordsId.indexOf(uid) < 0) {
+          setRecordsId([ ...recordsId, uid ])
+        }
+      });
+    }
+    if (info.stage_status === 2) {
+      setRecordsId([])
+    }
+  }, [ bet_records ]);
+
+  useEffect(() => {
     if (result) {
       const parent:HTMLElement = document.getElementById(`seat`) as HTMLElement;
       let other:any[] = result.winner.other;
       let tempArr:goldType[] = [];
-      other.forEach(el => {
-        mic.forEach((item, key) => {
-          let topNum = key < 6 ? key + 1 : key - 6
-          if (el.user_id === item.user_id) {
-            tempArr.push({
-              win: el.diamond > 0,
-              left: key < 6 ? 20 : parent.clientWidth - 40,
-              top: topNum * 70 + 30
-            })
+      mic.forEach((item, key) => {
+        let topNum = key < 6 ? key + 1 : key - 6;
+        if (recordsId.indexOf(item.user_id) < 0) {
+          return
+        }
+        let win:boolean = false;
+        other.forEach(element => {
+          if (element.user_id === item.user_id) {
+            win = true
           }
+        });
+        tempArr.push({
+          win,
+          left: key < 6 ? 20 : parent.clientWidth - 40,
+          top: topNum * 70 + 30
         });
       });
       setGold([ ...tempArr ]);

@@ -102,15 +102,13 @@ const Baccarat = () => {
     }
   }
 
-  const handleBall = (key: number, two:number[], seat: number | string) => {
-    if (chip === '' || fscData.info.stage_status !== 3) {
+  const handleBall = (key: number, two:number[], seat: number | string, betSring?: number) => {
+    let betChip: number | string = betSring ? betSring : chip;
+    if (betChip === '' || fscData.info.stage_status !== 3) {
       return;
     }
     if (two.length === 2 && two.indexOf(key) < 0) {
       return;
-    }
-    if (!seat && own !== '') {
-      seat = own;
     }
     const current:HTMLElement = document.getElementById(`reward-${key}`) as HTMLElement;
     const set:HTMLElement = document.getElementById(`seat-${seat}`) as HTMLElement;
@@ -128,23 +126,25 @@ const Baccarat = () => {
     let ballPos = {
       left: `${eleLeft}px`,
       top: `${eleTop}px`,
-      active: chip,
-      diamond: fscData.bet[chip].diamond
+      active: betChip,
+      diamond: fscData.bet[betChip].diamond
     }
     let temp = mic;
-    let tempNum = num + fscData.bet[chip].diamond;
-    let deduction = temp[seat].user_info.balance - fscData.bet[chip].diamond;
+    let tempNum = num + fscData.bet[betChip].diamond;
+    let deduction = temp[seat].user_info.balance - fscData.bet[betChip].diamond;
     if (deduction >= 0) {
       temp[seat].user_info.balance = deduction;
       temp[seat].ball.push(ballPos);
-      setNum(tempNum);
       setMic([ ...temp ]);
     }
-    setBetItem([{
-      rewardId: two.length === 2 ? `${fscData.reward[two[0]].id},${fscData.reward[two[1]].id}` : fscData.reward[key].id.toString(),
-      betId: fscData.bet[chip].id,
-      betMany: two.length === 2 ? 2 : 1
-    }])
+    if (!betSring) {
+      setNum(tempNum);
+      setBetItem([{
+        rewardId: two.length === 2 ? `${fscData.reward[two[0]].id},${fscData.reward[two[1]].id}` : fscData.reward[key].id.toString(),
+        betId: fscData.bet[betChip].id,
+        betMany: two.length === 2 ? 2 : 1
+      }])
+    }
   }
 
   return (
@@ -169,7 +169,9 @@ const Baccarat = () => {
         chip={chip}
         result={result}
         num={num}
-        handleBall={ (reward, two) => handleBall(reward, two, '') }
+        own={own}
+        mic={mic}
+        handleBall={ (reward, two, seatIndex, betIndex) => handleBall(reward, two, seatIndex, betIndex) }
         handleChip={ (index) => handleChip(index) } /> }
 
       { fscData && mic.length > 0 && <Seat result={result} mic={mic} fscData={fscData} /> }

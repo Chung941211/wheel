@@ -15,14 +15,31 @@ type betType = {
 
 const Seat = (props) => {
   const [ my, setMy ] = useState<any>({});
+  const [ records, setRecords ] = useState<object[]>([]);
   const [ two, setTwo ] = useState<boolean>(false);
   const [ end, setEnd ] = useState<boolean>(false);
   const [ oldBet, setOldBet ] = useState<betType[]>([]);
   const [ twoActive, setTwoActive ] = useState<number[]>([]);
   const [ hisActive, setHisActive ] = useState<number[]>([]);
   const { request: getStart } = useRequest(fscService.getStart);
-  const {  handleBall, handleChip, fscData, chip, num, result } = props;
-  const { reward, bet, history } = fscData;
+  const {  handleBall, handleChip, fscData, chip, num, result, mic, own} = props;
+  const { reward, bet, history, bet_records, info } = fscData;
+
+  useEffect(() => {
+
+    let tempBet:betType[] = [];
+    reward.forEach((ele, reward) => {
+      if (ele.bet_id_list.length > 0) {
+        ele.bet_id_list.forEach(item => {
+          tempBet.push(getBetIndex(item, reward))
+        })
+      }
+    });
+
+    setRecords([ ...bet_records ])
+
+    setOldBet([ ...tempBet ]);
+  }, []);
 
   useEffect(() => {
     if (fscData) {
@@ -31,40 +48,58 @@ const Seat = (props) => {
           setMy(ele);
         }
       });
-
-      if (fscData.info.stage_status === 4) {
+      if (info.stage_status === 3) {
+        handleOther();
+      }
+      if (info.stage_status === 4) {
         setTwoActive([]);
         setTwo(false);
         setEnd(true);
+        handleChip('');
       }
-      if (fscData.info.stage_status === 5) {
+      if (info.stage_status === 5) {
         setOldBet([]);
-        setHisActive([])
+        setHisActive([]);
+        setEnd(false);
       }
 
       if (result && result.reward_id && fscData.info.stage_status === 4) {
         setHisActive([ ...history[0].reward_id.split('_') ]);
       }
 
-      if (oldBet.length === 0 && num === 0) {
-        let tempBet:betType[] = [];
-        fscData.reward.forEach((ele, reward) => {
-          if (ele.bet_id_list.length > 0) {
-            ele.bet_id_list.forEach(item => {
-              tempBet.push(getBetIndex(item, reward))
-            })
-          }
-        });
-        setOldBet([ ...tempBet ]);
-      }
     }
   }, [fscData]);
+
+  const handleOther = () => {
+    if (bet_records.length > records.length) {
+      let num = bet_records.length - records.length;
+      for (let i = 0; i < num; i++) {
+        let temp = bet_records[i];
+        let betIndex, rewardIndex;
+        bet.forEach((item, index) => {
+          if (item.id == temp.bet_id) {
+            betIndex = index
+          }
+        });
+        reward.forEach((item, index) => {
+          if (item.id == temp.reward_id) {
+            rewardIndex = index
+          }
+        });
+        mic.forEach((item, index) => {
+          if (item.user_id == temp.bet_user_id && item.is_own !== 1) {
+            handleBall(rewardIndex, [ rewardIndex ], index, betIndex)
+          }
+        });
+      }
+      setRecords([ ...bet_records ]);
+    }
+  }
 
   const handleStart = () => {
     let roomId:string | boolean = getQueryVariable('roomId');
     let betType:string | boolean = getQueryVariable('betType');
     getStart({ roomId, betType });
-    setEnd(false);
   }
 
   const getBetIndex = (id: number | string, reward: number) => {
@@ -105,7 +140,7 @@ const Seat = (props) => {
       return;
     }
     if (!two || twoActive.length === 2) {
-      return handleBall(index, twoActive);
+      return handleBall(index, twoActive, own, null);
     }
     const tempArr = twoActive;
     const key = twoActive.indexOf(index);
@@ -145,7 +180,8 @@ const Seat = (props) => {
       <div className={styles.times}>{ fscData.info.countdown }</div>
 
       {
-        my.is_ready_game === 0 && fscData.info.stage_status !== 4 && <div className={styles.ready}>
+        my.is_ready_game === 0 && fscData.info.stage_status !== 4  && fscData.info.stage_status !== 3 &&
+        <div className={styles.ready}>
           <span onClick={() => handleStart()}>准备</span>
         </div>
       }
@@ -153,7 +189,7 @@ const Seat = (props) => {
       <div className={styles.operation}>
         { two && <div className={styles.tips}>请选择两门下注</div> }
           {
-            fscData.info.stage_status === 3 && !end && bet.map((item, index) => {
+            fscData.info.stage_status === 3 && my.is_ready_game === 1 && !end && bet.map((item, index) => {
               return (
                 <div key={index} onClick={() => handleChip(index)} className={`${styles.chip} ${chip === index ? styles.chipActive : ''}`}>
                   <div className={`${styles['chip-' + index]}`}>{ item.diamond }</div>
@@ -162,7 +198,7 @@ const Seat = (props) => {
             })
           }
         </div>
-        { fscData.info.stage_status === 3 && !end &&
+        { fscData.info.stage_status === 3 && !end && my.is_ready_game === 1 &&
           <div>
             <div className={styles.bigBtn}>
               <div className={styles.stop} onClick={ () => handleFinish() }>停止下注</div>
