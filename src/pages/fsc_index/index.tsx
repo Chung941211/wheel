@@ -16,6 +16,7 @@ import Records from './components/Records';
 import styles from './index.module.css';
 import close from '@/assets/close.png';
 import text from '@/locales';
+import diamonds from '@/assets/diamonds.png';
 
 type betItemType = {
   rewardId: string
@@ -30,7 +31,7 @@ const Baccarat = () => {
   const [ showRank, setRank ] = useState<boolean>(false);
   const [ chip, setChip ] = useState<number | string>('');
   const [ roomId, setRoomId ] = useState<string>('');
-  const { request: getRoom } = useRequest(fscService.getUserRoom);
+  const { data: roomData, request: getRoom } = useRequest(fscService.getUserRoom);
   const { request: postClick } = useRequest(fscService.postClick);
   const { data: result, request: getResult, mutate: resetResult } = useRequest(fscService.getResult);
   const { data: fscData, request: getFsc } = useRequest(fscService.getFsc, {
@@ -125,7 +126,7 @@ const Baccarat = () => {
     } else {
       eleLeft = (leftPos + set.offsetLeft - current.offsetLeft - parent.offsetLeft - 20) * -1;
     }
-    const eleTop = current.offsetTop + topPos + 220 - set.offsetTop
+    const eleTop = current.offsetTop + topPos + 195 - set.offsetTop
     let ballPos = {
       left: `${eleLeft}px`,
       top: `${eleTop}px`,
@@ -153,41 +154,43 @@ const Baccarat = () => {
   return (
 
     <div className={styles.main}>
-      <div className={styles.nav}>
-        <div className={styles.leftNav}>
-          <div onClick={ () => setRecords(true) }>{ text.records }</div>
-          <div onClick={ () => setRules(true) }>{ text.rules }</div>
-          <div onClick={ () => setRank(true) }>{ text.rank }</div>
+      <div className={styles.content}>
+        <div className={styles.nav}>
+          <div className={styles.leftNav}>
+            <div onClick={ () => setRecords(true) }>{ text.records }</div>
+            <div onClick={ () => setRules(true) }>{ text.rules }</div>
+            <div onClick={ () => setRank(true) }>{ text.rank }</div>
+          </div>
+          <div className={styles.close}>
+            <img src={close}  />
+          </div>
+          { roomData && <div className={styles.room}>ID：{ roomData.numid } <img src={diamonds} /></div> }
         </div>
-        <div className={styles.close}>
-          <img src={close}  />
-        </div>
+
+        { fscData && <Disc info={fscData.info} history={fscData.history} result={result}  /> }
+
+        { fscData &&
+          <Mainer
+          fscData={fscData}
+          chip={chip}
+          result={result}
+          num={num}
+          own={own}
+          mic={mic}
+          roomId={roomId}
+          handleBall={ (reward, two, seatIndex, betIndex) => handleBall(reward, two, seatIndex, betIndex) }
+          handleChip={ (index) => handleChip(index) } /> }
+
+        { fscData && mic.length > 0 && <Seat result={result} mic={mic} fscData={fscData} /> }
+
+        { fscData && showRules && <Rules rule={fscData.rule} handleShow={ () => setRules(false) } /> }
+
+        { showRecords && <Records handleRecords={ () => setRecords(false)} /> }
+
+        { showReward && <Reward handleReward={ () => setReward(false)  } /> }
+
+        { showRank && !showReward && <Rank handleReward={ () => setReward(true)  } handleRank={ () => setRank(false) } /> }
       </div>
-
-      { fscData && <Disc info={fscData.info} history={fscData.history} result={result}  /> }
-
-      { fscData &&
-        <Mainer
-        fscData={fscData}
-        chip={chip}
-        result={result}
-        num={num}
-        own={own}
-        mic={mic}
-        roomId={roomId}
-        handleBall={ (reward, two, seatIndex, betIndex) => handleBall(reward, two, seatIndex, betIndex) }
-        handleChip={ (index) => handleChip(index) } /> }
-
-      { fscData && mic.length > 0 && <Seat result={result} mic={mic} fscData={fscData} /> }
-
-      { fscData && showRules && <Rules rule={fscData.rule} handleShow={ () => setRules(false) } /> }
-
-      { showRecords && <Records handleRecords={ () => setRecords(false)} /> }
-
-      { showReward && <Reward handleReward={ () => setReward(false)  } /> }
-
-      { showRank && !showReward && <Rank handleReward={ () => setReward(true)  } handleRank={ () => setRank(false) } /> }
-
     </div>
   );
 };

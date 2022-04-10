@@ -10,7 +10,8 @@
 
 .content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
+  min-height: 430px;
 }
 
 .rewardImg {
@@ -36,6 +37,7 @@
   color: #46614c;
   font-size: 20px;
   font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .operation {
@@ -155,7 +157,6 @@
 }
 
 .ready {
-  margin-top: 20px;
   text-align: center;
   span {
     background-image: linear-gradient( #efcc63 0, #e4a054 100%);
