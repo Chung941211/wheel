@@ -191,7 +191,7 @@
 .golden {
   position: absolute;
   z-index: 99;
-  width: 30px;
+  width: 15px;
   animation: golden_move 0.8s linear;
   animation-fill-mode: forwards;
 }
@@ -214,7 +214,7 @@
 .lose  {
   position: absolute;
   z-index: 99;
-  width: 30px;
+  width: 15px;
   animation: lose_move 0.8s linear;
   animation-fill-mode: forwards;
 }

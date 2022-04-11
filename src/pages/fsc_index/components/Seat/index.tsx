@@ -112,27 +112,9 @@ const Seat = (props) => {
 
   useEffect(() => {
     if (result) {
-      const parent:HTMLElement = document.getElementById(`seat`) as HTMLElement;
-      let other:any[] = result.winner.other;
-      let tempArr:goldType[] = [];
-      mic.forEach((item, key) => {
-        let topNum = key < 6 ? key + 1 : key - 6;
-        if (recordsId.indexOf(item.user_id) < 0) {
-          return
-        }
-        let win:boolean = false;
-        other.forEach(element => {
-          if (element.user_id === item.user_id) {
-            win = true
-          }
-        });
-        tempArr.push({
-          win,
-          left: key < 6 ? 20 : parent.clientWidth - 40,
-          top: topNum * 70 + 30
-        });
-      });
-      setGold([ ...tempArr ]);
+      setTimeout(() => {
+        handleGold();
+      }, 2000)
     } else {
       setGold([]);
     }
@@ -159,6 +141,52 @@ const Seat = (props) => {
       setHistoryItem(temp);
     }
   }, [ history ]);
+
+  const handleGold = () => {
+    const parent:HTMLElement = document.getElementById(`seat`) as HTMLElement;
+    let other:any[] = result.winner.other;
+    let tempArr:goldType[] = [];
+    let loseArr:goldType[] = [];
+    mic.forEach((item, key) => {
+      let topNum = key < 6 ? key + 1 : key - 6;
+      if (recordsId.indexOf(item.user_id) < 0) {
+        return
+      }
+      let win:boolean = false;
+      other.forEach(element => {
+        if (element.user_id === item.user_id) {
+          win = true
+        }
+      });
+      if (win) {
+        tempArr.push({
+          win,
+          left: key < 6 ? 20 : parent.clientWidth - 40,
+          top: topNum * 70 + 30
+        });
+      } else {
+        loseArr.push({
+          win,
+          left: key < 6 ? 20 : parent.clientWidth - 40,
+          top: topNum * 70 + 30
+        });
+      }
+    });
+    console.log(tempArr, loseArr)
+    if (loseArr.length > 0 && tempArr.length > 0) {
+      console.log('1')
+      setGold([ ...tempArr ]);
+      setTimeout(() => {
+        setGold([ ...loseArr ]);
+      }, 2000)
+    } else if (loseArr.length > 0) {
+      console.log('2')
+      setGold([ ...loseArr ]);
+    } else {
+      console.log('3')
+      setGold([ ...tempArr ]);
+    }
+  }
 
   const handleMic = async (open?: Boolean) => {
     let uid:number | string = '';

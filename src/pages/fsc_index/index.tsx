@@ -28,7 +28,7 @@ const Baccarat = () => {
   const [ showRules, setRules ] = useState<boolean>(false);
   const [ showReward, setReward ] = useState<boolean>(false);
   const [ showRecords, setRecords ] = useState<boolean>(false);
-  const [ showTips, setTips ] = useState<boolean>(true);
+  const [ showTips, setTips ] = useState<boolean>(false);
   const [ showRank, setRank ] = useState<boolean>(false);
   const [ chip, setChip ] = useState<number | string>('');
   const [ roomId, setRoomId ] = useState<string>('');
@@ -36,7 +36,7 @@ const Baccarat = () => {
   const { request: postClick } = useRequest(fscService.postClick);
   const { data: result, request: getResult, mutate: resetResult } = useRequest(fscService.getResult);
   const { data: fscData, request: getFsc } = useRequest(fscService.getFsc, {
-    // pollingInterval: 1000,
+    pollingInterval: 1000,
     pollingWhenHidden: false
   });
   const [ mic, setMic ] = useState<object[]>([]);
@@ -52,7 +52,6 @@ const Baccarat = () => {
       setRoomId(room.id)
       let data = await getFsc({ roomId: room.id, betType });
       handleResult(data);
-      console.log(data)
     };
 
     fetchData();
@@ -97,7 +96,7 @@ const Baccarat = () => {
         id: ele.position
       }
     });
-    setMic(seatArr);
+    setMic([ ...seatArr ]);
   }
 
   const handleChip = (index: number) => {
@@ -178,6 +177,7 @@ const Baccarat = () => {
           own={own}
           mic={mic}
           roomId={roomId}
+          handleTips={ () => setTips(true) }
           handleBall={ (reward, two, seatIndex, betIndex) => handleBall(reward, two, seatIndex, betIndex) }
           handleChip={ (index) => handleChip(index) } /> }
 

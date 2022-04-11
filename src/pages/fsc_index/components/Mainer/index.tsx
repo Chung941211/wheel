@@ -22,7 +22,7 @@ const Seat = (props) => {
   const [ twoActive, setTwoActive ] = useState<number[]>([]);
   const [ hisActive, setHisActive ] = useState<number[]>([]);
   const { request: getStart } = useRequest(fscService.getStart);
-  const {  handleBall, handleChip, fscData, chip, num, result, mic, own, roomId } = props;
+  const {  handleBall, handleChip, fscData, chip, num, result, mic, own, roomId, handleTips } = props;
   const { reward, bet, history, bet_records, info } = fscData;
 
   useEffect(() => {
@@ -61,6 +61,7 @@ const Seat = (props) => {
         setOldBet([]);
         setHisActive([]);
         setEnd(false);
+        setRecords([])
       }
 
       if (result && result.reward_id && fscData.info.stage_status === 4) {
@@ -201,7 +202,7 @@ const Seat = (props) => {
           <div>
             <div className={styles.bigBtn}>
               <div className={styles.stop} onClick={ () => handleFinish() }>停止下注</div>
-              <div className={styles.number}>{num}</div>
+              <div className={styles.number}  onClick={ () => handleTips() }>{num}</div>
             </div>
             <div className={styles.btn}>
               <div className={`${ two ? styles.twoActive : '' }`} onClick={ () => handleTwo() }>二中二</div>
