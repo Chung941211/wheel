@@ -1,0 +1,66 @@
+
+.props {
+  position: fixed;
+  z-index: 100;
+  top: 20%;
+  left: calc(50% - 150px);
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 300px;
+  border-radius: 8px;
+  border: 3px solid #ffffff;
+}
+
+.title {
+  text-align: center;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 12px 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.word {
+  color: #BC220A;
+  padding: 0 20px;
+  div {
+    margin-bottom: 10px;
+  }
+}
+
+.bg {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 99;
+  top: 0;
+  left: 0;
+}
+
+.rows {
+  background-color: rgba(78, 43, 122, 0.7);
+  display: flex;
+  margin: 10px 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.left {
+  color: #C0BBE8;
+  width: 80px;
+}
+
+.mian {
+  flex: 1;
+}
+
+.right {
+  color: #FFB026;
+}
+
+.list {
+  height: 230px;
+  padding-bottom: 20px;
+  overflow-y: scroll;
+}

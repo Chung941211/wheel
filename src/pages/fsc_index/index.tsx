@@ -12,9 +12,9 @@ import Rules from './components/Rules';
 import Reward from './components/Reward';
 import Rank from './components/Rank';
 import Records from './components/Records';
+import Tips from './components/Tips';
 
 import styles from './index.module.css';
-import close from '@/assets/close.png';
 import text from '@/locales';
 import diamonds from '@/assets/diamonds.png';
 
@@ -28,6 +28,7 @@ const Baccarat = () => {
   const [ showRules, setRules ] = useState<boolean>(false);
   const [ showReward, setReward ] = useState<boolean>(false);
   const [ showRecords, setRecords ] = useState<boolean>(false);
+  const [ showTips, setTips ] = useState<boolean>(true);
   const [ showRank, setRank ] = useState<boolean>(false);
   const [ chip, setChip ] = useState<number | string>('');
   const [ roomId, setRoomId ] = useState<string>('');
@@ -35,7 +36,7 @@ const Baccarat = () => {
   const { request: postClick } = useRequest(fscService.postClick);
   const { data: result, request: getResult, mutate: resetResult } = useRequest(fscService.getResult);
   const { data: fscData, request: getFsc } = useRequest(fscService.getFsc, {
-    pollingInterval: 1000,
+    // pollingInterval: 1000,
     pollingWhenHidden: false
   });
   const [ mic, setMic ] = useState<object[]>([]);
@@ -51,6 +52,7 @@ const Baccarat = () => {
       setRoomId(room.id)
       let data = await getFsc({ roomId: room.id, betType });
       handleResult(data);
+      console.log(data)
     };
 
     fetchData();
@@ -161,11 +163,9 @@ const Baccarat = () => {
             <div onClick={ () => setRules(true) }>{ text.rules }</div>
             <div onClick={ () => setRank(true) }>{ text.rank }</div>
           </div>
-          <div className={styles.close}>
-            <img src={close}  />
-          </div>
           { roomData && <div className={styles.room}>ID：{ roomData.numid } <img src={diamonds} /></div> }
         </div>
+
 
         { fscData && <Disc info={fscData.info} history={fscData.history} result={result}  /> }
 
@@ -185,12 +185,16 @@ const Baccarat = () => {
 
         { fscData && showRules && <Rules rule={fscData.rule} handleShow={ () => setRules(false) } /> }
 
-        { showRecords && <Records handleRecords={ () => setRecords(false)} /> }
-
-        { showReward && <Reward handleReward={ () => setReward(false)  } /> }
-
-        { showRank && !showReward && <Rank handleReward={ () => setReward(true)  } handleRank={ () => setRank(false) } /> }
       </div>
+
+      { showTips && fscData && <Tips fscData={ fscData } handleShow={ () => setTips(false)  } /> }
+
+      { showRecords && <Records handleRecords={ () => setRecords(false)} /> }
+
+      { showReward && <Reward handleReward={ () => setReward(false)  } /> }
+
+      { showRank && !showReward && <Rank handleReward={ () => setReward(true)  } handleRank={ () => setRank(false) } /> }
+
     </div>
   );
 };
