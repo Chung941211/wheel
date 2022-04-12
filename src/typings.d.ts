@@ -4,6 +4,11 @@ declare module '*.module.css' {
 }
 
 
+declare global {
+  interface Window {
+    BiubiuClub: any;
+  }
+}
 declare module '*.svg'
 declare module '*.png'
 declare module '*.jpg'

@@ -55,7 +55,15 @@ const SeatRows = (props) => {
   const { rows } = props;
 
   const handleSeat = () => {
-    // window.BiubiuClub.startActivity();
+    if (!rows.user_id) {
+      return;
+    }
+    if (window.BiubiuClub) {
+      window.BiubiuClub.startActivity("user_details",  { 'user_id': rows.user_id});
+    }
+    if (BiubiuClub) {
+      BiubiuClub.startActivity("user_details",  {'user_id': rows.user_id});
+    }
   }
   return (
     <div id={`seat-${rows.id}`} className={styles.seatRows} key={rows} onClick={ () => handleSeat() }>
@@ -172,18 +180,14 @@ const Seat = (props) => {
         });
       }
     });
-    console.log(tempArr, loseArr)
     if (loseArr.length > 0 && tempArr.length > 0) {
-      console.log('1')
       setGold([ ...tempArr ]);
       setTimeout(() => {
         setGold([ ...loseArr ]);
       }, 2000)
     } else if (loseArr.length > 0) {
-      console.log('2')
       setGold([ ...loseArr ]);
     } else {
-      console.log('3')
       setGold([ ...tempArr ]);
     }
   }
