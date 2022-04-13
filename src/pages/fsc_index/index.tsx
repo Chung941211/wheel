@@ -32,6 +32,7 @@ const Baccarat = () => {
   const [ showRank, setRank ] = useState<boolean>(false);
   const [ chip, setChip ] = useState<number | string>('');
   const [ roomId, setRoomId ] = useState<string>('');
+  const [ uid, setUid ] = useState<string>('');
   const { data: roomData, request: getRoom } = useRequest(fscService.getUserRoom);
   const { request: postClick } = useRequest(fscService.postClick);
   const { data: result, request: getResult, mutate: resetResult } = useRequest(fscService.getResult);
@@ -42,14 +43,14 @@ const Baccarat = () => {
   const [ mic, setMic ] = useState<object[]>([]);
   const [ own, setOwn ] = useState<number | string>('');
   const [ betItem, setBetItem ] = useState<betItemType[]>([]);
-  const [ num, setNum ] = useState<number>(0);
   let betType:string | boolean = getQueryVariable('betType');
 
   useEffect(() => {
 
     const fetchData = async () => {
       let room = await getRoom();
-      setRoomId(room.id)
+      setRoomId(room.id);
+      setUid(room.uid);
       let data = await getFsc({ roomId: room.id, betType });
       handleResult(data);
     };
@@ -72,8 +73,7 @@ const Baccarat = () => {
     if (stage_status !== 4 && stage_status !== 5) {
       resetResult(null);
     }
-    if (stage_status === 5) {
-      setNum(0);
+    if (stage_status === 5 || stage_status === 2) {
       handleResult(fscData);
     }
   }, 2000);
@@ -135,7 +135,7 @@ const Baccarat = () => {
       diamond: fscData.bet[betChip].diamond
     }
     let temp = mic;
-    let tempNum = num + fscData.bet[betChip].diamond;
+    // let tempNum = num + fscData.bet[betChip].diamond;
     let deduction = temp[seat].user_info.balance - fscData.bet[betChip].diamond;
     if (deduction >= 0) {
       temp[seat].user_info.balance = deduction;
@@ -143,7 +143,7 @@ const Baccarat = () => {
       setMic([ ...temp ]);
     }
     if (!betSring) {
-      setNum(tempNum);
+      // setNum(tempNum);
       setBetItem([{
         rewardId: two.length === 2 ? `${fscData.reward[two[0]].id},${fscData.reward[two[1]].id}` : fscData.reward[key].id.toString(),
         betId: fscData.bet[betChip].id,
@@ -173,7 +173,6 @@ const Baccarat = () => {
           fscData={fscData}
           chip={chip}
           result={result}
-          num={num}
           own={own}
           mic={mic}
           roomId={roomId}
@@ -181,7 +180,7 @@ const Baccarat = () => {
           handleBall={ (reward, two, seatIndex, betIndex) => handleBall(reward, two, seatIndex, betIndex) }
           handleChip={ (index) => handleChip(index) } /> }
 
-        { fscData && mic.length > 0 && <Seat result={result} mic={mic} fscData={fscData} /> }
+        { fscData && mic.length > 0 && <Seat uid={uid} result={result} mic={mic} fscData={fscData} /> }
 
         { fscData && showRules && <Rules rule={fscData.rule} handleShow={ () => setRules(false) } /> }
 

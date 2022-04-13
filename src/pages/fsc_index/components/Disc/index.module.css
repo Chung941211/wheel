@@ -78,7 +78,9 @@
 
 @keyframes wheel_move {
   0% {
-    margin-left: 0;
+    -webkit-transform: translateX(0px);
+    -ms-transform: translateX(0px);
+    transform: translateX(0px);
     opacity: 1;
   }
   50% {
@@ -86,6 +88,8 @@
   }
   100% {
     opacity: 0;
-    margin-left: 200px;
+    -webkit-transform: translateX(200px);
+    -ms-transform: translateX(2000px);
+    transform: translateX(200px);
   }
 }

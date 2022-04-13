@@ -52,24 +52,28 @@ const Ball = (props) => {
 
 const SeatRows = (props) => {
 
-  const { rows } = props;
+  const [ ready, setReady ] = useState<number>(0);
+  const { rows, info } = props;
+
+  useEffect(() => {
+    if (rows.is_ready_game === 1) {
+      setReady(1)
+    }
+  })
 
   const handleSeat = () => {
     if (!rows.user_id) {
       return;
     }
-    if (window.BiubiuClub) {
-      window.BiubiuClub.startActivity("user_details",  { 'user_id': rows.user_id});
-    }
-    if (BiubiuClub) {
-      BiubiuClub.startActivity("user_details",  {'user_id': rows.user_id});
-    }
+    window.BiubiuClub.callback("user_page", JSON.stringify({'user_id': rows.user_id}));
   }
   return (
     <div id={`seat-${rows.id}`} className={styles.seatRows} key={rows} onClick={ () => handleSeat() }>
+
       { !rows.user_id && <div className={styles.empty}>Empty</div> }
       { rows.user_id && <div className={styles.has}>
         <div className={styles.portrait}>
+          { ready === 1 && info.stage_status === 2 && <div className={styles.readys}>准备</div> }
           <img src={ rows.user_info.headimgurl }  />
         </div>
         <div className={styles.names}>{ rows.user_info.nickname }</div>
@@ -94,7 +98,7 @@ const Seat = (props) => {
   const [ gold, setGold ] =  useState<goldType[]>([]);
   const { request: postSound } = useRequest(fscService.postSound);
   const { request: postRemove } = useRequest(fscService.postRemove);
-  const { mic, fscData, result } = props;
+  const { mic, fscData, result, uid } = props;
   const { history, historyItemCount, reward, bet_records, info } = fscData;
 
   useEffect(() => {
@@ -193,12 +197,12 @@ const Seat = (props) => {
   }
 
   const handleMic = async (open?: Boolean) => {
-    let uid:number | string = '';
-    mic.forEach(element => {
-      if (element.is_own === 1) {
-        uid = element.user_id
-      }
-    });
+    // let uid:number | string = '';
+    // mic.forEach(element => {
+    //   if (element.is_own === 1) {
+    //     uid = element.user_id
+    //   }
+    // });
     if (open || !micOpen) {
       postRemove(uid);
       setMicOpen(true)
@@ -226,11 +230,11 @@ const Seat = (props) => {
             </div>
             <img className={styles.logo} src={logo} />
           </div>
-          { mic.slice(0, 6).map((item, index) => <SeatRows key={index} rows={item} />) }
+          { mic.slice(0, 6).map((item, index) => <SeatRows key={index} rows={item} info={info} />) }
         </div>
 
         <div>
-          { mic.slice(6, 13).map((item, index) => <SeatRows key={index} rows={item} />) }
+          { mic.slice(6, 13).map((item, index) => <SeatRows key={index} rows={item} info={info} />) }
 
           <div className={`${styles.seatIcon} ${styles.record}`}>
             <img src={record} onClick={ () => setRecordBol(!recordBol) } />

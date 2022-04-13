@@ -20,9 +20,10 @@ const Seat = (props) => {
   const [ end, setEnd ] = useState<boolean>(false);
   const [ oldBet, setOldBet ] = useState<betType[]>([]);
   const [ twoActive, setTwoActive ] = useState<number[]>([]);
+  const [ total, setTotal ] = useState<number>(0);
   const [ hisActive, setHisActive ] = useState<number[]>([]);
   const { request: getStart } = useRequest(fscService.getStart);
-  const {  handleBall, handleChip, fscData, chip, num, result, mic, own, roomId, handleTips } = props;
+  const {  handleBall, handleChip, fscData, chip, result, mic, own, roomId, handleTips } = props;
   const { reward, bet, history, bet_records, info } = fscData;
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const Seat = (props) => {
       });
       if (info.stage_status === 3) {
         handleOther();
+        handleTotal();
       }
       if (info.stage_status === 4) {
         setTwoActive([]);
@@ -62,6 +64,7 @@ const Seat = (props) => {
         setHisActive([]);
         setEnd(false);
         setRecords([])
+        setTotal(0)
       }
 
       if (result && result.reward_id && fscData.info.stage_status === 4) {
@@ -70,6 +73,18 @@ const Seat = (props) => {
 
     }
   }, [fscData]);
+
+  const handleTotal = () => {
+    let num:number = 0;
+    bet_records.forEach(element => {
+      bet.forEach(item => {
+        if (item.id == element.bet_id) {
+          num += item.diamond;
+        }
+      });
+    });
+    setTotal(num)
+  }
 
   const handleOther = () => {
     if (bet_records.length > records.length) {
@@ -186,6 +201,12 @@ const Seat = (props) => {
         </div>
       }
 
+      {
+        ( my && my.is_ready_game !== 1) && fscData.info.stage_status === 3 && <div className={styles.ready}>
+          <span onClick={ () => handleTips() }>{ total }</span>
+        </div>
+      }
+
       <div className={styles.operation}>
         { two && <div className={styles.tips}>请选择两门下注</div> }
           {
@@ -202,7 +223,7 @@ const Seat = (props) => {
           <div>
             <div className={styles.bigBtn}>
               <div className={styles.stop} onClick={ () => handleFinish() }>停止下注</div>
-              <div className={styles.number}  onClick={ () => handleTips() }>{num}</div>
+              <div className={styles.number} onClick={ () => handleTips() }>{ total }</div>
             </div>
             <div className={styles.btn}>
               <div className={`${ two ? styles.twoActive : '' }`} onClick={ () => handleTwo() }>二中二</div>

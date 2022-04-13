@@ -20,19 +20,28 @@ const Rules = (props) => {
       }
     });
     fscData.bet_records.forEach(element => {
-      if (element.bet_user_id == my.user_id) {
-        temp.push(element);
+      let has:boolean = false;
+      temp.forEach((item, index) => {
+        if (item.reward_id_str === element.reward_id_str) {
+          has = true;
+          temp[index].num = item.num + getBet(element.bet_id);
+        }
+      });
+      if (!has) {
+        temp.push({
+          ...element,
+          num: getBet(element.bet_id)
+        });
       }
     });
-
-    setMyReward(temp)
+    setMyReward(temp);
 
   }, [])
   const getBet = (betId: string) => {
     let diamond: number = 0;
     fscData.bet.forEach(element => {
       if (element.id == betId) {
-        diamond = element.diamond
+        diamond = element.diamond;
       }
     });
     return diamond;
@@ -55,7 +64,7 @@ const Rules = (props) => {
     <div className={styles.props}>
       <div className={styles.content}>
         <img className={styles.close} src={close}  onClick={handleShow}  />
-        { my.user_info && <div className={styles.title}>{ my.user_info.nickname }</div> }
+        <div className={styles.title}>玩家下注</div>
         <div className={styles.list}>
           { myReward.map((item, index) => {
             return (
@@ -64,7 +73,7 @@ const Rules = (props) => {
                   <div className={styles.mian}>
                     { getReward(item.reward_id_str).map((item, index) => <img key={index} src={item} />) }
                     </div>
-                  <div className={styles.right}>{ getBet(item.bet_id) }</div>
+                  <div className={styles.right}>{ item.num }</div>
                 </div>
               )
             })
