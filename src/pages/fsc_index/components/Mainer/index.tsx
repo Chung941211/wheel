@@ -77,6 +77,9 @@ const Seat = (props) => {
   const handleTotal = () => {
     let num:number = 0;
     bet_records.forEach(element => {
+      if (element.bet_user_id != my.user_id) {
+        return;
+      }
       bet.forEach(item => {
         if (item.id == element.bet_id) {
           num += item.diamond;
@@ -195,17 +198,17 @@ const Seat = (props) => {
       <div className={styles.times}>{ fscData.info.countdown }</div>
 
       {
-        my.is_ready_game === 0 && fscData.info.stage_status !== 4  && fscData.info.stage_status !== 3 &&
+        my.is_ready_game === 0 && fscData.info.stage_status !== 4 && fscData.info.stage_status !== 3 &&
         <div className={styles.ready}>
           <span onClick={() => handleStart()}>准备</span>
         </div>
       }
 
-      {
+      {/* {
         ( my && my.is_ready_game !== 1) && fscData.info.stage_status === 3 && <div className={styles.ready}>
           <span onClick={ () => handleTips() }>{ total }</span>
         </div>
-      }
+      } */}
 
       <div className={styles.operation}>
         { two && <div className={styles.tips}>请选择两门下注</div> }

@@ -21,6 +21,9 @@ const Rules = (props) => {
     });
     fscData.bet_records.forEach(element => {
       let has:boolean = false;
+      if (element.bet_user_id != my.user_id) {
+        return;
+      }
       temp.forEach((item, index) => {
         if (item.reward_id_str === element.reward_id_str) {
           has = true;

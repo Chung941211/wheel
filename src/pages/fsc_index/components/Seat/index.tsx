@@ -57,9 +57,11 @@ const SeatRows = (props) => {
 
   useEffect(() => {
     if (rows.is_ready_game === 1) {
-      setReady(1)
+      setReady(1);
+    } else {
+      setReady(0);
     }
-  })
+  }, [ rows ])
 
   const handleSeat = () => {
     if (!rows.user_id) {
@@ -102,7 +104,11 @@ const Seat = (props) => {
   const { history, historyItemCount, reward, bet_records, info } = fscData;
 
   useEffect(() => {
-    handleMic(true);
+    fscData.user_mic_serial.forEach(ele => {
+      if (ele.is_own === 1) {
+        setMicOpen(!Boolean(ele.shut_sound))
+      }
+    });
   }, []);
 
   useEffect(() => {

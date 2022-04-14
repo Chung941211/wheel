@@ -17,6 +17,7 @@ import Tips from './components/Tips';
 import styles from './index.module.css';
 import text from '@/locales';
 import diamonds from '@/assets/diamonds.png';
+import close from '@/assets/close.png';
 
 type betItemType = {
   rewardId: string
@@ -24,6 +25,7 @@ type betItemType = {
   betMany: number
 }
 
+// 28ed9ce3-9be9-471f-a3fc-556c18e8c7f7
 const Baccarat = () => {
   const [ showRules, setRules ] = useState<boolean>(false);
   const [ showReward, setReward ] = useState<boolean>(false);
@@ -152,6 +154,10 @@ const Baccarat = () => {
     }
   }
 
+  const handleClose = () => {
+    window.BiubiuClub.callback("close_room");
+  }
+
   return (
 
     <div className={styles.main}>
@@ -161,6 +167,9 @@ const Baccarat = () => {
             <div onClick={ () => setRecords(true) }>{ text.records }</div>
             <div onClick={ () => setRules(true) }>{ text.rules }</div>
             <div onClick={ () => setRank(true) }>{ text.rank }</div>
+          </div>
+          <div className={styles.close}>
+            <img onClick={ () => handleClose() } src={close} />
           </div>
           { roomData && <div className={styles.room}>ID：{ roomData.numid } <img src={diamonds} /></div> }
         </div>

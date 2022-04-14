@@ -28,7 +28,7 @@ const Lists = (props) => {
 
       </div>
       <div className={styles.result}>
-      {  items.reward_val.map((item, key) => <div><img key={key} src={item.item_img} /></div> ) }
+      {  items.reward_val.map((item, key) => <div key={key}><img key={key} src={item.item_img} /></div> ) }
       </div>
       <div
         className={`${styles.win} ${ items.moment_profit < 0 ? styles.lose : styles.wins}`}>
@@ -54,7 +54,7 @@ const Records = (props) => {
 
         <div className={styles.header}>
           <img className={styles.back} onClick={ () => handleRecords() } src={back} />
-          <div className={styles.title}>{ text.reward }</div>
+          <div className={styles.title}>{ text.records }</div>
         </div>
 
         <div className={`${styles.table} ${styles.thead}`}>
