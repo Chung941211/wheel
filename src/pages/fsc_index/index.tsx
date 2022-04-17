@@ -155,7 +155,7 @@ const Baccarat = () => {
   }
 
   const handleClose = () => {
-    window.BiubiuClub.callback("close_room");
+    window.BiubiuClub.callback("close_room", JSON.stringify({uid: uid}));
   }
 
   return (
@@ -184,6 +184,7 @@ const Baccarat = () => {
           result={result}
           own={own}
           mic={mic}
+          uid={uid}
           roomId={roomId}
           handleTips={ () => setTips(true) }
           handleBall={ (reward, two, seatIndex, betIndex) => handleBall(reward, two, seatIndex, betIndex) }

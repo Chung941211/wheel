@@ -5,38 +5,13 @@ import fscService from '@/services/fscApi';
 
 import styles from './index.module.css';
 import micImg from '@/assets/mic_ico.png';
+import micClose from '@/assets/close-mic.png';
+import master from '@/assets/mic-icon.png';
 import mcImg from '@/assets/main.png';
 import record from '@/assets/record_icon.png';
 import logo from '@/assets/logo.png';
-import golden from '@/assets/golden.png';
+import more from '@/assets/more-icon.png';
 
-
-const Gold = (props) => {
-  const { gold } = props;
-  const [ goldItem, setGoldItem ] = useState<number[]>([]);
-  const mystyles = {
-    '--top': `${gold.top}px`,
-    '--left': `${gold.left}px`,
-  } as React.CSSProperties;
-  useEffect(() => {
-    if (goldItem.length === 15) {
-      return;
-    }
-    let timer = setTimeout(() => {
-      setGoldItem([ ...goldItem , 1])
-    }, 100);
-    return () => {
-      clearTimeout(timer)
-    };
-  }, [ goldItem ]);
-
-  return(
-    <>
-      { goldItem.map((item, index) => <img className={`${gold.win ? styles.golden : styles.lose }`} key={index} src={golden} style={mystyles} />) }
-    </>
-  )
-
-}
 const Ball = (props) => {
   const { item } = props;
   const mystyles = {
@@ -53,7 +28,9 @@ const Ball = (props) => {
 const SeatRows = (props) => {
 
   const [ ready, setReady ] = useState<number>(0);
-  const { rows, info } = props;
+  const [ amout, setAmout ] = useState<any>(null);
+  const { rows, fscData, gold } = props;
+  const { info, is_master, user_id } = fscData;
 
   useEffect(() => {
     if (rows.is_ready_game === 1) {
@@ -61,7 +38,19 @@ const SeatRows = (props) => {
     } else {
       setReady(0);
     }
-  }, [ rows ])
+  }, [ rows ]);
+
+  useEffect(() => {
+    if (gold.length > 0) {
+      gold.forEach(element => {
+        if (element.user_id === rows.user_id) {
+          setAmout(element)
+        }
+      });
+    } else {
+      setAmout(null);
+    }
+  })
 
   const handleSeat = () => {
     if (!rows.user_id) {
@@ -71,8 +60,12 @@ const SeatRows = (props) => {
   }
   return (
     <div id={`seat-${rows.id}`} className={styles.seatRows} key={rows} onClick={ () => handleSeat() }>
-
+      { user_id === rows.user_id && is_master === 1 && <img className={styles.master} src={master} /> }
       { !rows.user_id && <div className={styles.empty}>Empty</div> }
+      { amout && amout.win_amount >= 0 &&
+        <div className={`${styles.amout} ${ rows.id > 5 ? styles.rightAmout : ''}`}>+{amout.win_amount}</div> }
+      { amout && amout.lose_amount > 0 &&
+        <div className={`${styles.loseAmout} ${ rows.id > 5 ? styles.rightAmout : ''}`}>-{amout.lose_amount}</div> }
       { rows.user_id && <div className={styles.has}>
         <div className={styles.portrait}>
           { ready === 1 && info.stage_status === 2 && <div className={styles.readys}>准备</div> }
@@ -101,7 +94,7 @@ const Seat = (props) => {
   const { request: postSound } = useRequest(fscService.postSound);
   const { request: postRemove } = useRequest(fscService.postRemove);
   const { mic, fscData, result, uid } = props;
-  const { history, historyItemCount, reward, bet_records, info } = fscData;
+  const { history, historyItemCount, reward, bet_records, info, wait_total, is_master, user_id } = fscData;
 
   useEffect(() => {
     fscData.user_mic_serial.forEach(ele => {
@@ -129,14 +122,15 @@ const Seat = (props) => {
   }, [ bet_records ]);
 
   useEffect(() => {
-    if (result) {
+    if (result && gold.length === 0) {
       setTimeout(() => {
-        handleGold();
+        setGold(result.winner.other);
       }, 2000)
-    } else {
+    } else if (!result) {
       setGold([]);
     }
-  }, [result]);
+    console.log(result)
+  }, [ result ]);
 
 
   useEffect(() => {
@@ -160,55 +154,11 @@ const Seat = (props) => {
     }
   }, [ history ]);
 
-  const handleGold = () => {
-    const parent:HTMLElement = document.getElementById(`seat`) as HTMLElement;
-    let other:any[] = result.winner.other;
-    let tempArr:goldType[] = [];
-    let loseArr:goldType[] = [];
-    mic.forEach((item, key) => {
-      let topNum = key < 6 ? key + 1 : key - 6;
-      if (recordsId.indexOf(item.user_id) < 0) {
-        return
-      }
-      let win:boolean = false;
-      other.forEach(element => {
-        if (element.user_id === item.user_id) {
-          win = true
-        }
-      });
-      if (win) {
-        tempArr.push({
-          win,
-          left: key < 6 ? 20 : parent.clientWidth - 40,
-          top: topNum * 70 + 30
-        });
-      } else {
-        loseArr.push({
-          win,
-          left: key < 6 ? 20 : parent.clientWidth - 40,
-          top: topNum * 70 + 30
-        });
-      }
-    });
-    if (loseArr.length > 0 && tempArr.length > 0) {
-      setGold([ ...tempArr ]);
-      setTimeout(() => {
-        setGold([ ...loseArr ]);
-      }, 2000)
-    } else if (loseArr.length > 0) {
-      setGold([ ...loseArr ]);
-    } else {
-      setGold([ ...tempArr ]);
-    }
+  const handleMore = () => {
+    window.BiubiuClub.callback("open_wait_list",JSON.stringify({user_id: user_id, uid: uid}));
   }
 
   const handleMic = async (open?: Boolean) => {
-    // let uid:number | string = '';
-    // mic.forEach(element => {
-    //   if (element.is_own === 1) {
-    //     uid = element.user_id
-    //   }
-    // });
     if (open || !micOpen) {
       postRemove(uid);
       setMicOpen(true)
@@ -218,12 +168,15 @@ const Seat = (props) => {
     }
   }
 
+  const handleInfo = () => {
+    if (recordBol) {
+      setRecordBol(false);
+    }
+  }
   return (
-    <div className={styles.seatWrapper}>
+    <div className={styles.seatWrapper} onClick={ () => handleInfo() }>
 
       <div id="seat" className={styles.seat}>
-
-        { gold.length > 0 && gold.map((item, index) => <Gold key={index} gold={item} />) }
 
         <div>
           <div id={`seat-mc`} className={styles.seatRows}>
@@ -236,11 +189,11 @@ const Seat = (props) => {
             </div>
             <img className={styles.logo} src={logo} />
           </div>
-          { mic.slice(0, 6).map((item, index) => <SeatRows key={index} rows={item} info={info} />) }
+          { mic.slice(0, 6).map((item, index) => <SeatRows key={index} rows={item} fscData={fscData} gold={gold} />) }
         </div>
 
         <div>
-          { mic.slice(6, 13).map((item, index) => <SeatRows key={index} rows={item} info={info} />) }
+          { mic.slice(6, 13).map((item, index) => <SeatRows key={index} rows={item} fscData={fscData} gold={gold} />) }
 
           <div className={`${styles.seatIcon} ${styles.record}`}>
             <img src={record} onClick={ () => setRecordBol(!recordBol) } />
@@ -268,7 +221,15 @@ const Seat = (props) => {
           </div>
 
           <div className={styles.seatIcon}>
-            <img onClick={ () => handleMic() } className={`${ !micOpen ? styles.sound : ''}`} src={micImg} />
+            { is_master === 1 && <div className={styles.more} onClick={ () => handleMore() }>
+                <div>
+                  { wait_total > 0 && <span>{ wait_total }</span> }
+                  <img src={more} />
+                </div>
+              </div>
+            }
+            { micOpen && <img onClick={ () => handleMic() } src={micImg} /> }
+            { !micOpen && <div className={styles.close}><img onClick={ () => handleMic() } src={micClose} /> </div> }
           </div>
 
         </div>

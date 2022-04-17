@@ -63,6 +63,18 @@ export default {
     });
     return data.data;
   },
+  async postAddWaid(params) {
+    const { uid } = params;
+    const data = await request({
+      url: `/api/addWaid`,
+      method: 'post',
+      data: {
+        uid: uid
+      },
+      headers: { ...header }
+    });
+    return data.data;
+  },
 
   async postClick(params) {
     const { betItem, roomId, betType } = params;

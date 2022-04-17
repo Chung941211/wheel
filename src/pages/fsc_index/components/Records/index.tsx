@@ -67,7 +67,6 @@ const Records = (props) => {
 
         <div className={styles.list}>
           { recordsList && recordsList.map((item, index) => <Lists key={index} index={index} items={item} />)  }
-          { recordsList && recordsList.map((item, index) => <Lists key={index} index={index} items={item} />)  }
         </div>
 
 

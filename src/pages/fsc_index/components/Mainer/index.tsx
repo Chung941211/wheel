@@ -18,13 +18,15 @@ const Seat = (props) => {
   const [ records, setRecords ] = useState<object[]>([]);
   const [ two, setTwo ] = useState<boolean>(false);
   const [ end, setEnd ] = useState<boolean>(false);
+  const [ loading, setLoading ] = useState<boolean>(false);
   const [ oldBet, setOldBet ] = useState<betType[]>([]);
   const [ twoActive, setTwoActive ] = useState<number[]>([]);
   const [ total, setTotal ] = useState<number>(0);
   const [ hisActive, setHisActive ] = useState<number[]>([]);
   const { request: getStart } = useRequest(fscService.getStart);
-  const {  handleBall, handleChip, fscData, chip, result, mic, own, roomId, handleTips } = props;
-  const { reward, bet, history, bet_records, info } = fscData;
+  const { request: postAddWaid } = useRequest(fscService.postAddWaid);
+  const {  handleBall, handleChip, fscData, chip, result, mic, own, roomId, handleTips, uid } = props;
+  const { reward, bet, history, bet_records, info, is_in_position } = fscData;
 
   useEffect(() => {
 
@@ -120,6 +122,14 @@ const Seat = (props) => {
     getStart({ roomId, betType });
   }
 
+  const handlePosition = async () => {
+    setLoading(true);
+    await postAddWaid({ uid });
+    setTimeout(() => {
+      setLoading(false);
+    }, 1100);
+  }
+
   const getBetIndex = (id: number | string, reward: number) => {
     let location:betType = {};
 
@@ -198,17 +208,17 @@ const Seat = (props) => {
       <div className={styles.times}>{ fscData.info.countdown }</div>
 
       {
-        my.is_ready_game === 0 && fscData.info.stage_status !== 4 && fscData.info.stage_status !== 3 &&
+        is_in_position === 1 && my.is_ready_game === 0 && fscData.info.stage_status !== 4 && fscData.info.stage_status !== 3 &&
         <div className={styles.ready}>
           <span onClick={() => handleStart()}>准备</span>
         </div>
       }
 
-      {/* {
-        ( my && my.is_ready_game !== 1) && fscData.info.stage_status === 3 && <div className={styles.ready}>
-          <span onClick={ () => handleTips() }>{ total }</span>
+      {
+        is_in_position === 0 && !loading && <div className={`${styles.position} ${loading ? styles.loading : ''}`}>
+          <span onClick={ () => handlePosition() }>参加游戏</span>
         </div>
-      } */}
+      }
 
       <div className={styles.operation}>
         { two && <div className={styles.tips}>请选择两门下注</div> }
