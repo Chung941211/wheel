@@ -13,26 +13,26 @@
 
 .amout {
   position: absolute;
-  font-size: 13px;
+  font-size: 15px;
   z-index: 2;
-  right: 7px;
-  top: 8px;
+  left: 0;
+  top: calc(50% - 9px);
   color: #29A000;
   font-weight: bold;
+  width: 100%;
+  text-align: center;
 }
 
 .loseAmout {
   position: absolute;
-  font-size: 13px;
+  font-size: 15px;
   z-index: 2;
-  right: 7px;
-  top: 8px;
+  left: 0;
+  top: calc(50% - 9px);
   color: #DE1C1C;
   font-weight: bold;
-}
-
-.rightAmout {
-  right: 7px;
+  width: 100%;
+  text-align: center;
 }
 
 

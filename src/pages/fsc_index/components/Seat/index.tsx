@@ -60,7 +60,7 @@ const SeatRows = (props) => {
   }
   return (
     <div id={`seat-${rows.id}`} className={styles.seatRows} key={rows} onClick={ () => handleSeat() }>
-      { user_id === rows.user_id && is_master === 1 && <img className={styles.master} src={master} /> }
+      { rows.user_id && rows.user_info.is_master === 1 && <img className={styles.master} src={master} /> }
       { !rows.user_id && <div className={styles.empty}>Empty</div> }
       { amout && amout.win_amount >= 0 &&
         <div className={`${styles.amout} ${ rows.id > 5 ? styles.rightAmout : ''}`}>+{amout.win_amount}</div> }
@@ -86,14 +86,13 @@ type goldType = {
 }
 
 const Seat = (props) => {
-  const [ recordBol, setRecordBol ] = useState(false);
   const [ historyItem, setHistoryItem ] = useState<any[]>([]);
   const [ recordsId, setRecordsId ] = useState<number[]>([]);
   const [ micOpen, setMicOpen ] = useState<boolean>(true);
   const [ gold, setGold ] =  useState<goldType[]>([]);
   const { request: postSound } = useRequest(fscService.postSound);
   const { request: postRemove } = useRequest(fscService.postRemove);
-  const { mic, fscData, result, uid } = props;
+  const { mic, fscData, result, uid, recordBol, handleInfo } = props;
   const { history, historyItemCount, reward, bet_records, info, wait_total, is_master, user_id } = fscData;
 
   useEffect(() => {
@@ -168,13 +167,9 @@ const Seat = (props) => {
     }
   }
 
-  const handleInfo = () => {
-    if (recordBol) {
-      setRecordBol(false);
-    }
-  }
+
   return (
-    <div className={styles.seatWrapper} onClick={ () => handleInfo() }>
+    <div className={styles.seatWrapper}>
 
       <div id="seat" className={styles.seat}>
 
@@ -196,7 +191,7 @@ const Seat = (props) => {
           { mic.slice(6, 13).map((item, index) => <SeatRows key={index} rows={item} fscData={fscData} gold={gold} />) }
 
           <div className={`${styles.seatIcon} ${styles.record}`}>
-            <img src={record} onClick={ () => setRecordBol(!recordBol) } />
+            <img src={record} onClick={ () => handleInfo() } />
             {
               recordBol &&
               <div className={styles.history}>

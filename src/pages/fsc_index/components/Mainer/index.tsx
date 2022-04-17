@@ -19,6 +19,7 @@ const Seat = (props) => {
   const [ two, setTwo ] = useState<boolean>(false);
   const [ end, setEnd ] = useState<boolean>(false);
   const [ loading, setLoading ] = useState<boolean>(false);
+  const [ ready, setReady ] = useState<boolean>(false);
   const [ oldBet, setOldBet ] = useState<betType[]>([]);
   const [ twoActive, setTwoActive ] = useState<number[]>([]);
   const [ total, setTotal ] = useState<number>(0);
@@ -117,9 +118,13 @@ const Seat = (props) => {
     }
   }
 
-  const handleStart = () => {
+  const handleStart = async () => {
     let betType:string | boolean = getQueryVariable('betType');
-    getStart({ roomId, betType });
+    setReady(true);
+    await getStart({ roomId, betType });
+    setTimeout(() => {
+      setReady(false);
+    }, 1100);
   }
 
   const handlePosition = async () => {
@@ -208,7 +213,7 @@ const Seat = (props) => {
       <div className={styles.times}>{ fscData.info.countdown }</div>
 
       {
-        is_in_position === 1 && my.is_ready_game === 0 && fscData.info.stage_status !== 4 && fscData.info.stage_status !== 3 &&
+        !ready && is_in_position === 1 && my.is_ready_game === 0 && fscData.info.stage_status !== 4 && fscData.info.stage_status !== 3 &&
         <div className={styles.ready}>
           <span onClick={() => handleStart()}>准备</span>
         </div>

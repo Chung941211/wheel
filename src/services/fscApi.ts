@@ -118,6 +118,21 @@ export default {
     });
     return data;
   },
+  // 赠送金币
+  async giftAmount(params) {
+    const data = await request({
+      url: `/api/fsc/gift_amount`,
+      headers: {
+        ...header,
+        roomId: params.roomId,
+        betType: params.betType
+      }
+    });
+    if (data.code === 0) {
+      alert(data.message);
+    }
+    return data.data;
+  },
 
   // 获取排行榜
   async getRank() {

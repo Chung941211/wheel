@@ -13,6 +13,7 @@ import Reward from './components/Reward';
 import Rank from './components/Rank';
 import Records from './components/Records';
 import Tips from './components/Tips';
+import Give from './components/Give';
 
 import styles from './index.module.css';
 import text from '@/locales';
@@ -25,7 +26,6 @@ type betItemType = {
   betMany: number
 }
 
-// 28ed9ce3-9be9-471f-a3fc-556c18e8c7f7
 const Baccarat = () => {
   const [ showRules, setRules ] = useState<boolean>(false);
   const [ showReward, setReward ] = useState<boolean>(false);
@@ -35,6 +35,7 @@ const Baccarat = () => {
   const [ chip, setChip ] = useState<number | string>('');
   const [ roomId, setRoomId ] = useState<string>('');
   const [ uid, setUid ] = useState<string>('');
+  const [ recordBol, setRecordBol ] = useState<boolean>(false);
   const { data: roomData, request: getRoom } = useRequest(fscService.getUserRoom);
   const { request: postClick } = useRequest(fscService.postClick);
   const { data: result, request: getResult, mutate: resetResult } = useRequest(fscService.getResult);
@@ -48,7 +49,7 @@ const Baccarat = () => {
   let betType:string | boolean = getQueryVariable('betType');
 
   useEffect(() => {
-
+    document.title = '鱼虾蟹';
     const fetchData = async () => {
       let room = await getRoom();
       setRoomId(room.id);
@@ -109,6 +110,7 @@ const Baccarat = () => {
     }
   }
 
+
   const handleBall = (key: number, two:number[], seat: number | string, betSring?: number) => {
     let betChip: number | string = betSring ? betSring : chip;
     if (betChip === '' || fscData.info.stage_status !== 3) {
@@ -158,9 +160,15 @@ const Baccarat = () => {
     window.BiubiuClub.callback("close_room", JSON.stringify({uid: uid}));
   }
 
+  const handleRecords = () => {
+    if (recordBol) {
+      setRecordBol(false)
+    }
+  }
+
   return (
 
-    <div className={styles.main}>
+    <div className={styles.main} onClick={ () => handleRecords() } >
       <div className={styles.content}>
         <div className={styles.nav}>
           <div className={styles.leftNav}>
@@ -171,7 +179,7 @@ const Baccarat = () => {
           <div className={styles.close}>
             <img onClick={ () => handleClose() } src={close} />
           </div>
-          { roomData && <div className={styles.room}>ID：{ roomData.numid } <img src={diamonds} /></div> }
+          { roomData && <div className={styles.room}>ID{recordBol}：{ roomData.numid } <img src={diamonds} /></div> }
         </div>
 
 
@@ -190,7 +198,14 @@ const Baccarat = () => {
           handleBall={ (reward, two, seatIndex, betIndex) => handleBall(reward, two, seatIndex, betIndex) }
           handleChip={ (index) => handleChip(index) } /> }
 
-        { fscData && mic.length > 0 && <Seat uid={uid} result={result} mic={mic} fscData={fscData} /> }
+        { fscData && mic.length > 0 &&
+          <Seat
+            uid={uid}
+            result={result}
+            mic={mic}
+            fscData={fscData}
+            recordBol={recordBol}
+            handleInfo={ () => { setRecordBol(true) }} /> }
 
         { fscData && showRules && <Rules rule={fscData.rule} handleShow={ () => setRules(false) } /> }
 
@@ -203,6 +218,8 @@ const Baccarat = () => {
       { showReward && <Reward handleReward={ () => setReward(false)  } /> }
 
       { showRank && !showReward && <Rank handleReward={ () => setReward(true)  } handleRank={ () => setRank(false) } /> }
+
+      { fscData && <Give fscData={fscData} roomId={roomId} /> }
 
     </div>
   );
