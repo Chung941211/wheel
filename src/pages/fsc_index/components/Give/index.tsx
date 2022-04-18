@@ -7,26 +7,18 @@ import { getQueryVariable } from '@/utils';
 import btn from '@/assets/btn.png';
 import styles from './index.module.css';
 
-
-// is_gift_gold_beans=1 && gift_gold_beans_count>0 && gift_gold_beans_num>0 && user_gift_num<gift_gold_beans_count
-
 const Give = (props) => {
   const { request: giftAmount } = useRequest(fscService.giftAmount);
   const [ loading, setLoading ] = useState<boolean>(false);
   const [ showGive, setShowGive ] = useState<boolean>(false);
   const { fscData, roomId } = props;
-  const { gift_gold_beans_count, gift_gold_beans_num, is_gift_gold_beans, user_gift_num } = fscData.rule_config;
+  const { gift_gold_beans_count, gift_gold_beans_num, is_gift_gold_coin } = fscData.rule_config;
 
   useEffect(() => {
     if (!fscData) {
       return;
     }
-    if (
-      is_gift_gold_beans === 1 &&
-      Number(gift_gold_beans_count) > 0 &&
-      Number(gift_gold_beans_num) > 0 &&
-      user_gift_num < Number(gift_gold_beans_count)
-    ) {
+    if (is_gift_gold_coin === 1) {
       setShowGive(true);
     }
 

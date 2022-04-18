@@ -2,12 +2,14 @@
 .props {
   position: fixed;
   z-index: 100;
-  top: 20%;
+  top: calc(50% - 215px);
   left: calc(50% - 162.5px);
   background: linear-gradient(180deg, #F5E5B1 0%, #FFD49F 100%);
   width: 325px;
   border-radius: 8px;
   padding-bottom: 30px;
+  height: 430px;
+  overflow-y: scroll;
 }
 
 .title {

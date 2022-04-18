@@ -207,7 +207,6 @@ const Baccarat = () => {
             recordBol={recordBol}
             handleInfo={ () => { setRecordBol(true) }} /> }
 
-        { fscData && showRules && <Rules rule={fscData.rule} handleShow={ () => setRules(false) } /> }
 
       </div>
 
@@ -220,6 +219,8 @@ const Baccarat = () => {
       { showRank && !showReward && <Rank handleReward={ () => setReward(true)  } handleRank={ () => setRank(false) } /> }
 
       { fscData && <Give fscData={fscData} roomId={roomId} /> }
+
+      { fscData && showRules && <Rules rule={fscData.rule} handleShow={ () => setRules(false) } /> }
 
     </div>
   );
