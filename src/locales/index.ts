@@ -36,7 +36,18 @@ const messages = {
     attention: 'Please pay attention to check your reward',
     rewardTips: 'Users with the most weekly bets can get the items sent by the BiubiuClub, and the top three weekly get the right to use the items for 7days',
     top: 'Top',
-    youWin: 'You win'
+    youWin: 'You win',
+    give1: 'You are running out of gold coins, the system will give you',
+    give2: 'gold coins for the first time (',
+    give3: 'times a day).',
+    stop: 'Stop',
+    two: '2 of 2',
+    choose: 'Please select two bets',
+    join: 'Join',
+    ready: 'Ready',
+    done: 'Complete',
+    empty: 'Empty',
+    player: 'Player bet'
   }
   ,
   'vi-vn': {
@@ -66,7 +77,18 @@ const messages = {
     attention: 'Hãy  kiểm tra phần thưởng của bạn',
     rewardTips: 'Người đặt cược hàng tuần nhiều nhất sẽ nhận được ô tô của nền tảng Biubiu club và ba người hàng đầu có quyền sử dụng các quà trong 7 ngày',
     top: 'Top',
-    youWin: 'Bạn Win'
+    youWin: 'Bạn Win',
+    give1: 'Số vàng của bạn không đủ, hệ thống sẽ tặng bạn ',
+    give2: 'vàng lần đầu (',
+    give3: ' lần / ngày) miễn phí。',
+    stop: 'ngừng cá cược',
+    two: 'hai giữa hai',
+    choose: 'Vui lòng chọn cược hai cửa ',
+    join: 'tham gia trò chơi',
+    ready: 'Chuẩn bị',
+    done: 'Hoàn thành đặt cược',
+    empty: 'Empty',
+    player: 'Cược của người chơi'
   }
 
 };

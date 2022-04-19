@@ -67,7 +67,7 @@ const Rules = (props) => {
     <div className={styles.props}>
       <div className={styles.content}>
         <img className={styles.close} src={close}  onClick={handleShow}  />
-        <div className={styles.title}>玩家下注</div>
+        <div className={styles.title}>{ text.player }</div>
         <div className={styles.list}>
           { myReward.map((item, index) => {
             return (

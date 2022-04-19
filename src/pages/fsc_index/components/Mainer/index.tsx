@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRequest } from 'ice';
 
+import text from '@/locales';
 import fscService from '@/services/fscApi';
 import { getQueryVariable } from '@/utils';
 import styles from './index.module.css';
@@ -215,18 +216,18 @@ const Seat = (props) => {
       {
         !ready && is_in_position === 1 && my.is_ready_game === 0 && fscData.info.stage_status !== 4 && fscData.info.stage_status !== 3 &&
         <div className={styles.ready}>
-          <span onClick={() => handleStart()}>准备</span>
+          <span onClick={() => handleStart()}>{ text.ready }</span>
         </div>
       }
 
       {
         is_in_position === 0 && !loading && <div className={`${styles.position} ${loading ? styles.loading : ''}`}>
-          <span onClick={ () => handlePosition() }>参加游戏</span>
+          <span onClick={ () => handlePosition() }>{ text.join }</span>
         </div>
       }
 
       <div className={styles.operation}>
-        { two && <div className={styles.tips}>请选择两门下注</div> }
+        { two && <div className={styles.tips}>{ text.choose }</div> }
           {
             fscData.info.stage_status === 3 && my.is_ready_game === 1 && !end && bet.map((item, index) => {
               return (
@@ -240,12 +241,12 @@ const Seat = (props) => {
         { fscData.info.stage_status === 3 && !end && my.is_ready_game === 1 &&
           <div>
             <div className={styles.bigBtn}>
-              <div className={styles.stop} onClick={ () => handleFinish() }>停止下注</div>
+              <div className={styles.stop} onClick={ () => handleFinish() }>{ text.stop }</div>
               <div className={styles.number} onClick={ () => handleTips() }>{ total }</div>
             </div>
             <div className={styles.btn}>
-              <div className={`${ two ? styles.twoActive : '' }`} onClick={ () => handleTwo() }>二中二</div>
-              <div onClick={ () => handleEnd() }>完成下注</div>
+              <div className={`${ two ? styles.twoActive : '' }`} onClick={ () => handleTwo() }>{ text.two }</div>
+              <div onClick={ () => handleEnd() }>{ text.done }</div>
             </div>
           </div>
         }

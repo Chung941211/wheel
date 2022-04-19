@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRequest } from 'ice';
 
 import fscService from '@/services/fscApi';
+import text from '@/locales';
 
 import styles from './index.module.css';
 import micImg from '@/assets/mic_ico.png';
@@ -61,14 +62,14 @@ const SeatRows = (props) => {
   return (
     <div id={`seat-${rows.id}`} className={styles.seatRows} key={rows} onClick={ () => handleSeat() }>
       { rows.user_id && rows.user_info.is_master === 1 && <img className={styles.master} src={master} /> }
-      { !rows.user_id && <div className={styles.empty}>Empty</div> }
+      { !rows.user_id && <div className={styles.empty}>{ text.empty }</div> }
       { amout && amout.win_amount >= 0 &&
         <div className={`${styles.amout} ${ rows.id > 5 ? styles.rightAmout : ''}`}>+{amout.win_amount}</div> }
       { amout && amout.lose_amount > 0 &&
         <div className={`${styles.loseAmout} ${ rows.id > 5 ? styles.rightAmout : ''}`}>-{amout.lose_amount}</div> }
       { rows.user_id && <div className={styles.has}>
         <div className={styles.portrait}>
-          { ready === 1 && info.stage_status === 2 && <div className={styles.readys}>准备</div> }
+          { ready === 1 && info.stage_status === 2 && <div className={styles.readys}>{ text.ready }</div> }
           <img src={ rows.user_info.headimgurl }  />
         </div>
         <div className={styles.names}>{ rows.user_info.nickname }</div>

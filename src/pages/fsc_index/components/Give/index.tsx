@@ -38,7 +38,7 @@ const Give = (props) => {
       { showGive && !loading &&
         <div className={styles.props}>
           <div className={styles.content}>
-            <div className={styles.word}>您身上的金币已不足，系统第一次（每天{gift_gold_beans_count}次）免费送您{gift_gold_beans_num}金币。</div>
+            <div className={styles.word}>{ text.give1 } { gift_gold_beans_num } { text.give2 } {gift_gold_beans_count} { text.give3 }</div>
             <div className={styles.btn} onClick={ () => handleGive() }>
               <img src={btn} />
             </div>
