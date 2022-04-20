@@ -49,7 +49,7 @@ const Baccarat = () => {
   let betType:string | boolean = getQueryVariable('betType');
 
   useEffect(() => {
-    document.title = '鱼虾蟹';
+    document.title = text.fscTitle;
     const fetchData = async () => {
       let room = await getRoom();
       setRoomId(room.id);
