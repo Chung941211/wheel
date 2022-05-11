@@ -27,7 +27,6 @@
 
 .content {
   transform: scaleY(0.9);
-  margin-top: -30px;
   min-height: 700px;
 }
 

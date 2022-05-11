@@ -18,6 +18,7 @@ import Give from './components/Give';
 import styles from './index.module.css';
 import text from '@/locales';
 import diamonds from '@/assets/diamonds.png';
+import bi from '@/assets/bi.png';
 import close from '@/assets/close.png';
 
 type betItemType = {
@@ -179,7 +180,10 @@ const Baccarat = () => {
           <div className={styles.close}>
             <img onClick={ () => handleClose() } src={close} />
           </div>
-          { roomData && <div className={styles.room}>ID{recordBol}：{ roomData.numid } <img src={diamonds} /></div> }
+          { roomData && <div className={styles.room}>ID{recordBol}：{ roomData.numid }
+            { betType === '1' ? <img src={diamonds} /> : <img src={bi} /> }
+            </div>
+          }
         </div>
 
 

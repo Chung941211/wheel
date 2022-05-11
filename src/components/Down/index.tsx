@@ -91,7 +91,7 @@ const Down = (props) => {
             return (
               <div
                 key={item.id}
-                className={`${styles.row} ${active % 8 === index && info.showTime > 0 ? styles.ballActive : ''} ${ item.num > 0 ? styles.ballNum : ''} ${history && (item.id == history[0].reward_id) ? item.num > 0 ? styles.ballNumLast : styles.ballLast : ''}`}
+                className={`${styles.row} ${active % 8 === index && info.showTime > 0 ? styles.ballActive : ''} ${ item.num > 0 ? styles.ballNum : ''} ${history.length > 0 && (item.id == history[0].reward_id) ? item.num > 0 ? styles.ballNumLast : styles.ballLast : ''}`}
                 onClick={() => handleActice(index, chip)} >
                 <div className={`${styles.container} ${info.showTime <= 0 ? styles.off : ''} ${active % 8 === index ? styles.on : '' }`}>
                   <img className={`${styles.ballAnimal} ${turn === index ? styles.ballTurn : '' }`} src={item.img} />
