@@ -40,10 +40,10 @@ const Lists = (props) => {
 }
 
 const Records = (props) => {
-  const { handleRecords } = props;
+  const { handleRecords, betType, roomId } = props;
   const { data: recordsList, request } = useRequest(fscService.getRecords);
   useEffect(() => {
-    request();
+    request({ betType, roomId });
   }, [])
 
 

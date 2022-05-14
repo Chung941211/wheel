@@ -47,12 +47,12 @@ const Items = (props) => {
 }
 
 const Rank = (props) => {
-  const { handleRank, handleReward } = props;
+  const { handleRank, handleReward, betType, roomId } = props;
   const { data: recordsList, request: fetchData } = useRequest(fscService.getRank);
 
   useEffect(() => {
 
-    fetchData();
+    fetchData({ betType, roomId });
 
   }, [ fetchData ])
 

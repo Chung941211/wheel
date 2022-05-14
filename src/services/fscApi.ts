@@ -38,12 +38,14 @@ export default {
     return data.data;
   },
   // 获取排行榜TOP3
-  async getFscTop3() {
+  async getFscTop3(params) {
     const data = await request({
       url: `/api/fsc/rank_top3`,
       data: {
         offset: '',
-        page: ''
+        page: '',
+        roomId: params.roomId,
+        betType: params.betType
       },
       method: 'post',
       headers: header
@@ -135,12 +137,14 @@ export default {
   },
 
   // 获取排行榜
-  async getRank() {
+  async getRank(params) {
     const data = await request({
       url: `/api/fsc/rank`,
       data: {
         offset: '',
-        page: ''
+        page: '',
+        roomId: params.roomId,
+        betType: params.betType
       },
       method: 'post',
       headers: header
@@ -148,8 +152,16 @@ export default {
     return data.data.rows || [];
   },
   // 开奖记录
-  async getRecords() {
-    const { data } = await request({ url: `/api/fsc/records`,  method: 'post', headers: header });
+  async getRecords(params) {
+    const { data } = await request({
+      url: `/api/fsc/records`,
+      method: 'post',
+      headers: header,
+      data: {
+        roomId: params.roomId,
+        betType: params.betType
+      }
+    });
     return data.rows.map(item => {
       return {
         ...item,

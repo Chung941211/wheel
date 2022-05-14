@@ -20,6 +20,8 @@ const Give = (props) => {
     }
     if (is_gift_gold_coin === 1) {
       setShowGive(true);
+    } else {
+      setShowGive(false);
     }
 
   }, [fscData]);

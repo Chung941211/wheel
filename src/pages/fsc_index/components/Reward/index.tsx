@@ -26,11 +26,11 @@ const Lists = (props) => {
 }
 
 const Reward = (props) => {
-  const { handleReward } = props;
+  const { handleReward, betType, roomId  } = props;
   const { data, request } = useRequest<any>(fscService.getFscTop3);
 
   useEffect(() => {
-    request();
+    request({ betType, roomId });
   }, [])
 
   return (

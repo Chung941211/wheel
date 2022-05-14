@@ -216,11 +216,11 @@ const Baccarat = () => {
 
       { showTips && fscData && <Tips fscData={ fscData } handleShow={ () => setTips(false)  } /> }
 
-      { showRecords && <Records handleRecords={ () => setRecords(false)} /> }
+      { showRecords && <Records betType={betType} roomId={roomId} handleRecords={ () => setRecords(false)} /> }
 
-      { showReward && <Reward handleReward={ () => setReward(false)  } /> }
+      { showReward && <Reward betType={betType} roomId={roomId} handleReward={ () => setReward(false)  } /> }
 
-      { showRank && !showReward && <Rank handleReward={ () => setReward(true)  } handleRank={ () => setRank(false) } /> }
+      { showRank && !showReward && <Rank betType={betType} roomId={roomId} handleReward={ () => setReward(true)  } handleRank={ () => setRank(false) } /> }
 
       { fscData && <Give fscData={fscData} roomId={roomId} /> }
 
