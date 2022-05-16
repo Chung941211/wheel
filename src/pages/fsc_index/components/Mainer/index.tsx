@@ -72,10 +72,13 @@ const Seat = (props) => {
       }
 
       if (result && result.reward_id && fscData.info.stage_status === 4) {
-        setHisActive([ ...history[0].reward_id.split('_') ]);
+        setTimeout(() => {
+          setHisActive([ ...history[0].reward_id.split('_') ]);
+        }, 500);
       }
 
     }
+    console.log(!ready ,is_in_position === 1 , my.is_ready_game === 0 )
   }, [fscData]);
 
   const handleTotal = () => {
@@ -121,10 +124,10 @@ const Seat = (props) => {
 
   const handleStart = async () => {
     let betType:string | boolean = getQueryVariable('betType');
-    setReady(true);
+    // setReady(true);
     await getStart({ roomId, betType });
     setTimeout(() => {
-      setReady(false);
+      // setReady(false);
     }, 1100);
   }
 
@@ -212,7 +215,6 @@ const Seat = (props) => {
       </div>
 
       <div className={styles.times}>{ fscData.info.countdown }</div>
-
       {
         !ready && is_in_position === 1 && my.is_ready_game === 0 && fscData.info.stage_status !== 4 && fscData.info.stage_status !== 3 &&
         <div className={styles.ready}>

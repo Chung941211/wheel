@@ -19,7 +19,6 @@ const Seat = (props) => {
     if (info.stage_status === 2) {
       setShowGive(false)
     }
-    console.log(showGive)
   }, [info]);
 
   return (
