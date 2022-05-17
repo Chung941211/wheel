@@ -197,7 +197,7 @@ const Seat = (props) => {
               recordBol &&
               <div className={styles.history}>
                 <div className={styles.count}>
-                  { historyItemCount.map((item, index) => <div key={index}>{item.name}x{item.num}</div>) }
+                  { historyItemCount.map((item, index) => <div key={index}>{item.name} x{item.num}</div>) }
                 </div>
                 <div className={styles.lists}>
                   { historyItem.map((el, index) => {
