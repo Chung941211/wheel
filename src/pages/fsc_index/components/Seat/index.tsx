@@ -29,9 +29,10 @@ const Ball = (props) => {
 const SeatRows = (props) => {
 
   const [ ready, setReady ] = useState<number>(0);
+  const [ balance, setBalance ] = useState<number>(0);
   const [ amout, setAmout ] = useState<any>(null);
-  const { rows, fscData, gold } = props;
-  const { info, is_master, user_id } = fscData;
+  const { rows, fscData, gold, num } = props;
+  const { info } = fscData;
 
   useEffect(() => {
     if (rows.is_ready_game === 1) {
@@ -39,7 +40,16 @@ const SeatRows = (props) => {
     } else {
       setReady(0);
     }
+    if (rows.user_info && rows.user_info.balance > 0) {
+      setBalance(rows.user_info.balance)
+    }
   }, [ rows ]);
+
+  useEffect(() => {
+    if (amout) {
+      setBalance(fscData.user_mic_serial[num].user_info.balance);
+    }
+  }, [ amout ]);
 
   useEffect(() => {
     if (gold.length > 0) {
@@ -58,12 +68,13 @@ const SeatRows = (props) => {
       return;
     }
     window.BiubiuClub.callback("user_page", JSON.stringify({'user_id': rows.user_id}));
+    window.webkit.messageHandlers.user_page.postMessage(rows.user_id);
   }
   return (
     <div id={`seat-${rows.id}`} className={styles.seatRows} key={rows} onClick={ () => handleSeat() }>
       { rows.user_id && rows.user_info.is_master === 1 && <img className={styles.master} src={master} /> }
       { !rows.user_id && <div className={styles.empty}>{ text.empty }</div> }
-      { amout && amout.win_amount >= 0 &&
+      { amout && amout.win_amount > 0 &&
         <div className={`${styles.amout} ${ rows.id > 5 ? styles.rightAmout : ''}`}>+{amout.win_amount}</div> }
       { amout && amout.lose_amount > 0 &&
         <div className={`${styles.loseAmout} ${ rows.id > 5 ? styles.rightAmout : ''}`}>-{amout.lose_amount}</div> }
@@ -73,7 +84,7 @@ const SeatRows = (props) => {
           <img src={ rows.user_info.headimgurl }  />
         </div>
         <div className={styles.names}>{ rows.user_info.nickname }</div>
-        <div className={styles.nums}>{ rows.user_info.balance }</div>
+        <div className={styles.nums}>{ balance }</div>
         { rows.ball.map((item, index) => <Ball key={index} item={item} /> )}
       </div> }
     </div>
@@ -129,7 +140,6 @@ const Seat = (props) => {
     } else if (!result) {
       setGold([]);
     }
-    console.log(result)
   }, [ result ]);
 
 
@@ -155,7 +165,8 @@ const Seat = (props) => {
   }, [ history ]);
 
   const handleMore = () => {
-    window.BiubiuClub.callback("open_wait_list",JSON.stringify({user_id: user_id, uid: uid}));
+    window.BiubiuClub.callback("open_wait_list", JSON.stringify({user_id: user_id, uid: uid}));
+    window.webkit.messageHandlers.open_wait_list.postMessage(JSON.stringify({user_id: user_id, uid: uid}))
   }
 
   const handleMic = async (open?: Boolean) => {
@@ -185,11 +196,11 @@ const Seat = (props) => {
             </div>
             <img className={styles.logo} src={logo} />
           </div>
-          { mic.slice(0, 6).map((item, index) => <SeatRows key={index} rows={item} fscData={fscData} gold={gold} />) }
+          { mic.slice(0, 6).map((item, index) => <SeatRows key={index} num={index} rows={item} fscData={fscData} gold={gold} />) }
         </div>
 
         <div>
-          { mic.slice(6, 13).map((item, index) => <SeatRows key={index} rows={item} fscData={fscData} gold={gold} />) }
+          { mic.slice(6, 13).map((item, index) => <SeatRows key={index} num={index} rows={item} fscData={fscData} gold={gold} />) }
 
           <div className={`${styles.seatIcon} ${styles.record}`}>
             <img src={record} onClick={ () => handleInfo() } />

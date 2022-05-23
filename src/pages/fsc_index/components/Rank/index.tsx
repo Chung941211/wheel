@@ -7,6 +7,7 @@ import styles from './index.module.css';
 
 import back from '@/assets/back.png';
 import diamonds from '@/assets/diamonds.png';
+import bi from '@/assets/bi.png';
 
 const Header = (props) => {
 
@@ -32,14 +33,14 @@ const Header = (props) => {
 }
 
 const Items = (props) => {
-  const { item, index } = props;
+  const { item, index, betType } = props;
   return (
     <div className={styles.items}>
       <div className={styles.index}>{ index + 1 }</div>
       <img className={styles.itemHeader} src={item.user_one.headimgurl} />
       <div className={styles.popular}>{ item.user_one.nickname }</div>
       <div className={styles.gold}>
-        <img src={diamonds} />
+        { betType === '1' ? <img src={diamonds} /> : <img src={bi} /> }
         <div>{ item.total_profit }</div>
       </div>
     </div>
@@ -74,7 +75,7 @@ const Rank = (props) => {
             { <Header item={recordsList[2]} index={3} /> }
           </div>
         }
-        { recordsList && recordsList.map((item, index) => index > 2 && <Items key={index} index={index} item={item} />) }
+        { recordsList && recordsList.map((item, index) => index > 2 && <Items key={index} index={index} item={item} betType={betType} />) }
       </div>
     </>
   );

@@ -159,6 +159,7 @@ const Baccarat = () => {
 
   const handleClose = () => {
     window.BiubiuClub.callback("close_room", JSON.stringify({uid: uid}));
+    window.webkit.messageHandlers.close_room.postMessage(JSON.stringify({uid: uid}));
   }
 
   const handleRecords = () => {

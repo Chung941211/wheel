@@ -78,7 +78,6 @@ const Seat = (props) => {
       }
 
     }
-    console.log(!ready ,is_in_position === 1 , my.is_ready_game === 0 )
   }, [fscData]);
 
   const handleTotal = () => {
