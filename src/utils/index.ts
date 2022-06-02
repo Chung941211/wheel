@@ -1,4 +1,6 @@
 
+const md5 = require('md5');
+
 function getQueryVariable (variable: string) {
 
   let query:string = window.location.search.substring(1);
@@ -45,10 +47,44 @@ if (getCookie("biubiuclub_cookieaccept_language")) {
   header['Accept-Language'] = getCookie("biubiuclub_cookieaccept_language");
 }
 
+function getSignParams(keys,  params) {
+
+  let timestamp = Date.now();
+  let p = "timestamp=" + timestamp + "&key=cFSSbyds4znU92S9";
+
+  if (params == null) {
+
+    console.log("参数", p, "时间戳", timestamp)
+
+    return {
+      "timestamp": timestamp,
+      "biuBiuSign": md5(p).toUpperCase()
+    }
+  }
+
+  // 进行排序
+  keys.sort();
+
+  let str = "";
+
+  keys.forEach(key => {
+    str += key + "=" + params[key] + "&"
+  });
+
+  str += p;
+
+  console.log("参数", str, "时间戳", timestamp)
+
+  return {
+    "timestamp": timestamp,
+    "biuBiuSign": md5(str).toUpperCase()
+  }
+}
 
 export {
   header,
   getCookie,
-  getQueryVariable
+  getQueryVariable,
+  getSignParams
 }
 

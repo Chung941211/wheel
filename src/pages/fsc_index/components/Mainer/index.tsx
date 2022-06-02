@@ -74,7 +74,7 @@ const Seat = (props) => {
       if (result && result.reward_id && fscData.info.stage_status === 4) {
         setTimeout(() => {
           setHisActive([ ...history[0].reward_id.split('_') ]);
-        }, 500);
+        }, 1000);
       }
 
     }

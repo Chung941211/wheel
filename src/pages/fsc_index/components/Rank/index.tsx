@@ -11,18 +11,18 @@ import bi from '@/assets/bi.png';
 
 const Header = (props) => {
 
-  const { index, item } = props;
+  const { index, item, betType } = props;
 
   return (
     <div className={`${styles.bigPortrait} portrait-${index}`}>
       { item &&
         <div>
-          <img className={`${styles.portrait} ${index === 1 ? styles.bimg : ''}`} src={item.user_one.headimgurl} />
+          <img className={`${styles.portrait} ${index === 1 ? styles.bimg : ''}`} src={item.user_one && item.user_one.headimgurl} />
           <div className={`${styles.nums} ${styles['nums-' + index]}`}>{index}</div>
           <div className={`${styles.name} ${styles['name-' + index]}`}>
-            <span>{ item.user_one.nickname }</span>
+            <span>{ item.user_one && item.user_one.nickname }</span>
             <div className={styles.fraction}>
-              <img src={diamonds} />
+            { betType === '1' ? <img src={diamonds} /> : <img src={bi} /> }
               <div className={styles.grade}>{ item.total_profit }</div>
             </div>
           </div>
@@ -37,8 +37,8 @@ const Items = (props) => {
   return (
     <div className={styles.items}>
       <div className={styles.index}>{ index + 1 }</div>
-      <img className={styles.itemHeader} src={item.user_one.headimgurl} />
-      <div className={styles.popular}>{ item.user_one.nickname }</div>
+      <img className={styles.itemHeader} src={item.user_one && item.user_one.headimgurl} />
+      <div className={styles.popular}>{ item.user_one && item.user_one.nickname }</div>
       <div className={styles.gold}>
         { betType === '1' ? <img src={diamonds} /> : <img src={bi} /> }
         <div>{ item.total_profit }</div>
@@ -70,9 +70,9 @@ const Rank = (props) => {
         </div>
         { recordsList &&
           <div className={styles.ranking}>
-            { <Header item={recordsList[1]} index={2} /> }
-            { <Header item={recordsList[0]} index={1} /> }
-            { <Header item={recordsList[2]} index={3} /> }
+            { <Header item={recordsList[1]} index={2} betType={betType} /> }
+            { <Header item={recordsList[0]} index={1} betType={betType} /> }
+            { <Header item={recordsList[2]} index={3} betType={betType} /> }
           </div>
         }
         { recordsList && recordsList.map((item, index) => index > 2 && <Items key={index} index={index} item={item} betType={betType} />) }

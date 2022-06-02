@@ -40,16 +40,16 @@ const SeatRows = (props) => {
     } else {
       setReady(0);
     }
-    if (rows.user_info && rows.user_info.balance > 0) {
+    if (rows && rows.user_info && rows.user_info.balance > 0) {
       setBalance(rows.user_info.balance)
     }
   }, [ rows ]);
 
   useEffect(() => {
-    if (amout) {
+    if (fscData.user_mic_serial[num]) {
       setBalance(fscData.user_mic_serial[num].user_info.balance);
     }
-  }, [ amout ]);
+  }, [ fscData ]);
 
   useEffect(() => {
     if (gold.length > 0) {
@@ -67,14 +67,18 @@ const SeatRows = (props) => {
     if (!rows.user_id) {
       return;
     }
-    window.BiubiuClub.callback("user_page", JSON.stringify({'user_id': rows.user_id}));
-    window.webkit.messageHandlers.user_page.postMessage(rows.user_id);
+    if (window.BiubiuClub) {
+      window.BiubiuClub.callback("user_page", JSON.stringify({'user_id': rows.user_id}));
+    }
+    if (window.webkit) {
+      window.webkit.messageHandlers.user_page.postMessage(rows.user_id);
+    }
   }
   return (
     <div id={`seat-${rows.id}`} className={styles.seatRows} key={rows} onClick={ () => handleSeat() }>
       { rows.user_id && rows.user_info.is_master === 1 && <img className={styles.master} src={master} /> }
       { !rows.user_id && <div className={styles.empty}>{ text.empty }</div> }
-      { amout && amout.win_amount > 0 &&
+      { amout && amout.win_amount >= 0 &&
         <div className={`${styles.amout} ${ rows.id > 5 ? styles.rightAmout : ''}`}>+{amout.win_amount}</div> }
       { amout && amout.lose_amount > 0 &&
         <div className={`${styles.loseAmout} ${ rows.id > 5 ? styles.rightAmout : ''}`}>-{amout.lose_amount}</div> }
@@ -165,8 +169,12 @@ const Seat = (props) => {
   }, [ history ]);
 
   const handleMore = () => {
-    window.BiubiuClub.callback("open_wait_list", JSON.stringify({user_id: user_id, uid: uid}));
-    window.webkit.messageHandlers.open_wait_list.postMessage(JSON.stringify({user_id: user_id, uid: uid}))
+    if (window.BiubiuClub) {
+      window.BiubiuClub.callback("open_wait_list", JSON.stringify({user_id: user_id, uid: uid}));
+    }
+    if (window.webkit) {
+      window.webkit.messageHandlers.open_wait_list.postMessage(JSON.stringify({user_id: user_id, uid: uid}));
+    }
   }
 
   const handleMic = async (open?: Boolean) => {

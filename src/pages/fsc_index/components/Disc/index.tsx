@@ -13,7 +13,7 @@ const Seat = (props) => {
     if (info.stage_status === 4 && result && result.reward_id && !showGive) {
       setTimeout(() => {
         setShowGive(true)
-      }, 200)
+      }, 800)
     }
 
     if (info.stage_status === 2) {
