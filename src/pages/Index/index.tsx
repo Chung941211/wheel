@@ -117,7 +117,6 @@ const Home = () => {
 
   useEffect(() => {
     let timer;
-    console.log(end, result)
     if (result) {
       return setEnd(false);
     }

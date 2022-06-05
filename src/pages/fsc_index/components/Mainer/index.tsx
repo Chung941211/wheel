@@ -68,7 +68,8 @@ const Seat = (props) => {
         setHisActive([]);
         setEnd(false);
         setRecords([])
-        setTotal(0)
+        setTotal(0);
+        handleChip('');
       }
 
       if (result && result.reward_id && fscData.info.stage_status === 4) {

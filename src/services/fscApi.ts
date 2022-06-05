@@ -1,12 +1,12 @@
 import { request } from 'ice';
-import { header } from '../utils';
+import { getSignParams } from '../utils';
 
 export default {
   async getUserRoom() {
     const data = await request({
       url: `/api/room/userRoom`,
       method: 'post',
-      headers: header
+      headers: getSignParams()
     });
     return data.data;
   },
@@ -15,7 +15,7 @@ export default {
     const data = await request({
       url: `/api/fsc/start`,
       headers: {
-        ...header,
+        ...getSignParams(),
         roomId: params.roomId,
         betType: params.betType
       }
@@ -30,7 +30,7 @@ export default {
     const data = await request({
       url: `/api/fsc/actionResult`,
       headers: {
-        ...header,
+        ...getSignParams(),
         roomId: params.roomId,
         betType: params.betType
       }
@@ -39,16 +39,15 @@ export default {
   },
   // 获取排行榜TOP3
   async getFscTop3(params) {
+    const query = {
+      roomId: params.roomId,
+      betType: params.betType
+    }
     const data = await request({
       url: `/api/fsc/rank_top3`,
-      data: {
-        offset: '',
-        page: '',
-        roomId: params.roomId,
-        betType: params.betType
-      },
+      data: query,
       method: 'post',
-      headers: header
+      headers: getSignParams(query)
     });
     return data.data;
   },
@@ -58,7 +57,7 @@ export default {
       url: `/api/fsc/section`,
       params,
       headers: {
-        ...header,
+        ...getSignParams(),
         roomId: params.roomId,
         betType: params.betType
       }
@@ -66,28 +65,27 @@ export default {
     return data.data;
   },
   async postAddWaid(params) {
-    const { uid } = params;
+    const query = { uid: params.uid }
     const data = await request({
       url: `/api/addWaid`,
       method: 'post',
-      data: {
-        uid: uid
-      },
-      headers: { ...header }
+      data: query,
+      headers: getSignParams(query)
     });
     return data.data;
   },
 
   async postClick(params) {
     const { betItem, roomId, betType } = params;
+    const query = {
+      betItem: betItem
+    }
     const data = await request({
       url: `/api/fsc/click`,
       method: 'post',
-      data: {
-        betItem: betItem
-      },
+      data: query,
       headers: {
-        ...header,
+        ...getSignParams({ betItem: JSON.stringify(betItem).replace(/[\\]/g,'') }),
         roomId,
         betType
       }
@@ -103,7 +101,7 @@ export default {
         uid
       },
       method: 'post',
-      headers: header
+      headers: getSignParams({ uid })
     });
     return data;
   },
@@ -116,7 +114,7 @@ export default {
         uid
       },
       method: 'post',
-      headers: header
+      headers: getSignParams({ uid })
     });
     return data;
   },
@@ -125,7 +123,7 @@ export default {
     const data = await request({
       url: `/api/fsc/gift_amount`,
       headers: {
-        ...header,
+        ...getSignParams(),
         roomId: params.roomId,
         betType: params.betType
       }
@@ -138,29 +136,29 @@ export default {
 
   // 获取排行榜
   async getRank(params) {
+    const query = {
+      roomId: params.roomId,
+      betType: params.betType
+    }
     const data = await request({
       url: `/api/fsc/rank`,
-      data: {
-        offset: '',
-        page: '',
-        roomId: params.roomId,
-        betType: params.betType
-      },
+      data: query,
       method: 'post',
-      headers: header
+      headers: getSignParams(query)
     });
     return data.data.rows || [];
   },
   // 开奖记录
   async getRecords(params) {
+    const query = {
+      roomId: params.roomId,
+      betType: params.betType
+    }
     const { data } = await request({
       url: `/api/fsc/records`,
       method: 'post',
-      headers: header,
-      data: {
-        roomId: params.roomId,
-        betType: params.betType
-      }
+      headers: getSignParams(query),
+      data: query
     });
     return data.rows.map(item => {
       return {

@@ -47,22 +47,23 @@ if (getCookie("biubiuclub_cookieaccept_language")) {
   header['Accept-Language'] = getCookie("biubiuclub_cookieaccept_language");
 }
 
-function getSignParams(keys,  params) {
+function getSignParams(params?:any) {
 
   let timestamp = Date.now();
-  let p = "timestamp=" + timestamp + "&key=cFSSbyds4znU92S9";
+  let p:string = "timestamp=" + timestamp + "&key=cFSSbyds4znU92S9";
 
   if (params == null) {
 
-    console.log("参数", p, "时间戳", timestamp)
-
     return {
+      ...header,
       "timestamp": timestamp,
       "biuBiuSign": md5(p).toUpperCase()
     }
   }
 
   // 进行排序
+  const keys = Object.keys(params);
+
   keys.sort();
 
   let str = "";
@@ -73,9 +74,9 @@ function getSignParams(keys,  params) {
 
   str += p;
 
-  console.log("参数", str, "时间戳", timestamp)
 
   return {
+    ...header,
     "timestamp": timestamp,
     "biuBiuSign": md5(str).toUpperCase()
   }

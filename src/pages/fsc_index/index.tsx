@@ -40,10 +40,11 @@ const Baccarat = () => {
   const { data: roomData, request: getRoom } = useRequest(fscService.getUserRoom);
   const { request: postClick } = useRequest(fscService.postClick);
   const { data: result, request: getResult, mutate: resetResult } = useRequest(fscService.getResult);
-  const { data: fscData, request: getFsc } = useRequest(fscService.getFsc, {
+  const { data: fscData, request: getFsc, mutate: resetFscData } = useRequest(fscService.getFsc, {
     pollingInterval: 1000,
     pollingWhenHidden: false
   });
+  const { data: fscAgain, request: getFscData } = useRequest(fscService.getFsc);
   const [ mic, setMic ] = useState<object[]>([]);
   const [ own, setOwn ] = useState<number | string>('');
   const [ betItem, setBetItem ] = useState<betItemType[]>([]);
@@ -62,6 +63,12 @@ const Baccarat = () => {
     fetchData();
 
   }, []);
+
+  useEffect(() => {
+    if (fscAgain) {
+      resetFscData(fscAgain)
+    }
+  }, [ fscAgain ])
 
   useEffect(() => {
     if (betItem.length > 0) {
@@ -140,20 +147,24 @@ const Baccarat = () => {
       diamond: fscData.bet[betChip].diamond
     }
     let temp = mic;
-    // let tempNum = num + fscData.bet[betChip].diamond;
-    let deduction = temp[seat].user_info.balance - fscData.bet[betChip].diamond;
+    let balance = 0;
+    fscData.user_mic_serial.forEach(element => {
+      if (element.user_id === temp[seat].user_id) {
+        balance = element.user_info.balance
+      }
+    });
+    let deduction = balance - fscData.bet[betChip].diamond;
     if (deduction >= 0) {
-      temp[seat].user_info.balance = deduction;
       temp[seat].ball.push(ballPos);
       setMic([ ...temp ]);
     }
     if (!betSring) {
-      // setNum(tempNum);
       setBetItem([{
         rewardId: two.length === 2 ? `${fscData.reward[two[0]].id},${fscData.reward[two[1]].id}` : fscData.reward[key].id.toString(),
         betId: fscData.bet[betChip].id,
         betMany: two.length === 2 ? 2 : 1
-      }])
+      }]);
+      getFscData({ roomId, betType });
     }
   }
 

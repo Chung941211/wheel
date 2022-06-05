@@ -46,9 +46,15 @@ const SeatRows = (props) => {
   }, [ rows ]);
 
   useEffect(() => {
-    if (fscData.user_mic_serial[num]) {
-      setBalance(fscData.user_mic_serial[num].user_info.balance);
+    if (!fscData) {
+      return;
     }
+
+    fscData.user_mic_serial.forEach(element => {
+      if (element.user_id === rows.user_id) {
+        setBalance(element.user_info.balance);
+      }
+    });
   }, [ fscData ]);
 
   useEffect(() => {
@@ -78,7 +84,7 @@ const SeatRows = (props) => {
     <div id={`seat-${rows.id}`} className={styles.seatRows} key={rows} onClick={ () => handleSeat() }>
       { rows.user_id && rows.user_info.is_master === 1 && <img className={styles.master} src={master} /> }
       { !rows.user_id && <div className={styles.empty}>{ text.empty }</div> }
-      { amout && amout.win_amount >= 0 &&
+      { amout && amout.win_amount >= 0 && amout.lose_amount === 0 &&
         <div className={`${styles.amout} ${ rows.id > 5 ? styles.rightAmout : ''}`}>+{amout.win_amount}</div> }
       { amout && amout.lose_amount > 0 &&
         <div className={`${styles.loseAmout} ${ rows.id > 5 ? styles.rightAmout : ''}`}>-{amout.lose_amount}</div> }
