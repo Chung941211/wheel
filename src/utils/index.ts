@@ -33,11 +33,27 @@ type historyType = {
 
   token?: string
 
+  platform?: string
+
   'Accept-Language'?: string
 
 }
 
 let header:historyType = {}
+
+const u = navigator.userAgent;
+
+const isandroid = u.indexOf('android') > -1 || u.indexOf('adr') > -1; //android终端
+
+const isios = !!u.match(/\(i[^;]+;( u;)? cpu.+mac os x/); //ios终端
+
+if (isandroid) {
+  header['platform'] = 'android';
+}
+
+if (isios) {
+  header['platform'] = 'ios';
+}
 
 if (getCookie("biubiuclub_cookiehttp_token")) {
   header['token'] = getCookie("biubiuclub_cookiehttp_token");
