@@ -28,22 +28,22 @@
 
 .baccarat {
   position: absolute;
-  width: 100px;
+  width: 55px;
 }
 
 .baccarat0 {
-  top: 8px;
-  left: 2px;
+  top: 30px;
+  left: 27px;
 }
 
 .baccarat1 {
-  top: 8px;
-  right: 2px;
+  top: 30px;
+  right: 30px;
 }
 
 .baccarat2 {
-  bottom: -2px;
-  right: 28px;
+  bottom: 25px;
+  right: 55px;
 }
 
 @keyframes shake {

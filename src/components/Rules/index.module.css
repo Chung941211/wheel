@@ -8,6 +8,8 @@
   width: 325px;
   border-radius: 8px;
   padding-bottom: 30px;
+  height: 430px;
+  overflow-y: scroll;
 }
 
 .title {

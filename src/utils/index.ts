@@ -43,9 +43,9 @@ let header:historyType = {}
 
 const u = navigator.userAgent;
 
-const isandroid = u.indexOf('android') > -1 || u.indexOf('adr') > -1; //android终端
+const isandroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
 
-const isios = !!u.match(/\(i[^;]+;( u;)? cpu.+mac os x/); //ios终端
+const isios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 
 if (isandroid) {
   header['platform'] = 'android';

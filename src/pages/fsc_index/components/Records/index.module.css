@@ -78,7 +78,7 @@
 
 .info {
   width: 40px;
-  margin: 0 -8px -10px -8px;
+  margin: 0 -8px 0px -8px;
 }
 
 .amount {
@@ -101,10 +101,10 @@
 .result {
   text-align: center;
   div {
-    margin-bottom: -35px;
+    margin-bottom: -5px;
   }
   img {
-    width: 55px;
+    width: 35px;
   }
 }
 
