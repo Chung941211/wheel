@@ -157,41 +157,43 @@ const Home = () => {
 
   return (
     <div className={styles.main}>
-      <div className={styles.content}>
+      <div className={styles.center}>
+        <div className={styles.content}>
 
-        <div className={styles.wrap}>
-          <div className={styles.leftW}>
-            <div className={`${styles.rows} ${styles.records}`}>
-              <a href="/index/ferris/records.html">{ text.records }</a>
+          <div className={styles.wrap}>
+            {/* <div className={styles.leftW}> */}
+              <div className={`${styles.rows} ${styles.records}`}>
+                <a href="/index/ferris/records.html">{ text.records }</a>
+              </div>
+            {/* </div> */}
+            <div className={`${styles.rows} ${styles.rules}`} onClick={ () => setRules(true) }>{ text.rules }</div>
+            <div className={`${styles.rows} ${styles.rank}`}>
+              <a href="/index/ferris/rank.html">{ text.rank }</a>
             </div>
           </div>
-          <div className={`${styles.rows} ${styles.rules}`} onClick={ () => setRules(true) }>{ text.rules }</div>
-          <div className={`${styles.rows} ${styles.rank}`}>
-            <a href="/index/ferris/rank.html">{ text.rank }</a>
-          </div>
+
+          { data && <Down
+            handleAdd={ (index, chip) => handleAdd(index, chip)}
+            reward={data.reward}
+            history={data.history}
+            balance={data.balance}
+            today={data.today_diamond}
+            info={data.info}
+            result={result}
+            bet={data.bet} /> }
+
         </div>
 
-        { data && <Down
-          handleAdd={ (index, chip) => handleAdd(index, chip)}
-          reward={data.reward}
-          history={data.history}
-          balance={data.balance}
-          today={data.today_diamond}
-          info={data.info}
-          result={result}
-          bet={data.bet} /> }
 
+        <img className={styles.base} src={base} />
+        { showTips && result &&
+          <Tips
+            winner={result.winner}
+            reward={data.reward}
+            id={result.reward_id} /> }
+
+        { showRules && <Rules rule={data.rule} handleShow={ () => setRules(false) } /> }
       </div>
-
-
-      <img className={styles.base} src={base} />
-      { showTips && result &&
-        <Tips
-          winner={result.winner}
-          reward={data.reward}
-          id={result.reward_id} /> }
-
-      { showRules && <Rules rule={data.rule} handleShow={ () => setRules(false) } /> }
     </div>
   );
 };
