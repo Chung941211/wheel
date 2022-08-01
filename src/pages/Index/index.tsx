@@ -142,7 +142,7 @@ const Home = () => {
       }, 10000 - speed);
       tipTime = setTimeout(() => {
         setTips(false)
-      }, 3000)
+      }, 1000)
     }
     return () => {
       clearTimeout(timer);

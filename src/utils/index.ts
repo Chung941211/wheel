@@ -54,7 +54,7 @@ if (isandroid) {
 if (isios) {
   header['platform'] = 'ios';
 }
-header['token'] = 'b0acd8e7-5e6a-42d7-9c39-becacb333502'
+// header['token'] = 'b0acd8e7-5e6a-42d7-9c39-becacb333502'
 if (getCookie("biubiuclub_cookiehttp_token")) {
   header['token'] = getCookie("biubiuclub_cookiehttp_token");
 }
