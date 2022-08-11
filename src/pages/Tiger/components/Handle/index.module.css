@@ -1,0 +1,77 @@
+.handle {
+  background-image: url("../../../../assets/tiger/handle.png");
+  height: 95px;
+  position: relative;
+  background-size: 100% 100%;
+  display: flex;
+  padding-top: 5px;
+}
+
+.nums {
+  background-image: url("../../../../assets/tiger/num.png");
+  width: 36px;
+  height: 23px;
+  background-size: 100% 100%;
+  margin: 0 3px;
+  text-align: center;
+}
+
+.btnWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  width: 120px;
+}
+
+.btn {
+  width: 35px;
+  height: 35px;
+  margin-right: 15px;
+  background-size: 100% 100%;
+  font-size: 13px;
+  text-align: center;
+  line-height: 30px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.btn1 {
+  background-image: url("../../../../assets/tiger/btn4.png");
+}
+
+.btn20 {
+  background-image: url("../../../../assets/tiger/btn2.png");
+}
+
+.btn10 {
+  background-image: url("../../../../assets/tiger/btn3.png");
+}
+
+.btn50 {
+  background-image: url("../../../../assets/tiger/btn1.png");
+}
+
+.lefts {
+  padding-left: 30px;
+}
+
+.down {
+  padding-left: 20px;
+}
+
+.mainer {
+  /* display: flex; */
+}
+
+.content {
+  display: flex;
+  margin-bottom: 7px;
+}
+
+.go {
+  width: 60px;
+  margin-left: 20px;
+}
+
+.direction {
+  width: 50px;
+}

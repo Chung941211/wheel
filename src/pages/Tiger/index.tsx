@@ -1,23 +1,33 @@
 import { useEffect } from "react";
 import { useRequest } from 'ice';
-import userService from '@/services/api';
-import text from '@/locales';
+import tigerApi from '@/services/tigerApi';
+
+import Seat from './components/Seat';
+import Handle from './components/Handle';
 
 import styles from './index.module.css';
 
-import back from '@/assets/back.png';
 
 const Tiger = () => {
-  const { data: recordsList, request: fetchData } = useRequest(userService.getRank);
+  const { data: section, request: fetchData } = useRequest(tigerApi.getSection);
 
   useEffect(() => {
-    fetchData();
-  }, [ fetchData ])
+    fetchData({ bet_type: 1 });
+  }, [ ])
 
 
   return (
     <div className={styles.wrapper}>
-      1
+
+      <div className={styles.topper}>
+        <div className={styles.nums}></div>
+        <div className={styles.nums}></div>
+      </div>
+
+      { section && <Handle section={section} /> }
+
+      { section && <Seat section={section} /> }
+
     </div>
   );
 
