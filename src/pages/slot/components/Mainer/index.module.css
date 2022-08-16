@@ -1,0 +1,169 @@
+.wrapper {
+  position: relative;
+}
+
+.mainerBg {
+  position: absolute;
+  width: 240px;
+  height: 240px;
+  top: 70px;
+  left: calc(50% - 120px);
+}
+
+.reward {
+  width: 30px;
+}
+
+.mainer {
+  position: relative;
+  height: 350px;
+  padding-top: 20px;
+  width: 343px;
+  margin: 0 auto;
+}
+
+.rows {
+  display: flex;
+  justify-content: center;
+}
+
+.mid {
+  display: flex;
+  justify-content: space-between;
+}
+
+.item {
+  width: 43px;
+  height: 44px;
+  text-align: center;
+  margin: 0 3px 5px 3px;
+  border-radius: 3px;
+  position: relative;
+}
+
+.active::after {
+  content: '';
+  width: 43px;
+  height: 44px;
+  background-color: #f19338;
+  left: 0;
+  top: 0;
+  position: absolute;
+  border-radius: 3px;
+  opacity: 0.7;
+}
+
+.item img {
+  width: 38px;
+}
+
+.item .multiple {
+  width: 30px;
+}
+
+.nums {
+  font-size: 12px;
+  color: #d90023;
+  margin-top: -8px;
+  font-weight: bold;
+}
+
+.item-1 {
+  background-color: #8da46c;
+}
+
+.item-2 {
+  background-color: #4fa6b4;
+}
+
+.item-3 {
+  background-color: #ebb749;
+}
+
+.item-4 {
+  background-color: #729b37;
+}
+
+.item-5 {
+  background-color: #4ea7b4;
+}
+
+.item-6 {
+  background-color: #f4ba20;
+}
+
+.item-7 {
+  background-color: #07bea2;
+}
+
+.item-8 {
+  background-color: #07bea2;
+}
+
+.item-9 {
+  background-color: #3b92ba;
+}
+
+.item-10 {
+  background-color: #689b22;
+}
+
+.item-8 {
+  background-color: #1fa6ba;
+}
+
+.item-11 {
+  background-color: #f4b524;
+}
+
+.item-12 {
+  background-color: #85a662;
+}
+
+.item-13 {
+  background-color: #f4b423;
+}
+
+.item-14 {
+  background-color: #23a4b6;
+}
+
+.item-15 {
+  background-color: #679d1d;
+}
+
+.item-16 {
+  background-color: #21a5b7;
+}
+
+.item-17 {
+  background-color: #f5ac25;
+}
+
+.item-18 {
+  background-color: #0eb9a0;
+}
+
+.item-19 {
+  background-color: #27a2b5;
+}
+
+.item-20 {
+  background-color: #22a5b7;
+}
+
+.item-21 {
+  background-color: #f4b322;
+}
+
+.item-22 {
+  background-color: #7b8927;
+}
+
+.item-23 {
+  background-color: #26a2b5;
+}
+
+.item-24 {
+  background-color: #f4b423;
+}

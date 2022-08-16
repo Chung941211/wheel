@@ -1,7 +1,7 @@
 .wrapper {
   background: linear-gradient(179deg, #17090b 0%, #130808 100%);
   min-height: 100vh;
-  padding: 30px 0 20px 0;
+  padding: 15px 0 20px 0;
 }
 
 .mainer {
@@ -25,4 +25,7 @@
   background-size: 100% 100%;
   margin: 0 4px;
   text-align: center;
+  color: #ffffff;
+  line-height: 23px;
+  font-weight: bold;
 }

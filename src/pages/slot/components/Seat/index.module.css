@@ -17,6 +17,10 @@
   margin: 8px 0 -3px 0;
 }
 
+.nums {
+  font-weight: bold;
+}
+
 .item {
   background-image: url("../../../../assets/tiger/bottom.png");
   width: 39px;
@@ -27,9 +31,10 @@
   text-align: center;
 }
 
-.nums {
-  font-weight: bold;
+.item:active {
+  background-color: rgba(0, 0, 0, 0.3);
 }
+
 .item:nth-child(1) {
   transform: rotate(4deg);
   margin-top: -3px;
@@ -71,4 +76,8 @@
   background-size: 100% 100%;
   margin: 0 3px;
   text-align: center;
+  color: #ffffff;
+  font-size: 13px;
+  line-height: 23px;
+  font-weight: bold;
 }

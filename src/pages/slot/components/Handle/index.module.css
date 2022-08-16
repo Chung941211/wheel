@@ -14,39 +14,45 @@
   background-size: 100% 100%;
   margin: 0 3px;
   text-align: center;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 .btnWrapper {
   display: flex;
   flex-wrap: wrap;
-  width: 120px;
+  width: 130px;
 }
 
 .btn {
   width: 35px;
   height: 35px;
   margin-right: 15px;
+  margin-bottom: 5px;
   background-size: 100% 100%;
   font-size: 13px;
   text-align: center;
   line-height: 30px;
   color: #ffffff;
   font-weight: bold;
+  border-radius: 50%;
 }
 
-.btn1 {
+.btn0 {
   background-image: url("../../../../assets/tiger/btn4.png");
 }
 
-.btn20 {
+.btn1 {
   background-image: url("../../../../assets/tiger/btn2.png");
 }
 
-.btn10 {
+.btn2 {
   background-image: url("../../../../assets/tiger/btn3.png");
+  margin-left: 25px;
 }
 
-.btn50 {
+.btn3 {
   background-image: url("../../../../assets/tiger/btn1.png");
 }
 
@@ -59,7 +65,10 @@
 }
 
 .mainer {
-  /* display: flex; */
+  display: flex;
+}
+.mainer img:active {
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 .content {
@@ -74,4 +83,28 @@
 
 .direction {
   width: 50px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.active {
+  box-shadow: 0 0 20px #000000 inset;
+}
+
+.directionActive {
+  position: relative;
+}
+
+.directionActive::after {
+  content: '';
+  width: 36px;
+  height: 36px;
+  background-color: #000000;
+  position: absolute;
+  left: 7px;
+  top: 0px;
+  display: block;
+  z-index: 2;
+  border-radius: 50%;
+  opacity: 0.3;
 }
