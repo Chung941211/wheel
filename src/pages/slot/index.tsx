@@ -21,14 +21,20 @@ interface SlotType {
   num: number
 }
 
+interface resultType {
+  balance: string;
+  payout: string
+}
+
 const Tiger = () => {
   const [ activeBets, setActiceBets ] = useState<RewardType>({});
   const [ ing, setIng ] = useState<boolean>(false);
   const [ win, setWin ] = useState<number | string>('');
   const [ payout, setPayout ] = useState<string | number>('');
   const [ slot, setSlot ] = useState<SlotType[]>([]);
-  const [ balance, setBalance ] = useState<number>(0);
+  const [ balance, setBalance ] = useState<string>('');
   const [ more, setMore ] = useState<object>({});
+  const [ resultData, setResultData ] = useState<resultType>({ balance: '', payout: '' });
   const { data: section, request: fetchData } = useRequest(tigerApi.getSection);
   const { latestMessage, readyState, sendMessage, connect, disconnect } = useWebSocket(
     'wss://sock.piupiuchat.top', {
@@ -95,18 +101,22 @@ const Tiger = () => {
       handleSolt(data.data); // slot
     }
     if (data.action === 2106) {
+      setIng(true);
       handleResult(data.data); // result
     }
   }, [ latestMessage ]);
 
+  const handleReset = () => {
+    setBalance(resultData.balance);
+    setPayout(resultData.payout);
+    setSlot([]);
+    setIng(false);
+  }
   const handleResult = (data) => {
+    setResultData(data);
     setTimeout(() => {
-      setBalance(data.balance);
-      setPayout(data.payout);
       setWin(data.win_reward_id);
-      setSlot([]);
-      setIng(false);
-    }, 5000);
+    }, 5000)
   }
 
   const handleSolt = (data) => {
@@ -119,7 +129,7 @@ const Tiger = () => {
   }
 
   const handleDirection = (direction) => {
-    if (activeBets.id) {
+    if (activeBets.id && !ing) {
       setWin('');
       setPayout('');
       sendMessage && sendMessage(`{"action":"GAME_SLOT_BET","data":{"reward_id":"${direction}","bet_id": "${activeBets.id}","bet_type": "1"}}`)
@@ -127,7 +137,7 @@ const Tiger = () => {
   }
 
   const handleReward = (item) => {
-    if (activeBets.id) {
+    if (activeBets.id && !ing) {
       setWin('');
       setPayout('');
       sendMessage && sendMessage(`{"action":"GAME_SLOT_BET","data":{"reward_id":"${item.id}","bet_id": "${activeBets.id}","bet_type": "1"}}`)
@@ -136,7 +146,6 @@ const Tiger = () => {
 
   const handleOpen = () => {
     if (!ing) {
-      setIng(true);
       sendMessage && sendMessage(`{"action":"GAME_SLOT_OPEN","data": null}`);
     }
   }
@@ -145,12 +154,13 @@ const Tiger = () => {
     <div className={styles.wrapper}>
       <div className={styles.topper}>
         <div className={styles.nums}>{ payout !== '' ? payout : '' }</div>
-        <div className={styles.nums}>{ balance > 0 ? balance : '' }</div>
+        <div className={styles.nums}>{ balance !== '' ? balance : '' }</div>
       </div>
 
       { section && <Mainer
         win={win}
         ing={ing}
+        handleReset={() => handleReset() }
         section={section} /> }
 
       { section && <Handle

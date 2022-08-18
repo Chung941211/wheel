@@ -32,7 +32,7 @@ const RewardItem = (props) => {
 }
 
 const Mainer = (props) => {
-  const { section, win, ing } = props;
+  const { section, win, ing, handleReset } = props;
   const { win_reward } = section;
 
   const [ active, setActive ] = useState<number[]>([]);
@@ -41,42 +41,53 @@ const Mainer = (props) => {
   const [ rightReward, setRight ] = useState<Array<RewardType>>([]);
   const [ bottomReward, setBottom ] = useState<Array<RewardType>>([]);
   const [ interval, setInterval ] = useState<number | undefined>(undefined);
+  const [ twinkling, setTwinkling ] = useState<boolean>(false);
 
   useInterval(() => {
     let tempArr = [ ...active ];
+    let winArr:number[] = [];
     let bol = false;
     for (let i = 0; i < tempArr.length; i++) {
       let num = tempArr[i];
       if (num === win) {
-        setInterval(undefined);
-        bol = true;
-        setActive([win, win, win, win])
-        break;
+        winArr.push(num)
       } else if (num + 1 > 24) {
         tempArr[i] = 1;
       } else {
         tempArr[i] = num + 1;
       }
     }
-    if (!bol) {
+    if (winArr.length >= 4) {
+      console.log(winArr, active)
+      setActive(winArr);
+      setInterval(undefined);
+      handleReset();
+      setTwinkling(true);
+      bol = true;
+    } else {
+      setTwinkling(false);
+    }
+
+    if (!bol && winArr.length < 4) {
+      let temp = interval || 10;
+      setInterval(temp + 1);
       setActive(tempArr);
     }
   }, interval);
 
   useEffect(() => {
-    if (ing) {
-      setInterval(100);
-      setActive([1, 2, 3, 4]);
-    } else if (!win) {
-      setInterval(100);
+    if (!win) {
+      setInterval(1);
       setActive([]);
     }
-  }, [ing, win])
-  // useEffect(() => {
-  //   if (!win) {
-  //     setActive([1, 2, 3, 4]);
-  //   }
-  // }, [win])
+  }, [win])
+
+  useEffect(() => {
+    if (ing && active.length === 0) {
+      setInterval(1);
+      setActive([1, 2, 3, 4]);
+    }
+  }, [ing])
 
   useEffect(() => {
     let tempArr = [ ...win_reward ];
@@ -89,7 +100,7 @@ const Mainer = (props) => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.mainer}>
+      <div className={`${styles.mainer} ${twinkling ? styles.interval : ''} `}>
         <div className={styles.rows}>
           { topReward.map((item, index) => <RewardItem key={index} active={active} item={item} />) }
         </div>

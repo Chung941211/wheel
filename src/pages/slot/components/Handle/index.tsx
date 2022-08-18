@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import styles from './index.module.css';
 import left from '@/assets/tiger/left.png';

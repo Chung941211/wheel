@@ -1,13 +1,14 @@
 .wrapper {
   position: relative;
+  margin-bottom: -10px;
 }
 
 .mainerBg {
   position: absolute;
-  width: 240px;
-  height: 240px;
+  width: 220px;
+  height: 230px;
   top: 70px;
-  left: calc(50% - 120px);
+  left: calc(50% - 105px);
 }
 
 .reward {
@@ -17,9 +18,20 @@
 .mainer {
   position: relative;
   height: 350px;
-  padding-top: 20px;
+  padding: 22px 30px 20px 16px;
   width: 343px;
   margin: 0 auto;
+}
+
+.mainer::after {
+  content: '';
+  position: absolute;
+  left: calc(50% - 191px);
+  top: 6px;
+  background-image: url("../../../../assets/tiger/border.png");
+  background-size: 100% 100%;
+  width: 370px;
+  height: 375px;
 }
 
 .rows {
@@ -30,11 +42,12 @@
 .mid {
   display: flex;
   justify-content: space-between;
+  padding: 0 10px;
 }
 
 .item {
-  width: 43px;
-  height: 44px;
+  width: 40px;
+  height: 43px;
   text-align: center;
   margin: 0 3px 5px 3px;
   border-radius: 3px;
@@ -43,8 +56,8 @@
 
 .active::after {
   content: '';
-  width: 43px;
-  height: 44px;
+  width: 40px;
+  height: 43px;
   background-color: #f19338;
   left: 0;
   top: 0;
@@ -52,6 +65,21 @@
   border-radius: 3px;
   opacity: 0.7;
 }
+
+.interval .active::after {
+  /* background-color: red; */
+  animation: twinkling 0.2s linear infinite;
+}
+
+@keyframes twinkling {
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
 
 .item img {
   width: 38px;
