@@ -2,6 +2,13 @@
   background: linear-gradient(179deg, #17090b 0%, #130808 100%);
   min-height: 100vh;
   padding: 15px 0 20px 0;
+  position: relative;
+}
+
+.center {
+  background-image: url("../../assets/tiger/miner.png");
+  background-size: 390px 415px;
+  background-position: -5px 0;
 }
 
 .mainer {
@@ -15,17 +22,37 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  width: 100%;
+  z-index: 9;
+  top: 100px;
 }
 
 .nums {
-  background-image: url("../../assets/tiger/top.png");
-  width: 133px;
+  background-image: url("../../assets/tiger/money.png");
+  width: 80px;
   height: 23px;
   border-radius: 5px;
   background-size: 100% 100%;
   margin: 0 4px;
   text-align: center;
-  color: #ffffff;
+  color: #e4c07a;
   line-height: 23px;
   font-weight: bold;
+  font-size: 14px;
+}
+
+.diamonds {
+  width: 15px;
+}
+
+.numsIn {
+  background-image: url("../../assets/tiger/money-null.png");
+}
+
+.down {
+  background-image: url("../../assets/tiger/green.png");
+  height: 223px;
+  position: relative;
+  background-size: 100% 100%;
 }

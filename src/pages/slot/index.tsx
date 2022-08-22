@@ -8,7 +8,7 @@ import Handle from './components/Handle';
 import Mainer from './components/Mainer';
 
 import styles from './index.module.css';
-
+import diamonds from '@/assets/diamonds.png';
 
 interface RewardType {
   bet_name?: string;
@@ -153,27 +153,32 @@ const Tiger = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.topper}>
-        <div className={styles.nums}>{ payout !== '' ? payout : '' }</div>
-        <div className={styles.nums}>{ balance !== '' ? balance : '' }</div>
+        <div className={`${styles.nums} ${payout !== '' ? styles.numsIn : ''} `}>{ payout !== '' ? payout : '' }</div>
+        <img className={styles.diamonds} src={diamonds} />
+        <div className={`${styles.nums} ${balance !== '' ? styles.numsIn : ''} `}>{ balance !== '' ? balance : '' }</div>
       </div>
 
-      { section && <Mainer
-        win={win}
-        ing={ing}
-        handleReset={() => handleReset() }
-        section={section} /> }
+      <div className={styles.center}>
+        { section && <Mainer
+          win={win}
+          ing={ing}
+          handleReset={() => handleReset() }
+          section={section} /> }
 
-      { section && <Handle
-       section={section}
-       more={more}
-       handleSetBets={ (bets) => handleBets(bets)}
-       handleSetRecords={ (direction) => handleDirection(direction)}
-       handleOpen={ () => handleOpen() } /> }
+        <div className={styles.down}>
+          { section && <Seat
+            more={more}
+            section={section}
+            handleReward={ (item) => handleReward(item) } /> }
 
-      { section && <Seat
-        more={more}
-        section={section}
-        handleReward={ (item) => handleReward(item) } /> }
+          { section && <Handle
+            section={section}
+            more={more}
+            handleSetBets={ (bets) => handleBets(bets)}
+            handleSetRecords={ (direction) => handleDirection(direction)}
+            handleOpen={ () => handleOpen() } /> }
+        </div>
+      </div>
 
     </div>
   );

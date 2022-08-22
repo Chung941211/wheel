@@ -1,9 +1,6 @@
 import { useState } from "react";
 
 import styles from './index.module.css';
-import left from '@/assets/tiger/left.png';
-import right from '@/assets/tiger/right.png';
-import go from '@/assets/tiger/Go.png';
 
 interface RewardType {
   bet_name?: string;
@@ -32,11 +29,11 @@ const Handle = (props) => {
     <div className={styles.handle}>
       <div className={styles.lefts}>
         <div className={styles.btnWrapper}>
-        { bets.map((item, index) =>
+        { [ bets[0], bets[1], bets[2] ].map((item, index) =>
           <div
             onClick={ () => handleBets(item)}
             key={index}
-            className={`${styles.btn} ${ activeBets.id === item.id ? styles.active : ''} ${styles['btn' + index]}`}>
+            className={`${styles.btn} ${ activeBets.id === item.id ? styles['active' + index] : ''} ${styles['btn' + index]}`}>
               {item.num}
             </div>)
         }
@@ -49,21 +46,19 @@ const Handle = (props) => {
         </div>
         <div className={styles.mainer}>
           <div>
-            <img
+            <div
               onClick={ () => handleSetRecords('left')}
-              className={`${styles.direction}`}
-              src={left} />
+              className={`${styles.direction} ${styles.directionLeft}`} />
           </div>
           <div>
-            <img
+            <div
               onClick={ () => handleSetRecords('right')}
-              className={`${styles.direction}`}
-              src={right} />
+              className={`${styles.direction} ${styles.directionRight}`}  />
           </div>
         </div>
       </div>
       <div>
-        <img onClick={ () => handleOpen() } className={styles.go} src={go} />
+        <div onClick={ () => handleOpen() } className={styles.go} />
       </div>
     </div>
   )
