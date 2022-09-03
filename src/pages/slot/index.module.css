@@ -5,10 +5,22 @@
   position: relative;
 }
 
+.wrapper::after {
+  content: '';
+  position: absolute;
+  background-image: url("../../assets/tiger/bg.gif");
+  background-size: 100% 100%;
+  width: 100%;
+  height: 777px;
+  top: -57px;
+}
+
 .center {
-  background-image: url("../../assets/tiger/miner.png");
-  background-size: 390px 415px;
-  background-position: -5px 0;
+  background-image: url("../../assets/tiger/big-pic.jpg");
+  background-size: 100% 585px;
+  background-position-x: center;
+  /* background-position-y: center; */
+  background-repeat: no-repeat;
 }
 
 .mainer {
@@ -33,17 +45,20 @@
   width: 80px;
   height: 23px;
   border-radius: 5px;
+  padding: 0 4px 0 0;
   background-size: 100% 100%;
   margin: 0 4px;
-  text-align: center;
+  text-align: right;
   color: #e4c07a;
   line-height: 23px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
+  letter-spacing: -4px;
 }
 
 .diamonds {
   width: 15px;
+  z-index: 9999;
 }
 
 .numsIn {
@@ -51,8 +66,18 @@
 }
 
 .down {
-  background-image: url("../../assets/tiger/green.png");
   height: 223px;
   position: relative;
-  background-size: 100% 100%;
+  z-index: 9;
 }
+
+.downWrapper {
+  /* padding-left: 4px; */
+}
+
+@media screen and (max-width: 405px) {
+  .downWrapper {
+    transform: scale(0.92);
+  }
+}
+

@@ -3,6 +3,7 @@ body {
   min-height: 100%;
   /* overflow: hidden; */
 }
+
 * {
   padding: 0;
   margin: 0;
@@ -26,4 +27,60 @@ div, img {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
+}
+
+
+@font-face {
+  font-family: "iconfont"; /* Project id 3606942 */
+  src: url('//at.alicdn.com/t/c/font_3606942_6imzgo7pm7m.woff2?t=1661269392013') format('woff2'),
+       url('//at.alicdn.com/t/c/font_3606942_6imzgo7pm7m.woff?t=1661269392013') format('woff'),
+       url('//at.alicdn.com/t/c/font_3606942_6imzgo7pm7m.ttf?t=1661269392013') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shuzi7:before {
+  content: "\37";
+}
+
+.icon-shuzi1:before {
+  content: "\31";
+}
+
+.icon-shuzi9:before {
+  content: "\39";
+}
+
+.icon-shuzi3:before {
+  content: "\33";
+}
+
+.icon-shuzi6:before {
+  content: "\36";
+}
+
+.icon-shuzi2:before {
+  content: "\32";
+}
+
+.icon-shuzi0:before {
+  content: "\30";
+}
+
+.icon-shuzi4:before {
+  content: "\34";
+}
+
+.icon-shuzi5:before {
+  content: "\35";
+}
+
+.icon-shuzi8:before {
+  content: "\38";
 }

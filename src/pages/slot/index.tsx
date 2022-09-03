@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useRequest } from 'ice';
-import { useWebSocket, useInterval } from 'ahooks';
+import { useWebSocket, useInterval, useUnmount, useDocumentVisibility } from 'ahooks';
 import tigerApi from '@/services/tigerApi';
 
 import Seat from './components/Seat';
 import Handle from './components/Handle';
 import Mainer from './components/Mainer';
+import Poups from './components/Poups';
 
 import styles from './index.module.css';
 import diamonds from '@/assets/diamonds.png';
@@ -38,24 +39,33 @@ const Tiger = () => {
   const { data: section, request: fetchData } = useRequest(tigerApi.getSection);
   const { latestMessage, readyState, sendMessage, connect, disconnect } = useWebSocket(
     'wss://sock.piupiuchat.top', {
-      manual: true,
-      onClose: (e) => {
-        connect && connect();
-      },
-      onError: (e) => {
-        connect && connect();
-      }
+      manual: true
     }
   );
+  const documentVisibility = useDocumentVisibility();
 
   // 心跳
   useInterval(() => {
     sendMessage && sendMessage(`{"action":"HEART","data":[]}`)
-  }, 20000);
+  }, 30000);
+
+  useUnmount(() => {
+    disconnect && disconnect();
+  });
 
   useEffect(() => {
-    console.log(readyState)
-  }, [readyState])
+    if (!section) {
+      return
+    }
+    const fetchApi = async () => {
+      await fetchData({ bet_type: 1 });
+    }
+    if (readyState === 2 || readyState === 3) {
+      connect && connect();
+      setMore({});
+      fetchApi();
+    }
+  }, [readyState, documentVisibility])
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -63,13 +73,16 @@ const Tiger = () => {
       connect && connect();
     }
     fetchApi();
+    return () => {
+      disconnect && disconnect();
+    }
   }, []);
 
   useEffect(() => {
     if (slot.length > 0) {
       let temp = {}
       slot.forEach(element => {
-        temp[element.reward_id] = element.num;
+        temp[element.reward_id] = element.num < 999 ? element.num : 999;
       });
       setMore(temp);
     } else {
@@ -153,10 +166,12 @@ const Tiger = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.topper}>
-        <div className={`${styles.nums} ${payout !== '' ? styles.numsIn : ''} `}>{ payout !== '' ? payout : '' }</div>
+        <div className={`${styles.nums} iconfont`}>{ payout !== '' ? payout : '' }</div>
         <img className={styles.diamonds} src={diamonds} />
-        <div className={`${styles.nums} ${balance !== '' ? styles.numsIn : ''} `}>{ balance !== '' ? balance : '' }</div>
+        <div className={`${styles.nums} iconfont`}>{ balance !== '' ? balance : '' }</div>
       </div>
+
+      { section && <Poups rule={section.rule} /> }
 
       <div className={styles.center}>
         { section && <Mainer
@@ -166,17 +181,19 @@ const Tiger = () => {
           section={section} /> }
 
         <div className={styles.down}>
-          { section && <Seat
-            more={more}
-            section={section}
-            handleReward={ (item) => handleReward(item) } /> }
+          <div className={styles.downWrapper}>
+            { section && <Seat
+              more={more}
+              section={section}
+              handleReward={ (item) => handleReward(item) } /> }
 
-          { section && <Handle
-            section={section}
-            more={more}
-            handleSetBets={ (bets) => handleBets(bets)}
-            handleSetRecords={ (direction) => handleDirection(direction)}
-            handleOpen={ () => handleOpen() } /> }
+            { section && <Handle
+              section={section}
+              more={more}
+              handleSetBets={ (bets) => handleBets(bets)}
+              handleSetRecords={ (direction) => handleDirection(direction)}
+              handleOpen={ () => handleOpen() } /> }
+          </div>
         </div>
       </div>
 

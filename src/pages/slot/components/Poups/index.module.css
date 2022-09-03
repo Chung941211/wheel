@@ -1,0 +1,66 @@
+.btn {
+  position: absolute;
+  z-index: 99;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  top: 285px;
+}
+.rules {
+  color: #83D3FF;
+  border: 1px solid #83D3FF;
+  width: 80px;
+  text-align: center;
+  border-radius: 12px;
+  transform: scale(0.92);
+  margin: 0 5px;
+}
+.records {
+  color: #FFEA81;
+  border: 1px solid #FFEA81;
+  width: 80px;
+  text-align: center;
+  border-radius: 12px;
+  transform: scale(0.92);
+  margin: 0 5px;
+}
+
+
+.props {
+  position: fixed;
+  z-index: 100;
+  top: 20%;
+  left: calc(50% - 162.5px);
+  background: #282828;
+  width: 325px;
+  border-radius: 8px;
+  padding-bottom: 30px;
+  height: 430px;
+  overflow-y: scroll;
+  z-index: 9999;
+}
+
+.title {
+  text-align: center;
+  color: #F0F0F0;
+  font-weight: bold;
+  padding: 15px 0;
+}
+
+.word {
+  color: #F0F0F0;
+  padding: 0 20px;
+  div {
+    margin-bottom: 10px;
+  }
+}
+
+.bg {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 99;
+  top: 0;
+  left: 0;
+}

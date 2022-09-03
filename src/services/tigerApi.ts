@@ -11,19 +11,15 @@ export default {
     });
     return data.data;
   },
-  // 开始游戏
-  async getStart(params) {
-    const data = await request({
-      url: `/api/fsc/start`,
-      headers: {
-        ...getSignParams(),
-        roomId: params.roomId,
-        betType: params.betType
+
+  // 开奖记录
+  async getRecords() {
+    const { data } = await request({ url: `/api/slot/records`,  method: 'post', headers: getSignParams() });
+    return data.rows.map(item => {
+      return {
+        ...item,
+        moment_profit: Number(item.moment_profit)
       }
-    });
-    if (data.code === 0) {
-      alert(data.message);
-    }
-    return data.data;
+    }) || []
   }
 }

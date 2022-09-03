@@ -3,6 +3,20 @@ import { getSignParams } from '../utils';
 
 export default {
 
+  async clientLog(log) {
+    await request({
+      url: `/api/common/client_log`,
+      data: {
+        log: JSON.stringify({
+          ...log,
+          token: getSignParams().token,
+          platform: 'h5'
+        })
+      },
+      method: 'post',
+      headers: getSignParams()
+    });
+  },
   // 获取排行榜TOP3
   async getFerrisTop3() {
     const params = {
@@ -95,7 +109,7 @@ export default {
   async postFerrisGo(data) {
     const params = { betItem: data };
 
-    const { result } = await request({ url: `/api/ferris/click`,  method: 'post', headers: getSignParams({ betItem: JSON.stringify(data).replace(/[\\]/g,'') }), data: params });
+    const result = await request({ url: `/api/ferris/click`,  method: 'post', headers: getSignParams({ betItem: JSON.stringify(data).replace(/[\\]/g,'') }), data: params });
     return result;
   },
 }

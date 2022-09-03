@@ -13,7 +13,8 @@ const Down = (props) => {
   const [ active, setActive ] = useState<number>(0);
   const [ turn, setTurn ] = useState<number>();
   const [ speed, setSpeed ] = useState<number>(200);
-  const { reward, history, balance, today, handleAdd, info, result, bet } = props;
+  const [ end, setEnd ] = useState<boolean>(false);
+  const { reward, history, balance, today, handleAdd, info, result, bet, handleTips } = props;
 
   const handleChip = (digit: number) => {
     setChip(digit);
@@ -47,6 +48,7 @@ const Down = (props) => {
       }, speed);
     } else if (info.showTime > 0) {
       setSpeed(200);
+      setEnd(false);
     }
     if (result) {
       let num = 0
@@ -58,6 +60,10 @@ const Down = (props) => {
       if (active % 8 === num) {
         setActive(num);
         setTurn(num);
+        if (!end) {
+          setEnd(true);
+          handleTips();
+        }
         return;
       }
     }

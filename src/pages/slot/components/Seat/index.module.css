@@ -3,12 +3,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 5px;
+  padding-top: 10px;
+  transform: scale(0.98);
 }
 
 .gift {
-  width: 20px;
-  margin: 8px 0 -3px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gift img {
+  width: 30px;
+  margin-top: 2px;
 }
 
 .nums {
@@ -16,11 +23,13 @@
 }
 
 .item {
-  width: 45px;
+  width: 49px;
   height: 45px;
   border-radius: 5px;
   background-size: 100% 100%;
   text-align: center;
+  background-repeat: no-repeat;
+  margin: 0 auto;
 }
 
 .reward:nth-child(1) .item {
@@ -30,6 +39,7 @@
 .reward:nth-child(1) .item:active {
   background-image: url("../../../../assets/tiger/reward-in-0.png");
 }
+
 
 .reward:nth-child(2) .item {
   background-image: url("../../../../assets/tiger/reward-1.png");
@@ -97,22 +107,22 @@
 .rows {
   background-image: url("../../../../assets/tiger/bule.png");
   width: 34px;
-  padding: 0 2px;
+  padding: 0 4px 0 0;
   height: 25px;
   background-size: 100% 100%;
-  margin: 0 3px 5px 3px;
+  margin: 0 auto 3px auto;
   text-align: right;
   color: #8fd9df;
   font-size: 16px;
   line-height: 25px;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: -5px;
 }
 
 .multiple {
   background-image: url("../../../../assets/tiger/seat.png");
   width: 34px;
-  padding: 0 2px;
+  padding: 0 4px 0 0;
   height: 25px;
   background-size: 100% 100%;
   margin: 0 3px;
@@ -121,6 +131,12 @@
   font-size: 16px;
   line-height: 25px;
   font-weight: bold;
-  margin-bottom: 10px;
-  letter-spacing: 1px;
+  margin: 0 auto 10px auto;
+  letter-spacing: -5px;
+}
+
+@media screen and (max-width: 405px) {
+  .reward {
+    margin-top: -5px;
+  }
 }

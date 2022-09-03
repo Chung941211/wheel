@@ -29,20 +29,19 @@ const Handle = (props) => {
     <div className={styles.handle}>
       <div className={styles.lefts}>
         <div className={styles.btnWrapper}>
-        { [ bets[0], bets[1], bets[2] ].map((item, index) =>
+        { bets.map((item, index) =>
           <div
             onClick={ () => handleBets(item)}
             key={index}
             className={`${styles.btn} ${ activeBets.id === item.id ? styles['active' + index] : ''} ${styles['btn' + index]}`}>
-              {item.num}
             </div>)
         }
         </div>
       </div>
       <div>
         <div className={styles.content}>
-          <div className={styles.nums}>{ more['left'] || '' }</div>
-          <div className={styles.nums}>{ more['right'] || '' }</div>
+          <div className={`${styles.nums} iconfont`}>{ more['left'] || '' }</div>
+          <div className={`${styles.nums} iconfont`}>{ more['right'] || '' }</div>
         </div>
         <div className={styles.mainer}>
           <div>
