@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ErrorBoundary } from 'ice';
 import { useDocumentVisibility, useInterval } from 'ahooks';
 import { useRequest } from 'ice';
 
@@ -20,6 +21,21 @@ type historyType = {
 
 }
 
+const Index = () => {
+  const { request: clientLog } = useRequest(userService.clientLog, {
+    refreshOnWindowFocus: true
+  });
+  const myErrorHandler = (error) => {
+    clientLog({ error: `${error}` })
+  }
+  return (
+    <ErrorBoundary
+      onError={myErrorHandler}
+    >
+      <Home />
+    </ErrorBoundary>
+  )
+}
 const Home = () => {
 
   const [ showRules, setRules ] = useState<boolean>(false);
@@ -104,7 +120,7 @@ const Home = () => {
     }
   }
 
-  const handleGo = (rewardId:number, betId:number) => {
+  const handleGo = async (rewardId:number, betId:number) => {
     if (data.info.showTime <= 0) {
       return;
     }
@@ -112,7 +128,10 @@ const Home = () => {
       rewardId,
       betId
     }];
-    postResult(betItem);
+    const res = await postResult(betItem);
+    if (res.code !== 1) {
+      getSection();
+    }
   }
 
   useEffect(() => {
@@ -132,34 +151,35 @@ const Home = () => {
 
   useEffect(() => {
     let timer;
-    let tipTime;
     if (result) {
-      setTips(true);
       let { showTime } = data.info;
       let speed = showTime * -1 * 1000;
       timer = setTimeout(() => {
         setrResult(null)
       }, 10000 - speed);
-      tipTime = setTimeout(() => {
-        setTips(false)
-      }, 1000)
     }
     return () => {
       clearTimeout(timer);
-      clearTimeout(tipTime);
     };
   }, [ result ])
 
   useInterval(() => {
     handleStatus();
-  }, 1000)
+  }, 1000);
+
+  const handleTips = () => {
+    setTips(true);
+    setTimeout(() => {
+      console.log('11')
+      setTips(false)
+    }, 3000)
+  }
 
 
   return (
     <div className={styles.main}>
       <div className={styles.center}>
         <div className={styles.content}>
-
           <div className={styles.wrap}>
             {/* <div className={styles.leftW}> */}
               <div className={`${styles.rows} ${styles.records}`}>
@@ -174,6 +194,7 @@ const Home = () => {
 
           { data && <Down
             handleAdd={ (index, chip) => handleAdd(index, chip)}
+            handleTips={ () => handleTips()}
             reward={data.reward}
             history={data.history}
             balance={data.balance}
@@ -184,9 +205,8 @@ const Home = () => {
 
         </div>
 
-
         <img className={styles.base} src={base} />
-        { showTips && result &&
+        { showTips && data && result &&
           <Tips
             winner={result.winner}
             reward={data.reward}
@@ -198,4 +218,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Index;
