@@ -54,9 +54,9 @@ if (isandroid) {
 if (isios) {
   header['platform'] = 'ios';
 }
-// header['token'] = 'b0acd8e7-5e6a-42d7-9c39-becacb333502'
+header['token'] = '8c9f3869-766a-4117-bc5b-147c1ed60f7d'
 if (getCookie("biubiuclub_cookiehttp_token")) {
-  header['token'] = getCookie("biubiuclub_cookiehttp_token");
+  // header['token'] = getCookie("biubiuclub_cookiehttp_token");
 }
 
 if (getCookie("biubiuclub_cookieaccept_language")) {

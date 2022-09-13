@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import styles from './index.module.css';
-
 interface RewardType {
   bet_name?: string;
   id?: number;
@@ -25,6 +24,10 @@ const Handle = (props) => {
     }
   }
 
+  useEffect(() => {
+    handleBets(bets[0])
+  }, [])
+
   return (
     <div className={styles.handle}>
       <div className={styles.lefts}>
@@ -34,6 +37,7 @@ const Handle = (props) => {
             onClick={ () => handleBets(item)}
             key={index}
             className={`${styles.btn} ${ activeBets.id === item.id ? styles['active' + index] : ''} ${styles['btn' + index]}`}>
+              <span>{item.num}</span>
             </div>)
         }
         </div>

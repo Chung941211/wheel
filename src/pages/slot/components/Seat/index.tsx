@@ -1,9 +1,23 @@
+import { useState, useEffect } from "react";
 import styles from './index.module.css';
 
 const Seat = (props) => {
 
   const { section, more, handleReward } = props;
   const { reward } = section;
+  const [ nums, setNums ] = useState<number[]>([]);
+
+  const handleSetReward = (item) => {
+    let temp = [...nums]
+    temp.push(item)
+    setNums(temp)
+  }
+
+  useEffect(() => {
+    if (nums.length > 0) {
+      handleReward(nums[nums.length - 1])
+    }
+  }, [ nums ])
 
   return (
     <div className={styles.seat}>
@@ -18,7 +32,7 @@ const Seat = (props) => {
                 <div className={`${styles.multiple}`}>
                   <div className={`${styles.more} iconfont`}>{ item.multiple }</div>
                 </div>
-                <div className={styles.item} onClick={ () => handleReward(item, index) }>
+                <div className={styles.item} onClick={ () => setNums([ ...nums, item.id ]) }>
                   <div className={styles.gift}>
                     <img src={item.show_img}/>
                   </div>

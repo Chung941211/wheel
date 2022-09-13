@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   padding-top: 10px;
-  transform: scale(0.98);
+  /* transform: scale(0.98); */
 }
 
 .gift {
@@ -14,8 +14,10 @@
 }
 
 .gift img {
-  width: 30px;
+  width: 27px;
   margin-top: 2px;
+  -webkit-transform: perspective(400px) rotateX(-20deg);
+  transform: perspective(400px) rotateX(-20deg)
 }
 
 .nums {
@@ -32,6 +34,9 @@
   margin: 0 auto;
 }
 
+.reward .item:active .gift {
+  transform: perspective(100px) rotateX(-40deg);
+}
 .reward:nth-child(1) .item {
   background-image: url("../../../../assets/tiger/reward-0.png");
 }
@@ -138,5 +143,11 @@
 @media screen and (max-width: 405px) {
   .reward {
     margin-top: -5px;
+  }
+}
+
+@media screen and (max-width: 355px) {
+  .list {
+    transform: scale(0.9);
   }
 }

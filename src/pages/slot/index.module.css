@@ -1,11 +1,18 @@
 .wrapper {
   background: linear-gradient(179deg, #17090b 0%, #130808 100%);
-  min-height: 100vh;
-  padding: 15px 0 20px 0;
+  height: 100vh;
   position: relative;
+  overflow: hidden;
 }
-
-.wrapper::after {
+.downWrapper {
+  position: relative;
+  z-index: 8;
+}
+.content {
+  position: relative;
+  padding: 15px 0 20px 0;
+}
+.content::after {
   content: '';
   position: absolute;
   background-image: url("../../assets/tiger/bg.gif");
@@ -79,5 +86,12 @@
   .downWrapper {
     transform: scale(0.92);
   }
+}
+
+@media screen and (max-width: 370px) {
+}
+
+@media screen and (max-width: 320px) {
+
 }
 

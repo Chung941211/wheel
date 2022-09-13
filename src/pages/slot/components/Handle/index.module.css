@@ -103,6 +103,12 @@
   background-image: url("../../../../assets/tiger/btn2-in.png");
 }
 
+.active0 span, .active1 span, .active2 span {
+  -webkit-transform: perspective(400px) rotateX(-40deg);
+  transform: perspective(400px) rotateX(-40deg);
+  display: inline-block;
+}
+
 .directionLeft {
   background-image: url("../../../../assets/tiger/left.png");
 }

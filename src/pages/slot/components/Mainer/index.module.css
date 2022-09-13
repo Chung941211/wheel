@@ -44,6 +44,9 @@
   border-radius: 3px;
   position: relative;
   box-shadow: 0 0 8px #000000 inset;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .active::after {
@@ -74,7 +77,7 @@
 
 
 .item img {
-  width: 38px;
+  width: 33px;
 }
 
 .item .multiple {
@@ -187,3 +190,10 @@
 .item-24 {
   background-color: #f4b423;
 }
+
+@media screen and (max-width: 355px) {
+  .wrapper {
+    transform: scale(0.9, 0.95);
+  }
+}
+

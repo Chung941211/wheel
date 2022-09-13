@@ -10,10 +10,15 @@ interface RewardType {
 }
 
 const RewardItem = (props) => {
-  const { item, active } = props;
+  const { item, active, music } = props;
   const [ show, setShow ] = useState<boolean>(false);
 
   useEffect(() => {
+    if (music && active[3] === item.id) {
+      return setShow(true)
+    } else if (music) {
+      return setShow(false)
+    }
     if (active.indexOf(item.id) > -1) {
       setShow(true)
     } else {
@@ -25,14 +30,14 @@ const RewardItem = (props) => {
     <div
       className={`${styles.item} ${show ? styles.active : ''} ${styles['item-' + item.id]}`}
       key={item.id}>
-      <img className={`${styles.reward} ${item.multiple > 0 ? styles.multiple : ''}`} src={item.show_img} />
-      { item.multiple > 0 && <div className={styles.nums}>x{ item.multiple }</div> }
+      <img className={`${styles.reward}`} src={item.show_img} />
+      {/* { item.multiple > 0 && <div className={styles.nums}>x{ item.multiple }</div> } */}
     </div>
   )
 }
 
 const Mainer = (props) => {
-  const { section, win, ing, handleReset } = props;
+  const { section, win, ing, handleReset, handleTime } = props;
   const { win_reward } = section;
 
   const [ active, setActive ] = useState<number[]>([]);
@@ -42,14 +47,16 @@ const Mainer = (props) => {
   const [ bottomReward, setBottom ] = useState<Array<RewardType>>([]);
   const [ interval, setInterval ] = useState<number | undefined>(undefined);
   const [ twinkling, setTwinkling ] = useState<boolean>(false);
+  const [ music, setMusic ] = useState<boolean>(false);
 
   useInterval(() => {
     let tempArr = [ ...active ];
     let winArr:number[] = [];
     let bol = false;
+    let temp = interval || 10;
     for (let i = 0; i < tempArr.length; i++) {
       let num = tempArr[i];
-      if (num === win) {
+      if (num === win && music) {
         winArr.push(num)
       } else if (num + 1 > 24) {
         tempArr[i] = 1;
@@ -57,8 +64,10 @@ const Mainer = (props) => {
         tempArr[i] = num + 1;
       }
     }
+
+    handleMusic();
+
     if (winArr.length >= 4) {
-      console.log(winArr, active)
       setActive(winArr);
       setInterval(undefined);
       handleReset();
@@ -69,8 +78,7 @@ const Mainer = (props) => {
     }
 
     if (!bol && winArr.length < 4) {
-      let temp = interval || 10;
-      setInterval(temp + 1);
+      setInterval(temp + 1.5);
       setActive(tempArr);
     }
   }, interval);
@@ -86,6 +94,7 @@ const Mainer = (props) => {
     if (ing && active.length === 0) {
       setInterval(1);
       setActive([1, 2, 3, 4]);
+      setMusic(false)
     }
   }, [ing])
 
@@ -97,23 +106,34 @@ const Mainer = (props) => {
     setLeft([ ...[ ...tempArr ].splice(16, 5)].reverse())
   }, [ win_reward ])
 
+  const handleMusic = () => {
+    let num = active[3]
+    if (!music && win > 6 && num === (win - 5)) {
+      setMusic(true)
+      handleTime();
+    } else if (!music && win > 0 && win <= 6 && num > (17 - -win)) {
+      setMusic(true)
+      handleTime();
+    }
+
+  }
 
   return (
     <div className={styles.wrapper}>
       <div className={`${styles.mainer} ${twinkling ? styles.interval : ''} `}>
         <div className={styles.rows}>
-          { topReward.map((item, index) => <RewardItem key={index} active={active} item={item} />) }
+          { topReward.map((item, index) => <RewardItem key={index} music={music} active={active} item={item} />) }
         </div>
         <div className={styles.mid}>
           <div className={styles.content}>
-            { leftReward.map((item, index) => <RewardItem key={index} active={active} item={item} />) }
+            { leftReward.map((item, index) => <RewardItem key={index} music={music} active={active} item={item} />) }
           </div>
           <div className={styles.content}>
-            { rightReward.map((item, index) => <RewardItem key={index} active={active} item={item} />) }
+            { rightReward.map((item, index) => <RewardItem key={index} music={music} active={active} item={item} />) }
           </div>
         </div>
         <div className={styles.rows}>
-          { bottomReward.map((item, index) => <RewardItem key={index} active={active} item={item} />) }
+          { bottomReward.map((item, index) => <RewardItem key={index} music={music} active={active} item={item} />) }
         </div>
       </div>
       <img className={styles.mainerBg} src={mainerBg}  />
