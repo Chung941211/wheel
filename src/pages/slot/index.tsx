@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { useRequest } from 'ice';
+import { useRequest, ErrorBoundary } from 'ice';
 import useSound from 'use-sound';
 import { useWebSocket, useInterval, useUnmount, useDocumentVisibility } from 'ahooks';
 import tigerApi from '@/services/tigerApi';
+import userService from '@/services/api';
+import { getCookie } from '../../utils';
+
 
 import Seat from './components/Seat';
 import Handle from './components/Handle';
@@ -30,18 +33,42 @@ interface resultType {
   payout: string | number;
 }
 
-let socktUrl = ''
+let socktUrl = '';
+let cdnUrl = '';
 let url = location.hostname.split('.');
 if (url[0] === 'release') {
   socktUrl = 'wss://release-socket.biubiuclub.com'
-} else if (url[2] === 'com' && url[0] === 'club') {
+  cdnUrl = 'https://static.biubiuclub.com';
+} else if (url[0] === 'static' || (url[2] === 'com' && url[0] === 'club')) {
   socktUrl = 'wss://socket.biubiuclub.com'
+  cdnUrl = 'https://static.biubiuclub.com';
 } else {
   socktUrl = 'wss://sock.piupiuchat.top'
+  cdnUrl = 'https://static.biubiuclub.com'
 }
+
+let language = getCookie("biubiuclub_cookieaccept_language") || 'en-us'
+
+const Index = () => {
+  const { request: clientLog } = useRequest(userService.clientLog, {
+    refreshOnWindowFocus: true
+  });
+  const myErrorHandler = (error) => {
+    clientLog({ error: `${error}` })
+  }
+  return (
+    <ErrorBoundary
+      onError={myErrorHandler}
+    >
+      <Tiger />
+    </ErrorBoundary>
+  )
+}
+
 const Tiger = () => {
   const [ activeBets, setActiceBets ] = useState<RewardType>({ id: '' });
   const [ ing, setIng ] = useState<boolean>(false);
+  const [ on, setOn ] = useState<boolean>(false);
   const [ win, setWin ] = useState<number | string>('');
   const [ payout, setPayout ] = useState<string | number>('');
   const [ slot, setSlot ] = useState<SlotType[]>([]);
@@ -54,15 +81,17 @@ const Tiger = () => {
       manual: true
     }
   );
-  const [ playBtes ] = useSound('https://club.piupiuchat.top/static/home/musics/bet.mp3');
-  const [ playIn, { stop } ] = useSound('https://club.piupiuchat.top/static/home/musics/in.mp3');
-  const [ playBad ] = useSound('https://club.piupiuchat.top/static/home/musics/bad.mp3');
-  const [ playGood ] = useSound('https://club.piupiuchat.top/static/home/musics/good.mp3');
+  const { request: clientLog } = useRequest(userService.clientLog, {
+    refreshOnWindowFocus: true
+  });
+  const [ playBtes ] = useSound(`${cdnUrl}/static/home/musics/bet.mp3`);
+  const [ playIn, { stop } ] = useSound(`${cdnUrl}/static/home/musics/in.mp3`);
+  const [ playBad ] = useSound(`${cdnUrl}/static/home/musics/bad.mp3`);
+  const [ playGood ] = useSound(`${cdnUrl}/static/home/musics/good.mp3`);
   const documentVisibility = useDocumentVisibility();
   // 心跳
   useInterval(() => {
     sendMessage && sendMessage(`{"action":"HEART","data":[]}`)
-    console.log(readyState)
   }, 30000);
 
   useUnmount(() => {
@@ -70,27 +99,27 @@ const Tiger = () => {
   });
 
   useEffect(() => {
-    console.log('readyState', readyState, documentVisibility)
+    if (documentVisibility !== 'hidden' && on && readyState === 3) {
+      connect && connect();
+    }
+  }, [ documentVisibility ])
+
+  useEffect(() => {
     if (!section) {
       return
     }
     if (readyState === 3) {
       connect && connect();
-      // setMore({});
-      // fetchData({ bet_type: 1 });
+      setMore({});
+      fetchData({ bet_type: 1 });
     }
   }, [readyState])
-
-  useEffect(() => {
-    if (documentVisibility === 'hidden') {
-      disconnect && disconnect();
-    }
-  }, [ documentVisibility ])
 
   useEffect(() => {
     const fetchApi = async () => {
       await fetchData({ bet_type: 1 });
       connect && connect();
+      setOn(true)
     }
     fetchApi();
     return () => {
@@ -132,16 +161,16 @@ const Tiger = () => {
     }
     if (data.action === 2105) {
       handleSolt(data.data); // slot
+      clientLog({ logMsg: `下注成功` });
     }
     if (data.action === 2106) {
       handleResult(data.data); // result
       setIng(true);
-      playIn();
+      clientLog({ logMsg: `结算成功，音乐开始` });
     }
     if (data.action === 0) {
+      clientLog({ logMsg: `下注失败${data.data}` });
       stop();
-      setIng(false);
-      alert(data.msg)
     }
   }, [ latestMessage ]);
 
@@ -164,7 +193,11 @@ const Tiger = () => {
   const handleResult = (data) => {
     setResultData(data);
     setTimeout(() => {
-      setWin(data.win_reward_id);
+      section.win_reward.forEach(el => {
+        if (el.id === data.win_reward_id) {
+          setWin(el.tempId);
+        }
+      });
     }, 5000)
   }
 
@@ -179,31 +212,29 @@ const Tiger = () => {
 
   const handleDirection = (direction) => {
     playBtes();
-    if (more[direction] + activeBets.num >= 999) {
-      return
-    }
     if (activeBets.id && !ing) {
       setWin('');
       setPayout('');
-      sendMessage && sendMessage(`{"action":"GAME_SLOT_BET","data":{"reward_id":"${direction}","bet_id": "${activeBets.id}","bet_type": "1"}}`)
+      clientLog({ logMsg: `下注，下注id${activeBets.id}` });
+      sendMessage && sendMessage(`{"action":"GAME_SLOT_BET","data":{"reward_id":"${direction}","bet_id": "${activeBets.id}","bet_type": "1","language":"${language}"}}`)
     }
   }
 
   const handleReward = (id) => {
     playBtes();
-    if (more[id] + activeBets.num >= 999) {
-      return
-    }
     if (activeBets.id && !ing) {
       setWin('');
       setPayout('');
-      sendMessage && sendMessage(`{"action":"GAME_SLOT_BET","data":{"reward_id":"${id}","bet_id": "${activeBets.id}","bet_type": "1"}}`)
+      clientLog({ logMsg: `下注，下注id${activeBets.id}` });
+      sendMessage && sendMessage(`{"action":"GAME_SLOT_BET","data":{"reward_id":"${id}","bet_id": "${activeBets.id}","bet_type": "1","language":"${language}"}}`)
     }
   }
 
   const handleOpen = () => {
     if (!ing) {
-      sendMessage && sendMessage(`{"action":"GAME_SLOT_OPEN","data": null}`);
+      clientLog({ logMsg: `点击游戏开始` });
+      sendMessage && sendMessage(`{"action":"GAME_SLOT_OPEN","data":{"language":"${language}"}}`);
+      playIn();
     }
   }
 
@@ -251,4 +282,4 @@ const Tiger = () => {
   ;
 };
 
-export default Tiger;
+export default Index;

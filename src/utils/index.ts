@@ -54,14 +54,15 @@ if (isandroid) {
 if (isios) {
   header['platform'] = 'ios';
 }
-header['token'] = '8c9f3869-766a-4117-bc5b-147c1ed60f7d'
+// header['token'] = '8c9f3869-766a-4117-bc5b-147c1ed60f7d'
 if (getCookie("biubiuclub_cookiehttp_token")) {
-  // header['token'] = getCookie("biubiuclub_cookiehttp_token");
+  header['token'] = getCookie("biubiuclub_cookiehttp_token");
 }
 
 if (getCookie("biubiuclub_cookieaccept_language")) {
   header['Accept-Language'] = getCookie("biubiuclub_cookieaccept_language");
 }
+
 
 function getSignParams(params?:any) {
 
@@ -98,8 +99,15 @@ function getSignParams(params?:any) {
   }
 }
 
+let ApiUrl = '';
+let url = location.hostname.split('.');
+if (url[0] === 'static') {
+  ApiUrl = 'https://club.biubiuclub.com';
+}
+
 export {
   header,
+  ApiUrl,
   getCookie,
   getQueryVariable,
   getSignParams

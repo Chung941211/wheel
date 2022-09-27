@@ -12,14 +12,13 @@ interface RewardType {
 const RewardItem = (props) => {
   const { item, active, music } = props;
   const [ show, setShow ] = useState<boolean>(false);
-
   useEffect(() => {
-    if (music && active[3] === item.id) {
+    if (music && active[3] === item.tempId) {
       return setShow(true)
     } else if (music) {
       return setShow(false)
     }
-    if (active.indexOf(item.id) > -1) {
+    if (active.indexOf(item.tempId) > -1) {
       setShow(true)
     } else {
       setShow(false)
@@ -28,8 +27,8 @@ const RewardItem = (props) => {
 
   return (
     <div
-      className={`${styles.item} ${show ? styles.active : ''} ${styles['item-' + item.id]}`}
-      key={item.id}>
+      className={`${styles.item} ${show ? styles.active : ''} ${styles['item-' + item.tempId]}`}
+      key={item.tempId}>
       <img className={`${styles.reward}`} src={item.show_img} />
       {/* { item.multiple > 0 && <div className={styles.nums}>x{ item.multiple }</div> } */}
     </div>

@@ -78,16 +78,19 @@ const Home = () => {
     }
   }, [ polling ]);
 
-  const handleAdd = (index: number, chip: number) => {
+  const handleAdd = async (index: number, chip: number) => {
     const temp = { ...data };
     const num:number = data.bet[chip].diamond;
-    if (temp.balance - num >= 0) {
+    const res = await postResult([{
+      rewardId: temp.reward[index].id,
+      betId: data.bet[chip].id
+    }]);
+    if (res.code === 1) {
       temp.reward[index].num += num;
       setHistory([ ...history, { index, chip }]);
       temp.balance -= num;
     }
     mutate(temp);
-    handleGo(temp.reward[index].id, data.bet[chip].id);
   }
 
   const handleStatus = () => {

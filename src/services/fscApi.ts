@@ -1,10 +1,10 @@
 import { request } from 'ice';
-import { getSignParams } from '../utils';
+import { getSignParams, ApiUrl } from '../utils';
 
 export default {
   async getUserRoom() {
     const data = await request({
-      url: `/api/room/userRoom`,
+      url: `${ApiUrl}/api/room/userRoom`,
       method: 'post',
       headers: getSignParams()
     });
@@ -13,7 +13,7 @@ export default {
   // 开始游戏
   async getStart(params) {
     const data = await request({
-      url: `/api/fsc/start`,
+      url: `${ApiUrl}/api/fsc/start`,
       headers: {
         ...getSignParams(),
         roomId: params.roomId,
@@ -28,7 +28,7 @@ export default {
   // 获取结果
   async getResult(params) {
     const data = await request({
-      url: `/api/fsc/actionResult`,
+      url: `${ApiUrl}/api/fsc/actionResult`,
       headers: {
         ...getSignParams(),
         roomId: params.roomId,
@@ -44,7 +44,7 @@ export default {
       betType: params.betType
     }
     const data = await request({
-      url: `/api/fsc/rank_top3`,
+      url: `${ApiUrl}/api/fsc/rank_top3`,
       data: query,
       method: 'post',
       headers: getSignParams(query)
@@ -54,7 +54,7 @@ export default {
 
   async getFsc(params) {
     const data = await request({
-      url: `/api/fsc/section`,
+      url: `${ApiUrl}/api/fsc/section`,
       params,
       headers: {
         ...getSignParams(),
@@ -67,7 +67,7 @@ export default {
   async postAddWaid(params) {
     const query = { uid: params.uid }
     const data = await request({
-      url: `/api/addWaid`,
+      url: `${ApiUrl}/api/addWaid`,
       method: 'post',
       data: query,
       headers: getSignParams(query)
@@ -81,7 +81,7 @@ export default {
       betItem: betItem
     }
     const data = await request({
-      url: `/api/fsc/click`,
+      url: `${ApiUrl}/api/fsc/click`,
       method: 'post',
       data: query,
       headers: {
@@ -96,7 +96,7 @@ export default {
   // 禁言
   async postSound(uid) {
     const data = await request({
-      url: `/api/is_sound`,
+      url: `${ApiUrl}/api/is_sound`,
       data: {
         uid
       },
@@ -109,7 +109,7 @@ export default {
   // 开麦
   async postRemove(uid) {
     const data = await request({
-      url: `/api/remove_sound`,
+      url: `${ApiUrl}/api/remove_sound`,
       data: {
         uid
       },
@@ -121,7 +121,7 @@ export default {
   // 赠送金币
   async giftAmount(params) {
     const data = await request({
-      url: `/api/fsc/gift_amount`,
+      url: `${ApiUrl}/api/fsc/gift_amount`,
       headers: {
         ...getSignParams(),
         roomId: params.roomId,
@@ -141,7 +141,7 @@ export default {
       betType: params.betType
     }
     const data = await request({
-      url: `/api/fsc/rank`,
+      url: `${ApiUrl}/api/fsc/rank`,
       data: query,
       method: 'post',
       headers: getSignParams(query)
@@ -155,7 +155,7 @@ export default {
       betType: params.betType
     }
     const { data } = await request({
-      url: `/api/fsc/records`,
+      url: `${ApiUrl}/api/fsc/records`,
       method: 'post',
       headers: getSignParams(query),
       data: query

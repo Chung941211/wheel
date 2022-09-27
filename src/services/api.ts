@@ -1,11 +1,11 @@
 import { request } from 'ice';
-import { getSignParams } from '../utils';
+import { getSignParams, ApiUrl } from '../utils';
 
 export default {
 
   async clientLog(log) {
     await request({
-      url: `/api/common/client_log`,
+      url: `${ApiUrl}/api/common/client_log`,
       data: {
         log: JSON.stringify({
           ...log,
@@ -24,7 +24,7 @@ export default {
       page: ''
     }
     const data = await request({
-      url: `/api/ferris/rank_top3`,
+      url: `${ApiUrl}/api/ferris/rank_top3`,
       data: params,
       method: 'post',
       headers: getSignParams()
@@ -39,7 +39,7 @@ export default {
       page: ''
     }
     const data = await request({
-      url: `/api/ferris/rank`,
+      url: `${ApiUrl}/api/ferris/rank`,
       data: params,
       method: 'post',
       headers: getSignParams()
@@ -50,7 +50,7 @@ export default {
   // 获取摩天轮
   async getSection() {
     let { data } = await request({
-      url: '/api/ferris/section',
+      url: `${ApiUrl}/api/ferris/section`,
       headers: getSignParams()
     });
     let showTime = data.info.bet_duration - data.info.started_seconds;
@@ -73,13 +73,13 @@ export default {
 
   // 获取用户信息
   async getUserData() {
-    return await request({ url: `/api/get_user_info`,  method: 'post', headers: getSignParams() });
+    return await request({ url: `${ApiUrl}/api/get_user_info`,  method: 'post', headers: getSignParams() });
   },
 
   // // 获取用户信息
   async login() {
     return await request({
-        url: `/api/login`,
+        url: `${ApiUrl}/api/login`,
         method: 'post',
         data: {
           phone: '15999951551', //13051032222
@@ -90,7 +90,7 @@ export default {
 
   // 开奖记录
   async getRecords() {
-    const { data } = await request({ url: `/api/ferris/records`,  method: 'post', headers: getSignParams() });
+    const { data } = await request({ url: `${ApiUrl}/api/ferris/records`,  method: 'post', headers: getSignParams() });
     return data.rows.map(item => {
       return {
         ...item,
@@ -101,7 +101,7 @@ export default {
 
   // 获取中奖情况
   async getActionResult() {
-    const { data } = await request({ url: `/api/ferris/actionResult`, headers: getSignParams() });
+    const { data } = await request({ url: `${ApiUrl}/api/ferris/actionResult`, headers: getSignParams() });
     return data;
   },
 
@@ -109,7 +109,7 @@ export default {
   async postFerrisGo(data) {
     const params = { betItem: data };
 
-    const result = await request({ url: `/api/ferris/click`,  method: 'post', headers: getSignParams({ betItem: JSON.stringify(data).replace(/[\\]/g,'') }), data: params });
+    const result = await request({ url: `${ApiUrl}/api/ferris/click`,  method: 'post', headers: getSignParams({ betItem: JSON.stringify(data).replace(/[\\]/g,'') }), data: params });
     return result;
   },
 }
